@@ -1,6 +1,12 @@
 function teste() {
-    var asd=$("#validationDefault03").val();
-    window.alert(asd);
+    var rendimentoA = Number($("#rendA").val());
+    var rendimentoB = Number($("#rendB").val());
+    var estadoCivil = $('#estadoCivil option:selected').text()
+    var tributacao = $('#tributacao option:selected').text()
+    var ascendentes = Number($("#ascendentes").val());
+    var dependentes3Menos = Number($("#dependentes3menos").val());
+    // greater or equal
+    var dependentes3Mais = Number($("#dependentes3mais").val());
 }
 
 

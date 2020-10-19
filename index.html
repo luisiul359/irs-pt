@@ -21,9 +21,28 @@
       </div>
 
       <div class="row">
-        <div class="col-md-12 order-md-1">
-          <form class="needs-validation" novalidate="" onsubmit="teste()" id="myForm">
+        <div class="col-md-12">
+          <form class="needs-validation" novalidate="" id="myForm">
             <div class="row">
+              <div class="col-md-2 mb-3">
+                <h5>&nbsp;</h5>
+                <label for="estadoCivil">Estado Civil</label>
+                <select class="custom-select d-block w-100" id="estadoCivil">
+                  <option>Casado/Unido de facto</option>
+                  <option selected>Solteiro, divorciado, viúvo ou separado judicialmente</option>
+                </select>
+                <div class="invalid-feedback">
+                  Por favor escolha um estado civil válido.
+                </div>
+              </div>
+              <div class="col-md-2 mb-3">
+                <h5>&nbsp;</h5>
+                <label for="tributacao">Tributação</label>
+                <select class="custom-select d-block w-100" id="tributacao" disabled>
+                  <option>Separado</option>
+                  <option selected>Conjunto</option>
+                </select>
+              </div>
               <div class="col-md-4 mb-3">
                 <h5>Sujeito Passivo A</h5>
                 <label for="rendA">Rendimento bruto mensal (14 meses)</label>
@@ -31,7 +50,7 @@
                   <div class="input-group-prepend">
                     <span class="input-group-text">EUR</span>
                   </div>
-                  <input type="number" class="form-control" id="rendA" placeholder="" value="" required="">
+                  <input type="number" min="0" class="form-control" id="rendA" placeholder="" value="" required="">
                   <div class="invalid-feedback">
                     Rendimento inválido.
                   </div>
@@ -44,38 +63,18 @@
                   <div class="input-group-prepend">
                     <span class="input-group-text">EUR</span>
                   </div>
-                  <input type="number" class="form-control" id="rendB" placeholder="" value="" required="">
+                  <input type="number" min="0" class="form-control" id="rendB" placeholder="" value="" disabled required="">
                   <div class="invalid-feedback">
                     Rendimento inválido.
                   </div>
                 </div>
               </div>
-              <div class="col-md-4 mb-3">
-                <h5>&nbsp;</h5>
-                <label for="estadoCivil">Estado Civil</label>
-                <select class="custom-select d-block w-100" id="estadoCivil" required="">
-                  <option value="">Escolha...</option>
-                  <option>Casado/Unido de facto</option>
-                  <option>Solteiro, divorciado, viúvo ou separado judicialmente</option>
-                </select>
-                <div class="invalid-feedback">
-                  Por favor escolha um estado civil válido.
-                </div>
-              </div>
             </div>
             <div class="row">
               <div class="col-md-3 mb-3">
-                <h5>&nbsp;</h5>
-                <label for="tributacao">Opção de tributação</label>
-                <select class="custom-select d-block w-100" id="tributacao">
-                  <option value="">Separado</option>
-                  <option>Conjunto</option>
-                </select>
-              </div>
-              <div class="col-md-3 mb-3">
                 <h5>Ascendentes</h5>
                 <label for="ascendentes">Número de ascendentes</label>
-                <input type="number" class="form-control" id="ascendentes" placeholder="" value="0">
+                <input type="number" min="0" class="form-control" id="ascendentes" placeholder="" value="0" title="Terá que viver em comunhão de habitação com o sujeito passivo e não poderá auferir rendimento superior à pensão mínima do regime geral, o montante fixo de € 525.">
                 <div class="invalid-feedback">
                   Número de ascendentes inválido.
                 </div>
@@ -85,14 +84,14 @@
                 <div class="row">
                   <div class="col-md-6 mb-3">
                     <label for="dependentes3menos">Com menos 3 anos</label>
-                    <input type="number" class="form-control" id="dependentes3menos" placeholder="" value="0">
+                    <input type="number" min="0" class="form-control" id="dependentes3menos" placeholder="" value="0">
                     <div class="invalid-feedback">
                       Número de dependentes inválido.
                     </div>
                   </div>
                   <div class="col-md-6 mb-3">
                     <label for="dependentes3mais">Com 3 ou mais anos</label>
-                    <input type="number" class="form-control" id="dependentes3mais" placeholder="" value="0">
+                    <input type="number" min="0" class="form-control" id="dependentes3mais" placeholder="" value="0">
                     <div class="invalid-feedback">
                       Número de dependentes inválido.
                     </div>
@@ -106,64 +105,84 @@
                 <button class="btn btn-primary btn-lg btn-block" type="submit">Calcular</button>
               </div>
             </div>
+            <hr class="mb-4">
           </form>
         </div>
       </div>
 
       <div class="row">
-        <div class="col-md-4 order-md-2 mb-4">
+        <div class="col-md-4 mb-4">
         </div>
       </div>
 
-
-
-
-
-
       <div class="row">
-        <div class="col-md-6 order-md-2 mb-4">
-          <h4 class="d-flex justify-content-between align-items-center mb-3">
-            <span class="text-muted">Resultado | Proposta IL</span>
-            <span class="badge badge-secondary badge-pill">300€</span>
-          </h4>
+        <div class="py-2 px-3 text-center col-md-12">
+          <p class="blockquote" id="summary">Solteiro | sem dependentes | sem ascendentes</p>
+        </div>
+        <div class="col-md-6 mb-4 offset-md-3">
           <ul class="list-group mb-3">
             <li class="list-group-item d-flex justify-content-between lh-condensed">
               <div>
-                <h6 class="my-0">Product name</h6>
-                <small class="text-muted">Brief description</small>
+                <h6 class="my-0">Rendimento</h6>
+                <small class="text-muted">Bruto anual</small>
               </div>
-              <span class="text-muted">$12</span>
+              <span class="text-muted pr-4" id="rendimento"></span>
+            </li>
+            <li class="list-group-item justify-content-between lh-condensed">
+              <div class="d-flex justify-content-between">
+                <div>
+                  <h6 class="my-0 collapsed" data-toggle="collapse" href="#detalheContasIRS" role="button" aria-expanded="true" aria-controls="detalheContasIRS">IRS 2020<span class="mr-3"></span></h6>
+                  <small class="text-muted">Sistema atual</small>
+                </div>
+                <span class="text-muted pr-4" id="irsAtual"></span>
+              </div>
+              <div class="collapse" id="detalheContasIRS">
+                <div class="card card-body mt-2 px-0 py-0">
+                  <ul class="list-group">
+                    <li class="list-group-item d-flex justify-content-between lh-condensed">
+                      <small class="my-0">Deduções Específicas</small>
+                      <small class="text-muted pr-3" id="deducoesEspecificas"></small>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between lh-condensed">
+                      <small class="my-0">Rendimento Coletável</small>
+                      <small class="text-muted pr-3" id="rendimentoColectavel"></small>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between lh-condensed">
+                      <small class="my-0">Taxa</small>
+                      <small class="text-muted pr-3" id="taxa"></small>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between lh-condensed">
+                      <small class="my-0">Coleta Total</small>
+                      <small class="text-muted pr-3" id="coletaTotal"></small>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between lh-condensed">
+                      <small class="my-0">Deduções à Coleta</small>
+                      <small class="text-muted pr-3" id="deducoesColeta"></small>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between lh-condensed">
+                      <small class="my-0">Coleta Líquida</small>
+                      <small class="text-muted pr-3" id="coletaLiquida"></small>
+                    </li>
+                  </ul>
+                </div>
+              </div>
             </li>
             <li class="list-group-item d-flex justify-content-between lh-condensed">
               <div>
-                <h6 class="my-0">Second product</h6>
-                <small class="text-muted">Brief description</small>
+                <h6 class="my-0">Proposta IL</h6>
+                <small class="text-muted">Flat tax (15%)</small>
               </div>
-              <span class="text-muted">$8</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between lh-condensed">
-              <div>
-                <h6 class="my-0">Third item</h6>
-                <small class="text-muted">Brief description</small>
-              </div>
-              <span class="text-muted">$5</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between bg-light">
-              <div class="text-success">
-                <h6 class="my-0">Promo code</h6>
-                <small>EXAMPLECODE</small>
-              </div>
-              <span class="text-success">-$5</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between">
-              <span>Total (USD)</span>
-              <strong>$20</strong>
+              <span class="text-muted pr-4" id="irsIL"></span>
             </li>
           </ul>
+          <h4 class="d-flex justify-content-between align-items-center mb-3">
+            <span class="text-muted">Diferença</span>
+            <span class="badge badge-secondary badge-pill" id="diff">€</span>
+          </h4>
         </div>
       </div>
 
-      <footer class="my-5 pt-5 text-muted text-center text-small">
+      <footer class="mb-3 mt-3 text-muted text-center text-small">
         <p class="mb-1">© 2020-2020 Iniciativa Liberal</p>
         <!--
         <ul class="list-inline">
@@ -181,6 +200,7 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
     <script src="irs.js"></script>
 
   </body>

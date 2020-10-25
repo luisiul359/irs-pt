@@ -20,7 +20,7 @@ const tributacaoSeparado = 'Separado';
 if (ano===2019) {
   // solteiro
   var tests = [
-    // [rendimento, valor obtido pelo simulador da pwc]
+    // [rendimento, valor obtido pelo simulador da pwc - similar ao simulador do Portal das Finanças]
     [  500,      0.00],
     [  550,      0.00],
     [  635,      0.00],
@@ -33,6 +33,7 @@ if (ano===2019) {
     [ 2200,   6869.27],
     [ 2800,   9900.31],
     [ 3000,  10864.33],
+    [ 3500,  13667.83],
     [ 4000,  16471.33],
     [ 5750,  26283.58],
     [ 6430,  30099.29],
@@ -111,13 +112,29 @@ if (ano===2019) {
 
   // casado + tributacao conjunta
   var tests = [
-    // [rendimento A, redimento B, valor obtido pelo simulador da pwc]
-    [  500,  100, 0.00],
-    [  500,  500, 0.00],
-    [ 1000,  500, 0.00],
-    [ 635, 635, 0.00]
-    [ 675, 635, 1251.30]
-    [ 1000, 1000, 3346.69]
+    // [rendimento A, redimento B, valor obtido pelo simulador do Portal das Finanças - o simulador da PWC aparenta estar errado quando é necessário considerar o Mínimo de Existência]
+    [   500,   100,      0.00],
+    [   500,   500,      0.00],
+    [   750,   500,   1347.34],
+    [  1000,   500,   1854.84],
+    [   635,   635,      0.00],
+    [   650,   635,      0.00],
+    [   675,   635,    299.04],
+    [   700,   635,    649.04],
+    [   900,   635,   1925.89],
+    [  1000,   635,   2171.39], 
+    [  1000,  1000,   3346,68],
+    [  1500,  1000,   5253.26],
+    [  2500,  1500,  11710.98],
+    [  2500,  2000,  14256.54],  // 37%
+    [  3500,  2500,  21614.36],  // 45%
+    [  7000,  5000,  55370.66],  // 45%
+    [  7025,  5000,  55510.84],  // 45%
+    [  7500,  5000,  58174.16],  // 45%
+    [  7500,  5400,  60435.31],  // 47.5%
+    [  9000,  9000,  92509.24],  // 50.5%
+    [ 15000, 15000, 168016.84],  // 50.5%
+    [ 25000, 25000, 296937.84]   // 53%
   ];
   tests.forEach(test => {
     // há pequenas diferenças de arredondamentos, daí estarmos a garantir um erro máximo de 1€
@@ -151,4 +168,5 @@ if (ano===2019) {
       ),
       `Casado + Conjunto + ${test[1]} + ${test[0]}`
     );
+  });
 }

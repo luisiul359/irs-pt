@@ -100,21 +100,26 @@ function calcularColetaTotal(rendimentoColectavel) {
   }
 
   // Somar a coleta acima do ultimo escalao
-  coletaTotal += Math.max(0, rendimentoColectavel-escalao8.valor) * escalao8.percentagem;
+  rendimentoNoEscalaoAtual = Math.max(0, rendimentoColectavel-escalao8.valor);
+  coletaTotal += rendimentoNoEscalaoAtual * escalao8.percentagem;
+
+  if (rendimentoNoEscalaoAtual > 0) {
+    taxa = escalao8.percentagem;
+  }
 
   return [coletaTotal, taxa];
 }
 
 
-function calcularColetaLiquida(rendimentoAnualBruto, coletaTotal) {
+function calcularColetaLiquida(rendimentoAnualBruto, rendimentoAnualBrutoSujeito, coletaTotal, quoeficienteFamiliar) {
 
   // Se receber menos do que o Mínimo de Existência ou do que o Salário Mínimo,
   // a diferença é deduzida na coleta total
   // https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs70.aspx
-  if (rendimentoAnualBruto - coletaTotal < thresholdIRS) {
-    return Math.max(0, rendimentoAnualBruto - thresholdIRS);
+  if (rendimentoAnualBruto - coletaTotal < thresholdIRS*quoeficienteFamiliar) {
+    return Math.max(0, rendimentoAnualBrutoSujeito - thresholdIRS);
   } else {
-    return Math.max(0, coletaTotal);
+    return Math.max(0, coletaTotal/quoeficienteFamiliar);
   }
 }
 
@@ -142,12 +147,22 @@ function calcularIRS(rendimentoA, rendimentoB, estadoCivil, tributacao, ascenden
     var coletaTotal = coletaTotalA + coletaTotalB;
     var taxa = `${numeral(taxaA*100).format('0,0.0')}% | ${numeral(taxaB*100).format('0,0.0')}%`;
 
+    // Quoeficiente Familiar
+    // https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs69.aspx
+    var quoeficienteFamiliar = 1
+
     // TODO: acrescentar
     var deducoesColeta = 0;
 
-    var coletaLiquida = calcularColetaLiquida(rendimentoAnualBrutoA, coletaTotalA) +
-                        calcularColetaLiquida(rendimentoAnualBrutoB, coletaTotalB) -
-                        ded;
+    var coletaLiquida = calcularColetaLiquida(rendimentoAnualBrutoA, rendimentoAnualBrutoA, coletaTotalA, quoeficienteFamiliar) +
+                        calcularColetaLiquida(rendimentoAnualBrutoB, rendimentoAnualBrutoB, coletaTotalB, quoeficienteFamiliar);
+
+    // Garantir que a coleta liquida não é superior à total
+    coletaLiquida = Math.min(coletaLiquida, coletaTotal);
+
+    // Deduçōes à Coleta
+    // https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs78.aspx
+    coletaLiquida = coletaLiquida - deducoesColeta;
 
     console.log('rendimentoColectavelA', rendimentoColectavelA);
     console.log('rendimentoColectavelB', rendimentoColectavelB);
@@ -177,9 +192,14 @@ function calcularIRS(rendimentoA, rendimentoB, estadoCivil, tributacao, ascenden
     // TODO: acrescentar
     var deducoesColeta = 0;
 
-    var coletaLiquida = calcularColetaLiquida(rendimentoAnualBrutoA, coletaTotal/quoeficienteFamiliar) +
-                        calcularColetaLiquida(rendimentoAnualBrutoB, coletaTotal/quoeficienteFamiliar) -
-                        deducoesColeta;
+    var coletaLiquida = calcularColetaLiquida(rendimentoAnualBrutoTotal, rendimentoAnualBrutoA, coletaTotal, quoeficienteFamiliar) +
+                        (rendimentoB>0 ? calcularColetaLiquida(rendimentoAnualBrutoTotal, rendimentoAnualBrutoB, coletaTotal, quoeficienteFamiliar): 0);
+    // Garantir que a coleta liquida não é superior à total
+    coletaLiquida = Math.min(coletaLiquida, coletaTotal);
+
+    // Deduçōes à Coleta
+    // https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs78.aspx
+    coletaLiquida = coletaLiquida - deducoesColeta;
 
     // https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs70.aspx
     if(rendimentoAnualBrutoTotal < minimoExistencia) {

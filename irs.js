@@ -311,6 +311,16 @@ function atualizarTabelaIRS(irsActual, irsIL, rendimentoA, rendimentoB, estadoCi
   var fRendimentoAnual = numeral(rendimentoAnual).format('0,0.00');
   span_rendimento.text(`${fRendimentoAnual}€`);
 
+  // Onde irá aparecer o valor que o trabalhador recebe
+  var span_valorTrabalhador = $('#valorTrabalhador');
+  var fValorTrabalhador = numeral(valorTrabalhador).format('0,0.00');
+  span_valorTrabalhador.text(`${fValorTrabalhador}€`);
+
+  // Onde irá aparecer o valor para o Estado
+  var span_valorEstado = $('#valorEstado');
+  var fValorEstado = numeral(valorEstado).format('0,0.00');
+  span_valorEstado.text(`${fValorEstado}€`);
+
   // Onde irá aparecer o valor de IRS segundo o actual sistema
   var span_irsAtual = $('#irsAtual');
   var fIrsAtual = numeral(irsActual).format('0,0.00');
@@ -339,16 +349,6 @@ function atualizarTabelaIRS(irsActual, irsIL, rendimentoA, rendimentoB, estadoCi
   var span_irsIL = $('#irsIL');
   var fIrsIL = numeral(irsIL).format('0,0.00');
   span_irsIL.text(`${fIrsIL}€`);
-
-  // Onde irá aparecer o valor que o trabalhador recebe
-  var span_valorTrabalhador = $('#valorTrabalhador');
-  var fValorTrabalhador = numeral(valorTrabalhador).format('0,0.00');
-  span_valorTrabalhador.text(`${fValorTrabalhador}€`);
-
-  // Onde irá aparecer o valor para o Estado
-  var span_valorEstado = $('#valorEstado');
-  var fValorEstado = numeral(valorEstado).format('0,0.00');
-  span_valorEstado.text(`${fValorEstado}€`);
 
   // Diferença entre o IRS do actual sistema e da proposta da IL
   var span_diff = $('#diff');

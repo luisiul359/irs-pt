@@ -147,15 +147,12 @@ function calcularIRS(rendimentoA, rendimentoB, estadoCivil, tributacao, ascenden
     var coletaTotal = coletaTotalA + coletaTotalB;
     var taxa = `${numeral(taxaA*100).format('0,0.0')}% | ${numeral(taxaB*100).format('0,0.0')}%`;
 
-    // Quoeficiente Familiar
-    // https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs69.aspx
-    var quoeficienteFamiliar = 1
-
     // TODO: acrescentar
     var deducoesColeta = 0;
 
-    var coletaLiquida = calcularColetaLiquida(rendimentoAnualBrutoA, rendimentoAnualBrutoA, coletaTotalA, quoeficienteFamiliar) +
-                        calcularColetaLiquida(rendimentoAnualBrutoB, rendimentoAnualBrutoB, coletaTotalB, quoeficienteFamiliar);
+    var coletaLiquidaA = calcularColetaLiquida(rendimentoAnualBrutoA, rendimentoAnualBrutoA, coletaTotalA, 1);
+    var coletaLiquidaB = calcularColetaLiquida(rendimentoAnualBrutoB, rendimentoAnualBrutoB, coletaTotalB, 1);
+    var coletaLiquida = coletaLiquidaA + coletaLiquidaB;
 
     // Garantir que a coleta liquida não é superior à total
     coletaLiquida = Math.min(coletaLiquida, coletaTotal);
@@ -163,6 +160,11 @@ function calcularIRS(rendimentoA, rendimentoB, estadoCivil, tributacao, ascenden
     // Deduçōes à Coleta
     // https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs78.aspx
     coletaLiquida = coletaLiquida - deducoesColeta;
+
+    // https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs70.aspx
+    if(rendimentoAnualBrutoA < minimoExistencia) {
+      coletaLiquida = 0 + (rendimentoAnualBrutoB < minimoExistencia ? 0 : coletaLiquidaB);
+    }
 
     console.log('rendimentoColectavelA', rendimentoColectavelA);
     console.log('rendimentoColectavelB', rendimentoColectavelB);
@@ -259,15 +261,42 @@ function calcularIRS_IL(rendimentoA, rendimentoB, dependentes, estadoCivil) {
 }
 
 
+function calcularRendLiquido(rendimentoA, rendimentoB, pagarIRS) {
+
+  // Estamos a pedir o salário bruto mensal considerando 14 meses
+  var rendimentoAnualBrutoA = rendimentoA * 14;
+  var rendimentoAnualBrutoB = rendimentoB * 14;
+  var rendimentoAnualBruto = rendimentoAnualBrutoA + rendimentoAnualBrutoB;
+
+  // Contribuições: TSU trabalhador (Quota parte da contribuição para a Segurança Social)
+  //                TSU empresa     (Quota parte da contribuição para a Segurança Social)
+  // Págia 2: http://www.seg-social.pt/documents/10152/16175054/Taxas_Contributivas_2019.pdf/5ea23f5f-e7c4-400f-958b-4ff12c41ca0e
+  // Assumindo a taxa para "Trabalhadores em geral"
+  var tsuTrabalhador = rendimentoAnualBruto * 0.11;
+  var tsuEmpresa = rendimentoAnualBruto * 0.2375;
+
+  // Quanto vai cair na conta do(s) sujeito(s) passivo(s)
+  var rendTrabalhador = rendimentoAnualBruto - pagarIRS - tsuTrabalhador;
+
+  // Quanto vai para o Estado
+  var rendEstado = pagarIRS + tsuTrabalhador + tsuEmpresa;
+
+  return [rendTrabalhador, rendEstado]
+
+}
+
+
 function atualizarTabelaIRS(irsActual, irsIL, rendimentoA, rendimentoB, estadoCivil,
   tributacao, ascendentes, dependentes, deducoesEspecificas, rendimentoColectavel,
-  taxa, coletaTotal, deducoesColeta)
+  taxa, coletaTotal, deducoesColeta, valorTrabalhador, valorEstado)
 {
 
   // ter a certeza que este rendimento é 0 nesta condição
   if (estadoCivil==='Solteiro, divorciado, viúvo ou separado judicialmente') {
     rendimentoB = 0;
   }
+
+  var rendimentoAnual = (rendimentoA+rendimentoB)*14;
 
   // Resumo das opções escolhidas
   var p_summary = $('#summary');
@@ -279,7 +308,7 @@ function atualizarTabelaIRS(irsActual, irsIL, rendimentoA, rendimentoB, estadoCi
 
   // Onde irá aparecer o rendimento anual bruto
   var span_rendimento = $('#rendimento')
-  var fRendimentoAnual = numeral((rendimentoA+rendimentoB)*14).format('0,0.00');
+  var fRendimentoAnual = numeral(rendimentoAnual).format('0,0.00');
   span_rendimento.text(`${fRendimentoAnual}€`);
 
   // Onde irá aparecer o valor de IRS segundo o actual sistema
@@ -311,6 +340,16 @@ function atualizarTabelaIRS(irsActual, irsIL, rendimentoA, rendimentoB, estadoCi
   var fIrsIL = numeral(irsIL).format('0,0.00');
   span_irsIL.text(`${fIrsIL}€`);
 
+  // Onde irá aparecer o valor que o trabalhador recebe
+  var span_valorTrabalhador = $('#valorTrabalhador');
+  var fValorTrabalhador = numeral(valorTrabalhador).format('0,0.00');
+  span_valorTrabalhador.text(`${fValorTrabalhador}€`);
+
+  // Onde irá aparecer o valor para o Estado
+  var span_valorEstado = $('#valorEstado');
+  var fValorEstado = numeral(valorEstado).format('0,0.00');
+  span_valorEstado.text(`${fValorEstado}€`);
+
   // Diferença entre o IRS do actual sistema e da proposta da IL
   var span_diff = $('#diff');
   var diff = irsActual - irsIL;
@@ -330,7 +369,7 @@ function atualizarTabelaIRS(irsActual, irsIL, rendimentoA, rendimentoB, estadoCi
 }
 
 
-function IRS() {
+function main() {
 
     // Obter os valores inseridos pelo utilizador no formulário
     var rendimentoA = Number($("#rendA").val());
@@ -351,9 +390,11 @@ function IRS() {
       rendimentoA, rendimentoB, dependentes3Menos + dependentes3Mais, estadoCivil
     )
 
+    var [valorTrabalhador, valorEstado] = calcularRendLiquido(rendimentoA, rendimentoB, irsActual)
+
     atualizarTabelaIRS(
       irsActual, irsIL, rendimentoA, rendimentoB, estadoCivil, tributacao, ascendentes, dependentes3Menos + dependentes3Mais,
-      deducoesEspecificas, rendimentoColectavel, taxa, coletaTotal, deducoesColeta
+      deducoesEspecificas, rendimentoColectavel, taxa, coletaTotal, deducoesColeta, valorTrabalhador, valorEstado
     )
 
 }
@@ -374,7 +415,7 @@ function IRS() {
           event.preventDefault()
           event.stopPropagation()
         } else {
-          IRS();
+          main();
           // Avoid form from resetting the selected values
           event.preventDefault()
         }
@@ -395,5 +436,6 @@ function IRS() {
 
     // eneable tooltips
     $('input').tooltip();
+    $('[data-toggle="tooltip"]').tooltip();
   }, false)
 }())

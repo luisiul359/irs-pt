@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
     <link href="irs.css" rel="stylesheet">
     <link rel="icon" href="https://iniciativaliberal.pt/wp-content/uploads/2017/06/favicon.png">
 
@@ -27,7 +27,7 @@
               <div class="col-md-2 mb-3">
                 <h5>&nbsp;</h5>
                 <label for="estadoCivil">Estado Civil</label>
-                <select class="custom-select d-block w-100" id="estadoCivil">
+                <select class="form-select d-block w-100" id="estadoCivil">
                   <option>Casado/Unido de facto</option>
                   <option selected>Solteiro, divorciado, viúvo ou separado judicialmente</option>
                 </select>
@@ -38,7 +38,7 @@
               <div class="col-md-2 mb-3">
                 <h5>&nbsp;</h5>
                 <label for="tributacao">Tributação</label>
-                <select class="custom-select d-block w-100" id="tributacao" disabled>
+                <select class="form-select d-block w-100" id="tributacao" disabled>
                   <option>Separado</option>
                   <option selected>Conjunto</option>
                 </select>
@@ -100,8 +100,179 @@
               </div>
             </div>
             <hr class="mb-4">
-            <div class="row">
-              <div class="col-md-4 mb-3 offset-md-4">
+
+            <div class="row accordion accordion-flush" id="deducoesColetaInput">
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#deducoesColeta-collapse" aria-expanded="false">
+                    <div class="d-flex align-middle">
+                      <h5 title="">Despesas passiveis de deduçōes</h5>
+                      <p><small>(Podem ser consultadas no <a href="https://faturas.portaldasfinancas.gov.pt/home.action">e-fatura</a>)</small></p>
+                    </div>
+                  </button>
+                </h2>
+                <div id="deducoesColeta-collapse" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#deducoesColetaInput">
+                  <div class="accordion-body">
+                    <div class="row">
+                      <div class="col-md-4 mb-3">
+                        <label for="despesasGerais">Despesas gerais familiares</label>
+                        <div class="input-group mb-3">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text">EUR</span>
+                          </div>
+                          <input type="number" min="0" class="form-control" id="despesasGerais" placeholder="" value="">
+                          <div class="invalid-feedback">
+                            Valor inválido.
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <label for="despesasSaude">Despesas de saúde</label>
+                        <div class="input-group mb-3">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text">EUR</span>
+                          </div>
+                          <input type="number" min="0" class="form-control" id="despesasSaude" placeholder="" value="">
+                          <div class="invalid-feedback">
+                            Valor inválido.
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <label for="despesasEducacao">Despesas de educação</label>
+                        <div class="input-group mb-3">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text">EUR</span>
+                          </div>
+                          <input type="number" min="0" class="form-control" id="despesasEducacao" placeholder="" value="">
+                          <div class="invalid-feedback">
+                            Valor inválido.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4 mb-3">
+                        <label for="despesasHabitacao">Despesas de habitação</label>
+                        <div class="input-group mb-3">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text">EUR</span>
+                          </div>
+                          <input type="number" min="0" class="form-control" id="despesasHabitacao" placeholder="" value="">
+                          <div class="invalid-feedback">
+                            Valor inválido.
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <label for="despesasLares">Despesas com lares</label>
+                        <div class="input-group mb-3">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text">EUR</span>
+                          </div>
+                          <input type="number" min="0" class="form-control" id="despesasLares" placeholder="" value="">
+                          <div class="invalid-feedback">
+                            Valor inválido.
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <label for="despesasPensoesAlimentos">Despesas com pensōes de alimentos</label>
+                        <div class="input-group mb-3">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text">EUR</span>
+                          </div>
+                          <input type="number" min="0" class="form-control" id="despesasPensoesAlimentos" placeholder="" value="">
+                          <div class="invalid-feedback">
+                            Valor inválido.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4 mb-3">
+                        <label for="despesasAutomoveis">Reparação de automóveis</label>
+                        <div class="input-group mb-3">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text">EUR</span>
+                          </div>
+                          <input type="number" min="0" class="form-control" id="despesasAutomoveis" placeholder="" value="">
+                          <div class="invalid-feedback">
+                            Valor inválido.
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <label for="despesasMotociclos">Reparação de motociclos</label>
+                        <div class="input-group mb-3">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text">EUR</span>
+                          </div>
+                          <input type="number" min="0" class="form-control" id="despesasMotociclos" placeholder="" value="">
+                          <div class="invalid-feedback">
+                            Valor inválido.
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <label for="despesasRestauracao">Restauração e alojamento</label>
+                        <div class="input-group mb-3">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text">EUR</span>
+                          </div>
+                          <input type="number" min="0" class="form-control" id="despesasRestauracao" placeholder="" value="">
+                          <div class="invalid-feedback">
+                            Valor inválido.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4 mb-3">
+                        <label for="despesasCabeleireiros">Cabeleireiros</label>
+                        <div class="input-group mb-3">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text">EUR</span>
+                          </div>
+                          <input type="number" min="0" class="form-control" id="despesasCabeleireiros" placeholder="" value="">
+                          <div class="invalid-feedback">
+                            Valor inválido.
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <label for="despesasVeterinario">Atividades veterinárias</label>
+                        <div class="input-group mb-3">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text">EUR</span>
+                          </div>
+                          <input type="number" min="0" class="form-control" id="despesasVeterinario" placeholder="" value="">
+                          <div class="invalid-feedback">
+                            Valor inválido.
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <label for="despesasPasses">Passes Mensais</label>
+                        <div class="input-group mb-3">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text">EUR</span>
+                          </div>
+                          <input type="number" min="0" class="form-control" id="despesasPasses" placeholder="" value="">
+                          <div class="invalid-feedback">
+                            Valor inválido.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <hr class="mb-4">
+            <div class="row justify-content-center">
+              <div class="col text-center mb-2">
                 <button class="btn btn-primary btn-lg btn-block" type="submit">Calcular</button>
               </div>
             </div>
@@ -145,7 +316,7 @@
             <li class="list-group-item justify-content-between lh-condensed">
               <div class="d-flex justify-content-between">
                 <div>
-                  <h6 class="my-0 collapsed" data-toggle="collapse" href="#detalheContasIRS" role="button" aria-expanded="true" aria-controls="detalheContasIRS">IRS 2020<span class="mr-3"></span></h6>
+                  <h6 class="my-0 collapsed" data-bs-toggle="collapse" href="#detalheContasIRS" role="button" aria-expanded="false" aria-controls="detalheContasIRS">IRS 2020<span></span></h6>
                   <small class="text-muted">Sistema atual</small>
                 </div>
                 <span class="text-muted pr-4" id="irsAtual"></span>
@@ -191,7 +362,7 @@
           </ul>
           <h4 class="d-flex justify-content-between align-items-center mb-3">
             <span class="text-muted">Diferença IRS</span>
-            <span class="badge badge-secondary badge-pill" id="diff">€</span>
+            <span class="badge badge-secondary badge-pill" id="diff"></span>
           </h4>
         </div>
       </div>
@@ -211,9 +382,9 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-pQQkAEnwaBkjpqZ8RU1fF1AKtTcHJwFl3pblpTlHXybJjHpMYo79HY3hIi4NKxyj" crossorigin="anonymous"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
     <script src="irs.js"></script>
 

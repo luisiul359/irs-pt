@@ -9,7 +9,7 @@ function assert(condition, message) {
 }
 
 function withinMarginError(value, expected, epsilon=1) {
-    return Math.abs(value-expected) < epsilon
+    return Math.abs(value-expected) < epsilon;
 }
 
 const casado = 'Casado/Unido de facto';
@@ -53,7 +53,8 @@ if (ano===2019) {
           tributacao=tributacaoSeparado,
           ascendentes=0,
           dependentes3Menos=0,
-          dependentes3Mais=0
+          dependentes3Mais=0,
+          0,0,0,0,0,0,0,0,0,0,0,0
         )[5],
         test[1]
       ),
@@ -70,7 +71,8 @@ if (ano===2019) {
           tributacao=tributacaoConjunto,
           ascendentes=0,
           dependentes3Menos=0,
-          dependentes3Mais=0
+          dependentes3Mais=0,
+          0,0,0,0,0,0,0,0,0,0,0,0
         )[5],
         test[1]
       ),
@@ -87,7 +89,8 @@ if (ano===2019) {
           tributacao=tributacaoSeparado,
           ascendentes=0,
           dependentes3Menos=0,
-          dependentes3Mais=0
+          dependentes3Mais=0,
+          0,0,0,0,0,0,0,0,0,0,0,0
         )[5],
         test[1]
       ),
@@ -102,7 +105,8 @@ if (ano===2019) {
           tributacao=tributacaoConjunto,
           ascendentes=0,
           dependentes3Menos=0,
-          dependentes3Mais=0
+          dependentes3Mais=0,
+          0,0,0,0,0,0,0,0,0,0,0,0
         )[5],
         test[1]
       ),
@@ -147,7 +151,8 @@ if (ano===2019) {
           tributacao=tributacaoConjunto,
           ascendentes=0,
           dependentes3Menos=0,
-          dependentes3Mais=0
+          dependentes3Mais=0,
+          0,0,0,0,0,0,0,0,0,0,0,0
         )[5],
         test[2]
       ),
@@ -162,7 +167,8 @@ if (ano===2019) {
           tributacao=tributacaoConjunto,
           ascendentes=0,
           dependentes3Menos=0,
-          dependentes3Mais=0
+          dependentes3Mais=0,
+          0,0,0,0,0,0,0,0,0,0,0,0
         )[5],
         test[2]
       ),
@@ -209,7 +215,8 @@ if (ano===2019) {
           tributacao=tributacaoSeparado,
           ascendentes=0,
           dependentes3Menos=0,
-          dependentes3Mais=0
+          dependentes3Mais=0,
+          0,0,0,0,0,0,0,0,0,0,0,0
         )[5],
         calcularIRS(
           rendimentoA=test[0],
@@ -218,7 +225,8 @@ if (ano===2019) {
           tributacao=tributacaoSeparado,
           ascendentes=0,
           dependentes3Menos=0,
-          dependentes3Mais=0
+          dependentes3Mais=0,
+          0,0,0,0,0,0,0,0,0,0,0,0
         )[5] +
         calcularIRS(
           rendimentoA=test[1],
@@ -227,7 +235,8 @@ if (ano===2019) {
           tributacao=tributacaoSeparado,
           ascendentes=0,
           dependentes3Menos=0,
-          dependentes3Mais=0
+          dependentes3Mais=0,
+          0,0,0,0,0,0,0,0,0,0,0,0
         )[5]
       ),
       `Casado + Separado + ${test[0]} + ${test[1]}`
@@ -241,7 +250,8 @@ if (ano===2019) {
           tributacao=tributacaoSeparado,
           ascendentes=0,
           dependentes3Menos=0,
-          dependentes3Mais=0
+          dependentes3Mais=0,
+          0,0,0,0,0,0,0,0,0,0,0,0
         )[5],
         calcularIRS(
           rendimentoA=test[0],
@@ -250,7 +260,8 @@ if (ano===2019) {
           tributacao=tributacaoSeparado,
           ascendentes=0,
           dependentes3Menos=0,
-          dependentes3Mais=0
+          dependentes3Mais=0,
+          0,0,0,0,0,0,0,0,0,0,0,0
         )[5] +
         calcularIRS(
           rendimentoA=test[1],
@@ -259,7 +270,8 @@ if (ano===2019) {
           tributacao=tributacaoSeparado,
           ascendentes=0,
           dependentes3Menos=0,
-          dependentes3Mais=0
+          dependentes3Mais=0,
+          0,0,0,0,0,0,0,0,0,0,0,0
         )[5]
       ),
       `Casado + Separado + ${test[1]} + ${test[0]}`
@@ -303,7 +315,8 @@ if (ano===2020) {
           tributacao=tributacaoSeparado,
           ascendentes=0,
           dependentes3Menos=0,
-          dependentes3Mais=0
+          dependentes3Mais=0,
+          0,0,0,0,0,0,0,0,0,0,0,0
         )[5],
         test[1]
       ),
@@ -320,7 +333,8 @@ if (ano===2020) {
           tributacao=tributacaoConjunto,
           ascendentes=0,
           dependentes3Menos=0,
-          dependentes3Mais=0
+          dependentes3Mais=0,
+          0,0,0,0,0,0,0,0,0,0,0,0
         )[5],
         test[1]
       ),
@@ -337,7 +351,8 @@ if (ano===2020) {
           tributacao=tributacaoSeparado,
           ascendentes=0,
           dependentes3Menos=0,
-          dependentes3Mais=0
+          dependentes3Mais=0,
+          0,0,0,0,0,0,0,0,0,0,0,0
         )[5],
         test[1]
       ),
@@ -352,7 +367,8 @@ if (ano===2020) {
           tributacao=tributacaoConjunto,
           ascendentes=0,
           dependentes3Menos=0,
-          dependentes3Mais=0
+          dependentes3Mais=0,
+          0,0,0,0,0,0,0,0,0,0,0,0
         )[5],
         test[1]
       ),
@@ -397,7 +413,8 @@ if (ano===2020) {
           tributacao=tributacaoConjunto,
           ascendentes=0,
           dependentes3Menos=0,
-          dependentes3Mais=0
+          dependentes3Mais=0,
+          0,0,0,0,0,0,0,0,0,0,0,0
         )[5],
         test[2]
       ),
@@ -412,7 +429,8 @@ if (ano===2020) {
           tributacao=tributacaoConjunto,
           ascendentes=0,
           dependentes3Menos=0,
-          dependentes3Mais=0
+          dependentes3Mais=0,
+          0,0,0,0,0,0,0,0,0,0,0,0
         )[5],
         test[2]
       ),
@@ -444,7 +462,7 @@ if (ano===2020) {
     [  7500,  5400,  60399.58],
     [  9000,  9000,  92458.99],
     [ 15000, 15000, 167966.59],
-    [ 25000, 25000, 296887.59]   
+    [ 25000, 25000, 296887.59]
   ];
   tests.forEach(test => {
     // há pequenas diferenças de arredondamentos, daí estarmos a garantir um erro máximo de 1€
@@ -459,7 +477,8 @@ if (ano===2020) {
           tributacao=tributacaoSeparado,
           ascendentes=0,
           dependentes3Menos=0,
-          dependentes3Mais=0
+          dependentes3Mais=0,
+          0,0,0,0,0,0,0,0,0,0,0,0
         )[5],
         calcularIRS(
           rendimentoA=test[0],
@@ -468,7 +487,8 @@ if (ano===2020) {
           tributacao=tributacaoSeparado,
           ascendentes=0,
           dependentes3Menos=0,
-          dependentes3Mais=0
+          dependentes3Mais=0,
+          0,0,0,0,0,0,0,0,0,0,0,0
         )[5] +
         calcularIRS(
           rendimentoA=test[1],
@@ -477,7 +497,8 @@ if (ano===2020) {
           tributacao=tributacaoSeparado,
           ascendentes=0,
           dependentes3Menos=0,
-          dependentes3Mais=0
+          dependentes3Mais=0,
+          0,0,0,0,0,0,0,0,0,0,0,0
         )[5]
       ),
       `Casado + Separado + ${test[0]} + ${test[1]}`
@@ -491,7 +512,8 @@ if (ano===2020) {
           tributacao=tributacaoSeparado,
           ascendentes=0,
           dependentes3Menos=0,
-          dependentes3Mais=0
+          dependentes3Mais=0,
+          0,0,0,0,0,0,0,0,0,0,0,0
         )[5],
         calcularIRS(
           rendimentoA=test[0],
@@ -500,7 +522,8 @@ if (ano===2020) {
           tributacao=tributacaoSeparado,
           ascendentes=0,
           dependentes3Menos=0,
-          dependentes3Mais=0
+          dependentes3Mais=0,
+          0,0,0,0,0,0,0,0,0,0,0,0
         )[5] +
         calcularIRS(
           rendimentoA=test[1],
@@ -509,10 +532,218 @@ if (ano===2020) {
           tributacao=tributacaoSeparado,
           ascendentes=0,
           dependentes3Menos=0,
-          dependentes3Mais=0
+          dependentes3Mais=0,
+          0,0,0,0,0,0,0,0,0,0,0,0
         )[5]
       ),
       `Casado + Separado + ${test[1]} + ${test[0]}`
     );
   });
 }
+
+// despesas gerais familiares
+assert(
+  withinMarginError(
+    calcularDeducoesColeta(0, 1, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)[0],
+    0.35*100
+  ),
+  `Despesas gerais familiares normal`
+);
+assert(
+  withinMarginError(
+    calcularDeducoesColeta(0, 1, 15000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)[0],
+    250
+  ),
+  `Despesas gerais familiares acima`
+);
+
+// despesas saúde
+assert(
+  withinMarginError(
+    calcularDeducoesColeta(0, 1, 0, 500, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)[1],
+    0.15*500
+  ),
+  `Despesas saúde normal`
+);
+assert(
+  withinMarginError(
+    calcularDeducoesColeta(0, 1, 0, 100000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)[1],
+    1000
+  ),
+  `Despesas saúde acima`
+);
+
+// despesas educação
+assert(
+  withinMarginError(
+    calcularDeducoesColeta(0, 1, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0)[1],
+    0.3*100
+  ),
+  `Despesas educação normal`
+);
+assert(
+  withinMarginError(
+    calcularDeducoesColeta(0, 1, 0, 0, 10000, 0, 0, 0, 0, 0, 0, 0, 0, 0)[1],
+    800
+  ),
+  `Despesas educação acima`
+);
+
+// despesas habitação
+assert(
+  withinMarginError(
+    calcularDeducoesColeta(escalao0.valor, 1, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 0)[1],
+    0.15*100
+  ),
+  `Despesas habitação 1 normal`
+);
+assert(
+  withinMarginError(
+    calcularDeducoesColeta(escalao0.valor, 1, 0, 0, 0, 100000, 0, 0, 0, 0, 0, 0, 0, 0)[1],
+    800
+  ),
+  `Despesas habitação 1 acima`
+);
+assert(
+  withinMarginError(
+    calcularDeducoesColeta(14562, 1, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 0)[1],
+    0.15*100
+  ),
+  `Despesas habitação 2 normal`
+);
+assert(
+  withinMarginError(
+    calcularDeducoesColeta(14562, 1, 0, 0, 0, 100000, 0, 0, 0, 0, 0, 0, 0, 0)[1],
+    703
+  ),
+  `Despesas habitação 2 acima`
+);
+assert(
+  withinMarginError(
+    calcularDeducoesColeta(30001, 1, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 0)[1],
+    0.15*100
+  ),
+  `Despesas habitação 3 normal`
+);
+assert(
+  withinMarginError(
+    calcularDeducoesColeta(30001, 1, 0, 0, 0, 100000, 0, 0, 0, 0, 0, 0, 0, 0)[1],
+    502
+  ),
+  `Despesas habitação 3 acima`
+);
+
+// despesas lares
+assert(
+  withinMarginError(
+    calcularDeducoesColeta(escalao0.valor, 1, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0)[1],
+    0.25*100
+  ),
+  `Despesas lares normal`
+);
+assert(
+  withinMarginError(
+    calcularDeducoesColeta(escalao0.valor, 1, 0, 0, 0, 0, 100000, 0, 0, 0, 0, 0, 0, 0)[1],
+    403.75
+  ),
+  `Despesas lares acima`
+);
+
+// despesas pensōes alimentos
+assert(
+  withinMarginError(
+    calcularDeducoesColeta(escalao0.valor, 1, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0)[1],
+    0.2*100
+  ),
+  `Despesas pensōes alimentos normal`
+);
+assert(
+  withinMarginError(
+    calcularDeducoesColeta(escalao0.valor, 1, 0, 0, 0, 0, 0, 100000, 0, 0, 0, 0, 0, 0)[1],
+    0.2*100000
+  ),
+  `Despesas pensōes alimentos acima`
+);
+
+// despesas IVA
+assert(
+  withinMarginError(
+    calcularDeducoesColeta(escalao0.valor, 1, 0, 0, 0, 0, 0, 0, 10, 10, 10, 10, 10, 0)[1],
+    0.15*(10*5)*0.23/1.23
+  ),
+  `Despesas IVA normal`
+);
+assert(
+  withinMarginError(
+    calcularDeducoesColeta(escalao0.valor, 1, 0, 0, 0, 0, 0, 0, 2000, 2000, 2000, 2000, 2000, 0)[1],
+    250
+  ),
+  `Despesas IVA acima`
+);
+assert(
+  withinMarginError(
+    calcularDeducoesColeta(escalao0.valor, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 100)[1],
+    0.23/1.23*100
+  ),
+  `Despesas IVA passes`
+);
+
+// quoeficiente familiar deduçōes à coleta
+assert(
+  withinMarginError(
+    calcularDeducoesColeta(0, 2, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)[0],
+    0.35*100
+  ),
+  `Quoeficiente familiar deduçōes à coleta normal`
+);
+assert(
+  withinMarginError(
+    calcularDeducoesColeta(0, 2, 2000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)[0],
+    250*2
+  ),
+  `Quoeficiente familiar deduçōes à coleta acima`
+);
+
+// limites deduçōes à coleta
+var [deducoesDespesasGerais, restantesDeducoes] = calcularDeducoesColeta(escalao0.valor, 1, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+assert(
+  withinMarginError(
+    limitarDeducoesColeta(deducoesDespesasGerais, restantesDeducoes, escalao0.escalao, 0),
+    deducoesDespesasGerais+restantesDeducoes
+  ),
+  `Limites deduçōes à coleta 1 normal`
+);
+var [deducoesDespesasGerais, restantesDeducoes] = calcularDeducoesColeta(escalao0.valor, 1, 10000000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+assert(
+  withinMarginError(
+    limitarDeducoesColeta(deducoesDespesasGerais, restantesDeducoes, escalao0.escalao, 0),
+    deducoesDespesasGerais+restantesDeducoes
+  ),
+  `Limites deduçōes à coleta 1 sem limite`
+);
+var [deducoesDespesasGerais, restantesDeducoes] = calcularDeducoesColeta(0, 1, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+assert(
+  withinMarginError(
+    limitarDeducoesColeta(deducoesDespesasGerais, restantesDeducoes, escalao4.escalao, 30000),
+    deducoesDespesasGerais+restantesDeducoes
+  ),
+  `Limites deduçōes à coleta 2 normal`
+);
+var [deducoesDespesasGerais, restantesDeducoes] = calcularDeducoesColeta(0, 1, 10000, 10000, 10000, 10000, 10000, 0, 0, 0, 0, 0, 0, 0);
+assert(
+  withinMarginError(
+    limitarDeducoesColeta(deducoesDespesasGerais, restantesDeducoes, escalao4.escalao, 30000),
+    deducoesDespesasGerais+2032.78
+  ),
+  `Limites deduçōes à coleta 2 acima`
+);
+
+
+
+
+
+
+
+
+
+//

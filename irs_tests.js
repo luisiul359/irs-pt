@@ -17,6 +17,7 @@ const solteiro = 'Solteiro, divorciado, viúvo ou separado judicialmente';
 const tributacaoConjunto = 'Conjunto';
 const tributacaoSeparado = 'Separado';
 
+
 if (ano===2019) {
   // solteiro
   var tests = [
@@ -277,6 +278,326 @@ if (ano===2019) {
       `Casado + Separado + ${test[1]} + ${test[0]}`
     );
   });
+
+  // deduçōes à coleta
+  // valores obtido pelo simulador do Portal das Finanças
+  //   de notar que despesas gerais e de IVA não dá para fazer override,
+  //   visto serem obtidas automaticamento do e-fatura
+
+  // solteiro com deduçōes à coleta
+
+  // todas as deduçōes à coleta menos habitação
+  assert(
+    withinMarginError(
+      calcularIRS(
+        rendimentoA=1000,
+        rendimentoB=0,
+        estadoCivil=solteiro,
+        tributacao=tributacaoSeparado,
+        ascendentes=0,
+        dependentes3Menos=0,
+        dependentes3Mais=0,
+        0,100,100,0,100,100,0,0,0,0,0,0
+      )[5],
+      1583.35
+    ),
+    `Solteiro + deduçōes à coleta + todas - habitação`
+  );
+  // deduçōes à coleta - habitação
+  var res = calcularIRS(
+    rendimentoA=500,
+    rendimentoB=0,
+    estadoCivil=solteiro,
+    tributacao=tributacaoSeparado,
+    ascendentes=0,
+    dependentes3Menos=0,
+    dependentes3Mais=0,
+    0,0,0,100,0,0,0,0,0,0,0,0
+  );
+  assert(
+    withinMarginError(res[5],0),
+    `Solteiro + deduçōes à coleta + habitação 1 + IRS`
+  );
+  assert(
+    withinMarginError(res[4],15),
+    `Solteiro + deduçōes à coleta + habitação 1 + valor coleta`
+  );
+  var res = calcularIRS(
+    rendimentoA=500,
+    rendimentoB=0,
+    estadoCivil=solteiro,
+    tributacao=tributacaoSeparado,
+    ascendentes=0,
+    dependentes3Menos=0,
+    dependentes3Mais=0,
+    0,0,0,100000,0,0,0,0,0,0,0,0
+  );
+  assert(
+    withinMarginError(res[5],0),
+    `Solteiro + deduçōes à coleta + habitação 2 + IRS`
+  );
+  assert(
+    withinMarginError(res[4],800),
+    `Solteiro + deduçōes à coleta + habitação 2 + valor coleta max`
+  );
+  var res = calcularIRS(
+    rendimentoA=14562/14,
+    rendimentoB=0,
+    estadoCivil=solteiro,
+    tributacao=tributacaoSeparado,
+    ascendentes=0,
+    dependentes3Menos=0,
+    dependentes3Mais=0,
+    0,0,0,100000,0,0,0,0,0,0,0,0
+  );
+  assert(
+    withinMarginError(res[5],1046.4),
+    `Solteiro + deduçōes à coleta + habitação 3 + IRS`
+  );
+  assert(
+    withinMarginError(res[4],756.2),
+    `Solteiro + deduçōes à coleta + habitação 3 + valor coleta max`
+  );
+  var res = calcularIRS(
+    rendimentoA=10000,
+    rendimentoB=0,
+    estadoCivil=solteiro,
+    tributacao=tributacaoSeparado,
+    ascendentes=0,
+    dependentes3Menos=0,
+    dependentes3Mais=0,
+    0,100000,0,100000,0,0,0,0,0,0,0,0
+  );
+  assert(
+    withinMarginError(res[5],51546.92),
+    `Solteiro + deduçōes à coleta + habitação 4 + IRS`
+  );
+  assert(
+    withinMarginError(res[4],1000),
+    `Solteiro + deduçōes à coleta + habitação 4 + valor coleta max`
+  );
+  var res = calcularIRS(
+    rendimentoA=2000,
+    rendimentoB=0,
+    estadoCivil=solteiro,
+    tributacao=tributacaoSeparado,
+    ascendentes=0,
+    dependentes3Menos=0,
+    dependentes3Mais=0,
+    0,100000,100000,100000,0,0,0,0,0,0,0,0
+  );
+  assert(
+    withinMarginError(res[5],3698.22),
+    `Solteiro + deduçōes à coleta + habitação 5 + IRS`
+  );
+  assert(
+    withinMarginError(res[4],2157.27),
+    `Solteiro + deduçōes à coleta + habitação 5 + valor coleta max`
+  );
+
+  // casado + tributacao conjunta com deduçōes à coleta
+
+  // todas as deduçōes à coleta menos habitação
+  assert(
+    withinMarginError(
+      calcularIRS(
+        rendimentoA=1000,
+        rendimentoB=1000,
+        estadoCivil=casado,
+        tributacao=tributacaoConjunto,
+        ascendentes=0,
+        dependentes3Menos=0,
+        dependentes3Mais=0,
+        0,100,100,0,100,100,0,0,0,0,0,0
+      )[5],
+      3256.68
+    ),
+    `Casado + Conjunto + deduçōes à coleta + todas - habitação`
+  );
+  // deduçōes à coleta - habitação
+  var res = calcularIRS(
+    rendimentoA=1000,
+    rendimentoB=1000,
+    estadoCivil=casado,
+    tributacao=tributacaoConjunto,
+    ascendentes=0,
+    dependentes3Menos=0,
+    dependentes3Mais=0,
+    0,0,0,100,0,0,0,0,0,0,0,0
+  );
+  assert(
+    withinMarginError(res[5],3331.68),
+    `Casado + Conjunto + deduçōes à coleta + habitação 1 + IRS`
+  );
+  assert(
+    withinMarginError(res[4],15),
+    `Casado + Conjunto + deduçōes à coleta + habitação 1 + valor coleta`
+  );
+  var res = calcularIRS(
+    rendimentoA=500,
+    rendimentoB=500,
+    estadoCivil=casado,
+    tributacao=tributacaoConjunto,
+    ascendentes=0,
+    dependentes3Menos=0,
+    dependentes3Mais=0,
+    0,0,0,100000,0,0,0,0,0,0,0,0
+  );
+  assert(
+    withinMarginError(res[5],0),
+    `Casado + Conjunto + deduçōes à coleta + habitação 2 + IRS`
+  );
+  assert(
+    withinMarginError(res[4],800),
+    `Casado + Conjunto + deduçōes à coleta + habitação 2 + valor coleta max`
+  );
+  var res = calcularIRS(
+    rendimentoA=1000,
+    rendimentoB=1000,
+    estadoCivil=casado,
+    tributacao=tributacaoConjunto,
+    ascendentes=0,
+    dependentes3Menos=0,
+    dependentes3Mais=0,
+    0,0,0,100000,0,0,0,0,0,0,0,0
+  );
+  assert(
+    withinMarginError(res[5],2583.17),
+    `Casado + Conjunto + deduçōes à coleta + habitação 3 + IRS`
+  );
+  assert(
+    withinMarginError(res[4],763.51),
+    `Casado + Conjunto + deduçōes à coleta + habitação 3 + valor coleta max`
+  );
+  var res = calcularIRS(
+    rendimentoA=10000,
+    rendimentoB=10000,
+    estadoCivil=casado,
+    tributacao=tributacaoConjunto,
+    ascendentes=0,
+    dependentes3Menos=0,
+    dependentes3Mais=0,
+    0,100000,0,100000,0,0,0,0,0,0,0,0
+  );
+  assert(
+    withinMarginError(res[5],104093.84),
+    `Casado + Conjunto + deduçōes à coleta + habitação 4 + IRS`
+  );
+  assert(
+    withinMarginError(res[4],1000),
+    `Casado + Conjunto + deduçōes à coleta + habitação 4 + valor coleta max`
+  );
+  var res = calcularIRS(
+    rendimentoA=1000,
+    rendimentoB=1000,
+    estadoCivil=casado,
+    tributacao=tributacaoConjunto,
+    ascendentes=0,
+    dependentes3Menos=0,
+    dependentes3Mais=0,
+    0,100000,100000,100000,0,0,0,0,0,0,0,0
+  );
+  assert(
+    withinMarginError(res[5],903.89),
+    `Casado + Conjunto + deduçōes à coleta + habitação 5 + IRS`
+  );
+  assert(
+    withinMarginError(res[4],2442.79), // no portal das finanças deu 2373.9, mas não percebi como. No simulador da PwC dá igual a nós
+    `Casado + Conjunto + deduçōes à coleta + habitação 5 + valor coleta max`
+  );
+
+  // casado + tributacao separada com deduçōes à coleta
+  // sem dependentes e sem ascendentes o IRS final deve ser igual à soma dos IRSs individuais
+  // notar que estamos nas parcelas dos IRSs individuais estamos a colocar 50% de cada despesas
+
+  // todas as deduçōes à coleta menos habitação
+  assert(
+    withinMarginError(
+      calcularIRS(
+        rendimentoA=1500,
+        rendimentoB=1000,
+        estadoCivil=casado,
+        tributacao=tributacaoSeparado,
+        ascendentes=0,
+        dependentes3Menos=0,
+        dependentes3Mais=0,
+        0,100,100,0,100,100,0,0,0,0,0,0
+      )[5],
+      calcularIRS(
+        rendimentoA=1500,
+        rendimentoB=0,
+        estadoCivil=solteiro,
+        tributacao=tributacaoSeparado,
+        ascendentes=0,
+        dependentes3Menos=0,
+        dependentes3Mais=0,
+        0,100/2,100/2,0,100/2,100/2,0,0,0,0,0,0
+      )[5] +
+      calcularIRS(
+        rendimentoA=1000,
+        rendimentoB=0,
+        estadoCivil=solteiro,
+        tributacao=tributacaoSeparado,
+        ascendentes=0,
+        dependentes3Menos=0,
+        dependentes3Mais=0,
+        0,100/2,100/2,0,100/2,100/2,0,0,0,0,0,0
+      )[5]
+    ),
+    `Casado + Separado + deduçōes à coleta + todas - habitação 1`
+  );
+  assert(
+    withinMarginError(
+      calcularIRS(
+        rendimentoA=1000,
+        rendimentoB=1500,
+        estadoCivil=casado,
+        tributacao=tributacaoSeparado,
+        ascendentes=0,
+        dependentes3Menos=0,
+        dependentes3Mais=0,
+        0,100,100,0,100,100,0,0,0,0,0,0
+      )[5],
+      calcularIRS(
+        rendimentoA=1500,
+        rendimentoB=0,
+        estadoCivil=solteiro,
+        tributacao=tributacaoSeparado,
+        ascendentes=0,
+        dependentes3Menos=0,
+        dependentes3Mais=0,
+        0,100/2,100/2,0,100/2,100/2,0,0,0,0,0,0
+      )[5] +
+      calcularIRS(
+        rendimentoA=1000,
+        rendimentoB=0,
+        estadoCivil=solteiro,
+        tributacao=tributacaoSeparado,
+        ascendentes=0,
+        dependentes3Menos=0,
+        dependentes3Mais=0,
+        0,100/2,100/2,0,100/2,100/2,0,0,0,0,0,0
+      )[5]
+    ),
+    `Casado + Separado + deduçōes à coleta + todas - habitação 2`
+  );
+  // deduçōes à coleta - testar máximo por agregado
+  assert(
+    withinMarginError(
+      calcularIRS(
+        rendimentoA=10000,
+        rendimentoB=10000,
+        estadoCivil=casado,
+        tributacao=tributacaoSeparado,
+        ascendentes=0,
+        dependentes3Menos=0,
+        dependentes3Mais=0,
+        0,100000,0,100000,0,0,0,0,0,0,0,0
+      )[4],
+      1000
+    ),
+    `Casado + Separado + deduçōes à coleta + todas - habitação max`
+  );
 }
 
 if (ano===2020) {
@@ -737,7 +1058,6 @@ assert(
   ),
   `Limites deduçōes à coleta 2 acima`
 );
-
 
 
 

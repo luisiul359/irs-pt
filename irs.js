@@ -134,8 +134,11 @@ function calcularDeducoesColeta(rendimentoColectavel, quoeficienteFamiliar,
 
   // TODO
   // Artigo 78.º-A
+  // Ponto 9 do 78.º-A - 9 - Sempre que o mesmo dependente ou ascendente conste de mais do que uma declaração de rendimentos, o valor das deduções à coleta previstas no presente Código por referência a dependentes ou ascendentes é reduzido para metade, por sujeito passivo.
   // Artigo 78.º-B - 9 - No caso de famílias monoparentais, a dedução prevista no n.º 1 é de 45 % do valor suportado por qualquer membro do agregado familiar, com o limite global de (euro) 335.
   // PPRs
+
+
 
   // Ponto 1 do https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs78b.aspx
   // por cada sujeito passivo
@@ -165,7 +168,7 @@ function calcularDeducoesColeta(rendimentoColectavel, quoeficienteFamiliar,
   // Ponto 1 e 3 do https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs78f.aspx
   var despesasIva = despesasAutomoveis+despesasMotociclos+despesasRestauracao+despesasCabeleireiros+despesasVeterinario;
   // Assumindo que todas as faturas têm IVA a 23%.
-  var deducoesIva = Math.min(0.23/1.23*despesasIva*0.15 + 0.23/1.23*despesasPasses, 250);
+  var deducoesIva = Math.min(0.23/1.23*despesasIva*0.15, 250) + 0.23/1.23*despesasPasses;
 
   // Ponto 1 do https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs83a.aspx
   var deducoesPensoesAlimentos = 0.20*despesasPensoesAlimentos;
@@ -173,6 +176,7 @@ function calcularDeducoesColeta(rendimentoColectavel, quoeficienteFamiliar,
   // Ponto 1 do https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs84.aspx
   var deducoesLares = Math.min(0.25*despesasLares, 403.75);
 
+  // Ponto 3 do https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs78.aspx
   var restantesDeducoes = deducoesSaude + deducoesEducacao + deducoesHabitacao + deducoesPensoesAlimentos + deducoesIva + deducoesLares;
 
   console.log('deducoesDespesasGerais', deducoesDespesasGerais);
@@ -183,22 +187,28 @@ function calcularDeducoesColeta(rendimentoColectavel, quoeficienteFamiliar,
   console.log('deducoesIva', deducoesIva);
   console.log('deducoesLares', deducoesLares);
 
-  return [deducoesDespesasGerais, restantesDeducoes/quoeficienteFamiliar];
+  return [deducoesDespesasGerais, restantesDeducoes];
 }
 
 
-function limitarDeducoesColeta(deducoesDespesasGerais, restantesDeducoes, escalao, rendimentoColectavel) {
+function limitarDeducoesColeta(deducoesDespesasGerais, restantesDeducoes, escalao, rendimentoColectavel, tributacaoSeparado) {
+  // Ponto 7 do https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs78.aspx
 
   if (escalao==0) {
     // a) Para contribuintes que tenham um rendimento coletável igual ou inferior ao valor do 1.º escalão do n.º 1 artigo 68.º, sem limite;
     var threshold = Number.POSITIVE_INFINITY;
   } else if (escalao<=6) {
     // b) Para contribuintes que tenham um rendimento coletável superior ao valor do 1.º escalão e igual ou inferior ao valor do último escalão do n.º 1 do artigo 68.º, o limite resultante da aplicação da seguinte fórmula:
-    var normalization = (escalao6.valor-rendimentoColectavel) / (escalao6.valor-escalao0.valor)
-    var threshold = 1000 + (2500-1000) * normalization
+    var normalization = (escalao6.valor-rendimentoColectavel) / (escalao6.valor-escalao0.valor);
+    var threshold = 1000 + (2500-1000) * normalization;
   } else {
     // c) Para contribuintes que tenham um rendimento coletável superior ao valor do último escalão do n.º 1 do artigo 68.º, o montante de € 1 000.
-    var threshold =  1000;
+    var threshold = 1000;
+  }
+
+  // Ponto 14 a) do https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs78.aspx
+  if (tributacaoSeparado) {
+    threshold = threshold / 2;
   }
 
   // TODO
@@ -242,6 +252,7 @@ function calcularIRS(rendimentoA, rendimentoB, estadoCivil, tributacao, ascenden
     coletaLiquida = Math.min(coletaLiquida, coletaTotal);
 
     // Ponto 7 do https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs78.aspx
+    // Estamos a assumir que cada sujeito passivo foi responsável por 50% de cada despesa
     var [deducoesDespesasGeraisA, restantesDeducoesA] = calcularDeducoesColeta(rendimentoColectavelA, 1,
       despesasGerais/2, despesasSaude/2, despesasEducacao/2, despesasHabitacao/2, despesasLares/2, despesasPensoesAlimentos/2,
       despesasAutomoveis/2, despesasMotociclos/2, despesasRestauracao/2, despesasCabeleireiros/2, despesasVeterinario/2, despesasPasses/2
@@ -251,12 +262,13 @@ function calcularIRS(rendimentoA, rendimentoB, estadoCivil, tributacao, ascenden
       despesasAutomoveis/2, despesasMotociclos/2, despesasRestauracao/2, despesasCabeleireiros/2, despesasVeterinario/2, despesasPasses/2
     );
 
-    var deducoesColetaA = limitarDeducoesColeta(deducoesDespesasGeraisA, restantesDeducoesA, escalaoA.escalao, rendimentoColectavelA);
-    var deducoesColetaB = limitarDeducoesColeta(deducoesDespesasGeraisB, restantesDeducoesB, escalaoB.escalao, rendimentoColectavelB);
+    var deducoesColetaA = limitarDeducoesColeta(deducoesDespesasGeraisA, restantesDeducoesA, escalaoA.escalao, rendimentoColectavelA, true);
+    var deducoesColetaB = limitarDeducoesColeta(deducoesDespesasGeraisB, restantesDeducoesB, escalaoB.escalao, rendimentoColectavelB, true);
 
     // Deduçōes à Coleta
     // https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs78.aspx
-    coletaLiquida = coletaLiquida - deducoesColetaA - deducoesColetaB;
+    var deducoesColeta = deducoesColetaA + deducoesColetaB;
+    coletaLiquida = coletaLiquida - deducoesColeta;
 
     // https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs70.aspx
     if(rendimentoAnualBrutoA < minimoExistencia) {
@@ -301,7 +313,7 @@ function calcularIRS(rendimentoA, rendimentoB, estadoCivil, tributacao, ascenden
       despesasAutomoveis, despesasMotociclos, despesasRestauracao, despesasCabeleireiros, despesasVeterinario, despesasPasses
     );
 
-    var deducoesColeta = limitarDeducoesColeta(deducoesDespesasGerais, restantesDeducoes, escalao.escalao, rendimentoColectavelFinal);
+    var deducoesColeta = limitarDeducoesColeta(deducoesDespesasGerais, restantesDeducoes, escalao.escalao, rendimentoColectavelFinal, false);
 
     // Deduçōes à Coleta
     coletaLiquida = coletaLiquida - deducoesColeta;

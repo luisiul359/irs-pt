@@ -126,18 +126,28 @@ function calcularColetaLiquida(rendimentoAnualBruto, rendimentoAnualBrutoSujeito
 }
 
 
-function calcularDeducoesColeta(rendimentoColectavel, quoeficienteFamiliar,
+function calcularDeducoesColeta(rendimentoColectavel, quoeficienteFamiliar, ascendentes, dependentes3Menos, dependentes3Mais, tributacaoSeparado,
   despesasGerais, despesasSaude, despesasEducacao, despesasHabitacao, despesasLares, despesasPensoesAlimentos,
   despesasAutomoveis, despesasMotociclos, despesasRestauracao, despesasCabeleireiros, despesasVeterinario, despesasPasses)
   {
 
   // TODO
-  // Artigo 78.º-A
-  // Ponto 9 do 78.º-A - 9 - Sempre que o mesmo dependente ou ascendente conste de mais do que uma declaração de rendimentos, o valor das deduções à coleta previstas no presente Código por referência a dependentes ou ascendentes é reduzido para metade, por sujeito passivo.
   // Artigo 78.º-B - 9 - No caso de famílias monoparentais, a dedução prevista no n.º 1 é de 45 % do valor suportado por qualquer membro do agregado familiar, com o limite global de (euro) 335.
   // PPRs
 
+  // Pontos 1, 2 e 3 do https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs78a.aspx
+  var valorDependente3Menos = 726;
+  var valorDependente3Mais = 600;
+  var valorDependente3MenosExtra = (300-126); // retirar a parcela que já se encontra em "valorDependente3Menos"
+  var valorAscendente = ascendentes===1 ? 635 : 525;
 
+  var deducoesDependentesAscendentes = dependentes3Menos*valorDependente3Menos +
+                                       dependentes3Mais*valorDependente3Mais +
+                                       (ano===2020 ? Math.max(0, dependentes3Menos-1)*valorDependente3MenosExtra : 0) +
+                                       ascendentes*valorAscendente;
+  if (tributacaoSeparado) {
+    deducoesDependentesAscendentes = deducoesDependentesAscendentes / 2;
+  }
 
   // Ponto 1 do https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs78b.aspx
   // por cada sujeito passivo
@@ -178,6 +188,7 @@ function calcularDeducoesColeta(rendimentoColectavel, quoeficienteFamiliar,
   // Ponto 3 do https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs78.aspx
   var restantesDeducoes = deducoesSaude + deducoesEducacao + deducoesHabitacao + deducoesPensoesAlimentos + deducoesIva + deducoesLares;
 
+  console.log('deducoesDependentesAscendentes', deducoesDependentesAscendentes);
   console.log('deducoesDespesasGerais', deducoesDespesasGerais);
   console.log('deducoesSaude', deducoesSaude);
   console.log('deducoesEducacao', deducoesEducacao);
@@ -186,11 +197,11 @@ function calcularDeducoesColeta(rendimentoColectavel, quoeficienteFamiliar,
   console.log('deducoesIva', deducoesIva);
   console.log('deducoesLares', deducoesLares);
 
-  return [deducoesDespesasGerais, restantesDeducoes];
+  return [deducoesDespesasGerais, deducoesDependentesAscendentes, restantesDeducoes];
 }
 
 
-function limitarDeducoesColeta(deducoesDespesasGerais, restantesDeducoes, escalao, rendimentoColectavel, dependentes, tributacaoSeparado) {
+function limitarDeducoesColeta(deducoesDespesasGerais, deducoesDependentesAscendentes, restantesDeducoes, escalao, rendimentoColectavel, dependentes, tributacaoSeparado) {
   // Ponto 7 do https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs78.aspx
 
   if (escalao==0) {
@@ -218,7 +229,7 @@ function limitarDeducoesColeta(deducoesDespesasGerais, restantesDeducoes, escala
   // TODO
   // 8 - Nos agregados com três ou mais dependentes a seu cargo, os limites previstos no número anterior são majorados em 5 % por cada dependente ou afilhado civil que não seja sujeito passivo do IRS.
 
-  return Math.min(restantesDeducoes, threshold) + deducoesDespesasGerais;
+  return Math.min(restantesDeducoes, threshold) + deducoesDependentesAscendentes + deducoesDespesasGerais;
 }
 
 
@@ -284,17 +295,19 @@ function calcularIRS(rendimentoA, rendimentoB, estadoCivil, tributacao, ascenden
 
     // Ponto 7 do https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs78.aspx
     // Estamos a assumir que cada sujeito passivo foi responsável por 50% de cada despesa
-    var [deducoesDespesasGeraisA, restantesDeducoesA] = calcularDeducoesColeta(rendimentoColectavelA, 1,
+    var [deducoesDespesasGeraisA, deducoesDependentesAscendentesA, restantesDeducoesA] = calcularDeducoesColeta(
+      rendimentoColectavelA, 1, ascendentes, dependentes3Menos, dependentes3Mais, true,
       despesasGerais/2, despesasSaude/2, despesasEducacao/2, despesasHabitacao/2, despesasLares/2, despesasPensoesAlimentos/2,
       despesasAutomoveis/2, despesasMotociclos/2, despesasRestauracao/2, despesasCabeleireiros/2, despesasVeterinario/2, despesasPasses/2
     );
-    var [deducoesDespesasGeraisB, restantesDeducoesB] = calcularDeducoesColeta(rendimentoColectavelB, 1,
+    var [deducoesDespesasGeraisB, deducoesDependentesAscendentesB, restantesDeducoesB] = calcularDeducoesColeta(
+      rendimentoColectavelB, 1, ascendentes, dependentes3Menos, dependentes3Mais, true,
       despesasGerais/2, despesasSaude/2, despesasEducacao/2, despesasHabitacao/2, despesasLares/2, despesasPensoesAlimentos/2,
       despesasAutomoveis/2, despesasMotociclos/2, despesasRestauracao/2, despesasCabeleireiros/2, despesasVeterinario/2, despesasPasses/2
     );
 
-    var deducoesColetaA = limitarDeducoesColeta(deducoesDespesasGeraisA, restantesDeducoesA, escalaoA.escalao, rendimentoColectavelA, dependentes3Menos+dependentes3Mais, true);
-    var deducoesColetaB = limitarDeducoesColeta(deducoesDespesasGeraisB, restantesDeducoesB, escalaoB.escalao, rendimentoColectavelB, dependentes3Menos+dependentes3Mais, true);
+    var deducoesColetaA = limitarDeducoesColeta(deducoesDespesasGeraisA, deducoesDependentesAscendentesA, restantesDeducoesA, escalaoA.escalao, rendimentoColectavelA, dependentes3Menos+dependentes3Mais, true);
+    var deducoesColetaB = limitarDeducoesColeta(deducoesDespesasGeraisB, deducoesDependentesAscendentesB, restantesDeducoesB, escalaoB.escalao, rendimentoColectavelB, dependentes3Menos+dependentes3Mais, true);
 
     // Deduçōes à Coleta
     // https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs78.aspx
@@ -338,12 +351,13 @@ function calcularIRS(rendimentoA, rendimentoB, estadoCivil, tributacao, ascenden
     coletaLiquida = Math.min(coletaLiquida, coletaTotal);
 
     // Ponto 7 do https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs78.aspx
-    var [deducoesDespesasGerais, restantesDeducoes] = calcularDeducoesColeta(rendimentoColectavelFinal, quoeficienteFamiliar,
+    var [deducoesDespesasGerais, deducoesDependentesAscendentes, restantesDeducoes] = calcularDeducoesColeta(
+      rendimentoColectavelFinal, quoeficienteFamiliar, ascendentes, dependentes3Menos, dependentes3Mais, false,
       despesasGerais, despesasSaude, despesasEducacao, despesasHabitacao, despesasLares, despesasPensoesAlimentos,
       despesasAutomoveis, despesasMotociclos, despesasRestauracao, despesasCabeleireiros, despesasVeterinario, despesasPasses
     );
 
-    var deducoesColeta = limitarDeducoesColeta(deducoesDespesasGerais, restantesDeducoes, escalao.escalao, rendimentoColectavelFinal, dependentes3Menos+dependentes3Mais, false);
+    var deducoesColeta = limitarDeducoesColeta(deducoesDespesasGerais, deducoesDependentesAscendentes, restantesDeducoes, escalao.escalao, rendimentoColectavelFinal, dependentes3Menos+dependentes3Mais, false);
 
     // Deduçōes à Coleta
     coletaLiquida = coletaLiquida - deducoesColeta;

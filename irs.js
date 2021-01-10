@@ -58,6 +58,9 @@ if (ano===2019) {
 // value format
 const formato = '0,0.00';
 
+// TODO:
+// Ponto 1 d) do https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs78d.aspx
+// PPRs
 
 function rendimentoColectavel(rendimentoAnualBruto) {
 
@@ -130,9 +133,6 @@ function calcularDeducoesColeta(rendimentoColectavel, quoeficienteFamiliar, asce
   despesasGerais, despesasSaude, despesasEducacao, despesasHabitacao, despesasLares, despesasPensoesAlimentos,
   despesasAutomoveis, despesasMotociclos, despesasRestauracao, despesasCabeleireiros, despesasVeterinario, despesasPasses)
   {
-
-  // TODO
-  // PPRs
 
   // Pontos 1, 2 e 3 do https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs78a.aspx
   var valorDependente3Menos = 726;
@@ -229,9 +229,6 @@ function limitarDeducoesColeta(deducoesDespesasGerais, deducoesDependentesAscend
     threshold = threshold * (1 + 0.05 * dependentes)
   }
 
-  // TODO
-  // 8 - Nos agregados com três ou mais dependentes a seu cargo, os limites previstos no número anterior são majorados em 5 % por cada dependente ou afilhado civil que não seja sujeito passivo do IRS.
-
   return Math.min(restantesDeducoes, threshold) + deducoesDependentesAscendentes + deducoesDespesasGerais;
 }
 
@@ -242,7 +239,8 @@ function abaixoMinimoExistencia(rendimentoAnualBruto, rendimentoColectavel, cole
     return 0;
   }
 
-  // TODO nao consegui replicar no portal das financas nem no PwC
+  // TODO:
+  // nao consegui replicar no portal das financas nem no PwC
   // Pontos 2 e 3 do https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs70.aspx
   //if(dependentes === 3 || dependentes === 4) {
   //  var minimo = tributacaoSeparado ? 11320/2 : 11320;
@@ -263,12 +261,7 @@ function abaixoMinimoExistencia(rendimentoAnualBruto, rendimentoColectavel, cole
 function calcularIRS(rendimentoA, rendimentoB, estadoCivil, tributacao, ascendentes, dependentes3Menos, dependentes3Mais,
   despesasGerais, despesasSaude, despesasEducacao, despesasHabitacao, despesasLares, despesasPensoesAlimentos,
   despesasAutomoveis, despesasMotociclos, despesasRestauracao, despesasCabeleireiros, despesasVeterinario, despesasPasses)
-{
-
-  // ter a certeza que este rendimento é 0 nesta condição
-  if (estadoCivil==='Solteiro, divorciado, viúvo ou separado judicialmente') {
-    rendimentoB = 0;
-  }
+  {
 
   // Estamos a pedir o salário bruto mensal considerando 14 meses
   var rendimentoAnualBrutoA = rendimentoA * 14;
@@ -386,11 +379,6 @@ function calcularIRS(rendimentoA, rendimentoB, estadoCivil, tributacao, ascenden
 function calcularIRS_IL(rendimentoA, rendimentoB, dependentes, estadoCivil) {
 
   // https://iniciativaliberal.pt/legislativas2019/propostas/taxa-irs-15/
-
-  // ter a certeza que este rendimento é 0 nesta condição
-  if (estadoCivil==='Solteiro, divorciado, viúvo ou separado judicialmente') {
-    rendimentoB = 0;
-  }
 
   // Estamos a pedir o salário bruto mensal considerando 14 meses
   var rendimentoAnualBrutoA = rendimentoA * 14;
@@ -551,6 +539,11 @@ function main() {
     var despesasCabeleireiros = Number($("#despesasCabeleireiros").val());
     var despesasVeterinario = Number($("#despesasVeterinario").val());
     var despesasPasses = Number($("#despesasPasses").val());
+
+    // ter a certeza que este rendimento é 0 nesta condição
+    if (estadoCivil==='Solteiro, divorciado, viúvo ou separado judicialmente') {
+      rendimentoB = 0;
+    }
 
     var [deducoesEspecificas, rendimentoColectavel, taxa, coletaTotal, deducoesColeta, irsActual] = calcularIRS(
       rendimentoA, rendimentoB, estadoCivil, tributacao, ascendentes, dependentes3Menos, dependentes3Mais,

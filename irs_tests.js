@@ -727,6 +727,7 @@ if (ano===2019) {
   // casado + tributacao separada
 
 
+  
 }
 
 if (ano===2020) {
@@ -1133,6 +1134,21 @@ assert(
     250
   ),
   `Despesas gerais familiares acima`
+);
+// despesas gerais familiares - famílias monoparentais
+assert(
+  withinMarginError(
+    calcularDeducoesColeta(0, 1, 0, 1, 0, false, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)[0],
+    0.45*100
+  ),
+  `Despesas gerais familiares normal - famílias monoparentais`
+);
+assert(
+  withinMarginError(
+    calcularDeducoesColeta(0, 1, 0, 1, 0, false, 15000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)[0],
+    335
+  ),
+  `Despesas gerais familiares acima - famílias monoparentais`
 );
 
 // despesas saúde

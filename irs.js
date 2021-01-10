@@ -132,7 +132,6 @@ function calcularDeducoesColeta(rendimentoColectavel, quoeficienteFamiliar, asce
   {
 
   // TODO
-  // Artigo 78.º-B - 9 - No caso de famílias monoparentais, a dedução prevista no n.º 1 é de 45 % do valor suportado por qualquer membro do agregado familiar, com o limite global de (euro) 335.
   // PPRs
 
   // Pontos 1, 2 e 3 do https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs78a.aspx
@@ -152,6 +151,10 @@ function calcularDeducoesColeta(rendimentoColectavel, quoeficienteFamiliar, asce
   // Ponto 1 do https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs78b.aspx
   // por cada sujeito passivo
   var deducoesDespesasGerais = Math.min(0.35*despesasGerais, 250*quoeficienteFamiliar);
+  // Ponto 9 do https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs78b.aspx
+  if (quoeficienteFamiliar===1 && (dependentes3Menos+dependentes3Mais)>=1) {
+    deducoesDespesasGerais = Math.min(0.45*despesasGerais, 335);
+  }
 
   // Ponto 1 do https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs78c.aspx
   var deducoesSaude = Math.min(0.15*despesasSaude, 1000);

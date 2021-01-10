@@ -130,7 +130,7 @@ function calcularColetaLiquida(rendimentoAnualBruto, rendimentoAnualBrutoSujeito
 function calcularDeducoesColeta(rendimentoColectavel, quoeficienteFamiliar,
   despesasGerais, despesasSaude, despesasEducacao, despesasHabitacao, despesasLares, despesasPensoesAlimentos,
   despesasAutomoveis, despesasMotociclos, despesasRestauracao, despesasCabeleireiros, despesasVeterinario, despesasPasses)
-{
+  {
 
   // TODO
   // Artigo 78.º-A
@@ -361,11 +361,11 @@ function calcularIRS_IL(rendimentoA, rendimentoB, dependentes, estadoCivil) {
   // Ponto C.6 do https://iniciativaliberal.pt/legislativas2019/propostas/taxa-irs-15/
   var valorIsencao = isencaoMensalIL * 14 * sujeitosPassivos;
 
-  // TODO
-  // Por cada filho, o patamar de isenção individual subiria 200€ para cada progenitor.
-  // No caso de famílias monoparentais esse valor seria duplicado.
-  // Por exemplo, uma mãe solteira com dois filhos ficaria isenta até aos 1450€.
+  // Ponto D.5 do https://iniciativaliberal.pt/legislativas2019/propostas/taxa-irs-15/
+  var isencaoMensalILExtra = rendimentoB > 0 ? 200 : 400;
+  valorIsencao += isencaoMensalILExtra * dependentes * 14 * sujeitosPassivos;
 
+  // Ponto C.1 do https://iniciativaliberal.pt/legislativas2019/propostas/taxa-irs-15/
   var irs = Math.max(
     0,
     (rendimentoAnualBrutoA + rendimentoAnualBrutoB - valorIsencao) * 0.15

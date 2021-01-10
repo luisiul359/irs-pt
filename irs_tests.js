@@ -1060,6 +1060,73 @@ assert(
 );
 
 
+// proposta IRS da IL
+
+
+// solteiro
+// sem dependentes
+assert(
+  withinMarginError(
+    calcularIRS_IL(1000, 0, 0, solteiro),
+    0.15*14*(1000-650)
+  ),
+  `Proposta IL solteiro sem dependentes 1`
+);
+// o rendimento do sujeito passivo B deve ser ignorado
+assert(
+  withinMarginError(
+    calcularIRS_IL(1000, 100000, 0, solteiro),
+    0.15*14*(1000-650)
+  ),
+  `Proposta IL solteiro sem dependentes 2`
+);
+
+// casado + tributacao conjunta
+// casado + tributacao separada
+// sem dependentes
+assert(
+  withinMarginError(
+    calcularIRS_IL(1000, 750, 0, casado),
+    0.15*14*(1000+750-650*2)
+  ),
+  `Proposta IL casado sem dependentes`
+);
+
+// solteiro - monoparental
+// com dependentes
+var filhos = [1,2,3];
+filhos.forEach(dependentes => {
+  assert(
+    withinMarginError(
+      calcularIRS_IL(2000, 0, dependentes, solteiro),
+      0.15*14*(2000-(650+400*dependentes))
+    ),
+    `Proposta IL solteiro com ${dependentes} dependentes`
+  );
+});
+// minimo de IRS é 0
+assert(
+  withinMarginError(
+    calcularIRS_IL(1000, 0, 10, solteiro),
+    0
+  ),
+  `Proposta IL solteiro com 10 dependentes`
+);
+
+// casado + tributacao conjunta
+// casado + tributacao separada
+// com dependentes
+var filhos = [1,2,3];
+filhos.forEach(dependentes => {
+  assert(
+    withinMarginError(
+      calcularIRS_IL(2500, 1500, dependentes, casado),
+      0.15*14*(2500-(650+200*dependentes)+1500-(650+200*dependentes))
+    ),
+    `Proposta IL casado com ${dependentes} dependentes`
+  );
+});
+
 
 
 

@@ -17,6 +17,7 @@ const solteiro = 'Solteiro, divorciado, viúvo ou separado judicialmente';
 const tributacaoConjunto = 'Conjunto';
 const tributacaoSeparado = 'Separado';
 
+// confirmar minimo de existencia com +3 dependentes
 
 if (ano===2019) {
   // solteiro
@@ -508,7 +509,7 @@ if (ano===2019) {
 
   // casado + tributacao separada com deduçōes à coleta
   // sem dependentes e sem ascendentes o IRS final deve ser igual à soma dos IRSs individuais
-  // notar que estamos nas parcelas dos IRSs individuais estamos a colocar 50% de cada despesas
+  // notar que nas parcelas dos IRSs individuais estamos a colocar 50% de cada despesa
 
   // todas as deduçōes à coleta menos habitação
   assert(
@@ -598,6 +599,53 @@ if (ano===2019) {
     ),
     `Casado + Separado + deduçōes à coleta + todas - habitação max`
   );
+
+  // com dependentes
+
+  // solteiro
+  //var filhos = [3,4,5,6,7];
+  //filhos.forEach(dependentes => {
+  //  assert(
+  //    withinMarginError(
+  //      calcularIRS(
+  //        rendimentoA=750,
+  //        rendimentoB=0,
+  //        estadoCivil=solteiro,
+  //        tributacao=tributacaoSeparado,
+  //        ascendentes=0,
+  //        dependentes3Menos=dependentes,
+  //        dependentes3Mais=0,
+  //        0,0,0,0,0,0,0,0,0,0,0,0
+  //      )[5],
+  //      0
+  //    ),
+  //    `Solteiro + dependentes ${dependentes}+ abaixo do mínimo de existência`
+  //  );
+  //});
+  // casado + tributacao conjunta
+  //var filhos = [3,4,5,6,7];
+  //filhos.forEach(dependentes => {
+  //  assert(
+  //    withinMarginError(
+  //      calcularIRS(
+  //        rendimentoA=750,
+  //        rendimentoB=1300,
+  //        estadoCivil=casado,
+  //        tributacao=tributacaoConjunto,
+  //        ascendentes=0,
+  //        dependentes3Menos=dependentes,
+  //        dependentes3Mais=0,
+  //        0,0,0,0,0,0,0,0,0,0,0,0
+  //      )[5],
+  //      0
+  //    ),
+  //    `Casado + Conjunto + dependentes ${dependentes}+ abaixo do mínimo de existência`
+  //  );
+  //});
+  // casado + tributacao separada
+
+
+  
 }
 
 if (ano===2020) {

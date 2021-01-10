@@ -29,7 +29,7 @@ const isencaoMensalIL = 650;
 // 2020
 // https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs68.aspx
 //
-// Incluindo escalōes adicionais de solidariedade (mesma em ambos os anos)
+// Incluindo escalōes adicionais de solidariedade (mesmo em ambos os anos)
 // https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs68a.aspx
 if (ano===2019) {
   var escalao0 = {valor:   7091, percentagem: 0.145, escalao: 0};
@@ -70,7 +70,6 @@ function rendimentoColectavel(rendimentoAnualBruto) {
   // Página 8: https://info.portaldasfinancas.gov.pt/pt/apoio_contribuinte/Folhetos_informativos/Documents/IRS_folheto_2019.pdf
   var deducaoEspecifica = Math.max(minDeducaoEspecifica, tsuTrabalhador)
 
-  // https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs22.aspx
   var rendimentoColectavel = rendimentoAnualBruto - deducaoEspecifica
 
   return [Math.max(0, rendimentoColectavel), deducaoEspecifica];
@@ -218,6 +217,30 @@ function limitarDeducoesColeta(deducoesDespesasGerais, restantesDeducoes, escala
 }
 
 
+function abaixoMinimoExistencia(rendimentoAnualBruto, rendimentoColectavel, coletaLiquida, dependentes, tributacaoSeparado) {
+  // https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs70.aspx
+  if(rendimentoAnualBruto < minimoExistencia) {
+    return 0;
+  }
+
+  // TODO nao consegui replicar no portal das financas nem no PwC
+  // Pontos 2 e 3 do https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs70.aspx
+  //if(dependentes === 3 || dependentes === 4) {
+  //  var minimo = tributacaoSeparado ? 11320/2 : 11320;
+  //  if(rendimentoColectavel <= minimo) {
+  //    return 0;
+  //  }
+  //} else if(dependentes >=5) {
+  //  var minimo = tributacaoSeparado ? 15560/2 : 15560;
+  //  if(rendimentoColectavel <= minimo) {
+  //    return 0;
+  //  }
+  //}
+
+  return coletaLiquida
+}
+
+
 function calcularIRS(rendimentoA, rendimentoB, estadoCivil, tributacao, ascendentes, dependentes3Menos, dependentes3Mais,
   despesasGerais, despesasSaude, despesasEducacao, despesasHabitacao, despesasLares, despesasPensoesAlimentos,
   despesasAutomoveis, despesasMotociclos, despesasRestauracao, despesasCabeleireiros, despesasVeterinario, despesasPasses)
@@ -246,7 +269,10 @@ function calcularIRS(rendimentoA, rendimentoB, estadoCivil, tributacao, ascenden
 
     var coletaLiquidaA = calcularColetaLiquida(rendimentoAnualBrutoA, rendimentoAnualBrutoA, coletaTotalA, 1);
     var coletaLiquidaB = calcularColetaLiquida(rendimentoAnualBrutoB, rendimentoAnualBrutoB, coletaTotalB, 1);
-    var coletaLiquida = coletaLiquidaA + coletaLiquidaB;
+
+    // https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs70.aspx
+    var coletaLiquida = abaixoMinimoExistencia(rendimentoAnualBrutoA, rendimentoColectavelA, coletaLiquidaA, dependentes3Menos+dependentes3Mais, true) +
+                        abaixoMinimoExistencia(rendimentoAnualBrutoB, rendimentoColectavelB, coletaLiquidaB, dependentes3Menos+dependentes3Mais, true);
 
     // Garantir que a coleta liquida não é superior à total
     coletaLiquida = Math.min(coletaLiquida, coletaTotal);
@@ -269,11 +295,6 @@ function calcularIRS(rendimentoA, rendimentoB, estadoCivil, tributacao, ascenden
     // https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs78.aspx
     var deducoesColeta = deducoesColetaA + deducoesColetaB;
     coletaLiquida = coletaLiquida - deducoesColeta;
-
-    // https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs70.aspx
-    if(rendimentoAnualBrutoA < minimoExistencia) {
-      coletaLiquida = 0 + (rendimentoAnualBrutoB < minimoExistencia ? 0 : coletaLiquidaB);
-    }
 
     console.log('rendimentoColectavelA', rendimentoColectavelA);
     console.log('rendimentoColectavelB', rendimentoColectavelB);
@@ -304,6 +325,10 @@ function calcularIRS(rendimentoA, rendimentoB, estadoCivil, tributacao, ascenden
 
     var coletaLiquida = calcularColetaLiquida(rendimentoAnualBrutoTotal, rendimentoAnualBrutoA, coletaTotal, quoeficienteFamiliar) +
                         (rendimentoB>0 ? calcularColetaLiquida(rendimentoAnualBrutoTotal, rendimentoAnualBrutoB, coletaTotal, quoeficienteFamiliar): 0);
+
+    // https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs70.aspx
+    coletaLiquida = abaixoMinimoExistencia(rendimentoAnualBrutoTotal, rendimentoColectavelFinal, coletaLiquida, dependentes3Menos+dependentes3Mais, false);
+
     // Garantir que a coleta liquida não é superior à total
     coletaLiquida = Math.min(coletaLiquida, coletaTotal);
 
@@ -318,11 +343,6 @@ function calcularIRS(rendimentoA, rendimentoB, estadoCivil, tributacao, ascenden
     // Deduçōes à Coleta
     coletaLiquida = coletaLiquida - deducoesColeta;
 
-    // https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs70.aspx
-    if(rendimentoAnualBrutoTotal < minimoExistencia) {
-      coletaLiquida = 0;
-    }
-
     console.log('rendimentoAnualBrutoTotal', rendimentoAnualBrutoTotal);
     console.log('rendimentoColectavelA', rendimentoColectavelA);
     console.log('rendimentoColectavelB', rendimentoColectavelB);
@@ -333,8 +353,6 @@ function calcularIRS(rendimentoA, rendimentoB, estadoCivil, tributacao, ascenden
     console.log('coletaLiquida', coletaLiquida);
   }
 
-  // https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs95.aspx
-  // Não há lugar a cobrança ou reembolso quando, em virtude de liquidação, ainda que adicional, reforma ou revogação de liquidação, a importância a cobrar seja inferior a (euro) 25 ou a importância a restituir seja inferior a (euro) 10.
   var irs = Math.max(0, coletaLiquida);
 
   console.log('IRS', irs);

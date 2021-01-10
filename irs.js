@@ -190,7 +190,7 @@ function calcularDeducoesColeta(rendimentoColectavel, quoeficienteFamiliar,
 }
 
 
-function limitarDeducoesColeta(deducoesDespesasGerais, restantesDeducoes, escalao, rendimentoColectavel, tributacaoSeparado) {
+function limitarDeducoesColeta(deducoesDespesasGerais, restantesDeducoes, escalao, rendimentoColectavel, dependentes, tributacaoSeparado) {
   // Ponto 7 do https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs78.aspx
 
   if (escalao==0) {
@@ -208,6 +208,11 @@ function limitarDeducoesColeta(deducoesDespesasGerais, restantesDeducoes, escala
   // Ponto 14 a) do https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs78.aspx
   if (tributacaoSeparado) {
     threshold = threshold / 2;
+  }
+
+  // Ponto 8 do https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs78.aspx
+  if (dependentes>=3) {
+    threshold = threshold * (1 + 0.05 * dependentes)
   }
 
   // TODO
@@ -288,8 +293,8 @@ function calcularIRS(rendimentoA, rendimentoB, estadoCivil, tributacao, ascenden
       despesasAutomoveis/2, despesasMotociclos/2, despesasRestauracao/2, despesasCabeleireiros/2, despesasVeterinario/2, despesasPasses/2
     );
 
-    var deducoesColetaA = limitarDeducoesColeta(deducoesDespesasGeraisA, restantesDeducoesA, escalaoA.escalao, rendimentoColectavelA, true);
-    var deducoesColetaB = limitarDeducoesColeta(deducoesDespesasGeraisB, restantesDeducoesB, escalaoB.escalao, rendimentoColectavelB, true);
+    var deducoesColetaA = limitarDeducoesColeta(deducoesDespesasGeraisA, restantesDeducoesA, escalaoA.escalao, rendimentoColectavelA, dependentes3Menos+dependentes3Mais, true);
+    var deducoesColetaB = limitarDeducoesColeta(deducoesDespesasGeraisB, restantesDeducoesB, escalaoB.escalao, rendimentoColectavelB, dependentes3Menos+dependentes3Mais, true);
 
     // Deduçōes à Coleta
     // https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs78.aspx
@@ -338,7 +343,7 @@ function calcularIRS(rendimentoA, rendimentoB, estadoCivil, tributacao, ascenden
       despesasAutomoveis, despesasMotociclos, despesasRestauracao, despesasCabeleireiros, despesasVeterinario, despesasPasses
     );
 
-    var deducoesColeta = limitarDeducoesColeta(deducoesDespesasGerais, restantesDeducoes, escalao.escalao, rendimentoColectavelFinal, false);
+    var deducoesColeta = limitarDeducoesColeta(deducoesDespesasGerais, restantesDeducoes, escalao.escalao, rendimentoColectavelFinal, dependentes3Menos+dependentes3Mais, false);
 
     // Deduçōes à Coleta
     coletaLiquida = coletaLiquida - deducoesColeta;

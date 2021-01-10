@@ -506,6 +506,24 @@ if (ano===2019) {
     withinMarginError(res[4],2442.79), // no portal das finanças deu 2373.9, mas não percebi como. No simulador da PwC dá igual a nós
     `Casado + Conjunto + deduçōes à coleta + habitação 5 + valor coleta max`
   );
+  var res = calcularIRS(
+    rendimentoA=10000,
+    rendimentoB=10000,
+    estadoCivil=casado,
+    tributacao=tributacaoConjunto,
+    ascendentes=0,
+    dependentes3Menos=0,
+    dependentes3Mais=3,
+    0,100000,0,100000,0,0,0,0,0,0,0,0
+  );
+  assert(
+    withinMarginError(res[5],103943.84),
+    `Casado + Conjunto + deduçōes à coleta + habitação 5 + IRS`
+  );
+  assert(
+    withinMarginError(res[4],1000*1.15),
+    `Casado + Conjunto + deduçōes à coleta + habitação 5 + valor coleta max`
+  );
 
   // casado + tributacao separada com deduçōes à coleta
   // sem dependentes e sem ascendentes o IRS final deve ser igual à soma dos IRSs individuais

@@ -57,6 +57,7 @@ if (ano===2019) {
 
 // value format
 const formato = '0,0.00';
+const formato2 = '0,0';
 
 // TODO:
 // Ponto 1 d) do https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs78d.aspx
@@ -191,14 +192,14 @@ function calcularDeducoesColeta(rendimentoColectavel, quoeficienteFamiliar, asce
   // Ponto 3 do https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs78.aspx
   var restantesDeducoes = deducoesSaude + deducoesEducacao + deducoesHabitacao + deducoesPensoesAlimentos + deducoesIva + deducoesLares;
 
-  console.log('deducoesDependentesAscendentes', deducoesDependentesAscendentes);
-  console.log('deducoesDespesasGerais', deducoesDespesasGerais);
-  console.log('deducoesSaude', deducoesSaude);
-  console.log('deducoesEducacao', deducoesEducacao);
-  console.log('deducoesHabitacao', deducoesHabitacao);
-  console.log('deducoesPensoesAlimentos', deducoesPensoesAlimentos);
-  console.log('deducoesIva', deducoesIva);
-  console.log('deducoesLares', deducoesLares);
+  //console.log('deducoesDependentesAscendentes', deducoesDependentesAscendentes);
+  //console.log('deducoesDespesasGerais', deducoesDespesasGerais);
+  //console.log('deducoesSaude', deducoesSaude);
+  //console.log('deducoesEducacao', deducoesEducacao);
+  //console.log('deducoesHabitacao', deducoesHabitacao);
+  //console.log('deducoesPensoesAlimentos', deducoesPensoesAlimentos);
+  //console.log('deducoesIva', deducoesIva);
+  //console.log('deducoesLares', deducoesLares);
 
   return [deducoesDespesasGerais, deducoesDependentesAscendentes, restantesDeducoes];
 }
@@ -310,13 +311,13 @@ function calcularIRS(rendimentoA, rendimentoB, estadoCivil, tributacao, ascenden
     var deducoesColeta = deducoesColetaA + deducoesColetaB;
     coletaLiquida = coletaLiquida - deducoesColeta;
 
-    console.log('rendimentoColectavelA', rendimentoColectavelA);
-    console.log('rendimentoColectavelB', rendimentoColectavelB);
-    console.log('coletaTotalA', coletaTotalA);
-    console.log('coletaTotalB', coletaTotalB);
-    console.log('deducoesColetaA', deducoesColetaA);
-    console.log('deducoesColetaB', deducoesColetaB);
-    console.log('coletaLiquida', coletaLiquida);
+    //console.log('rendimentoColectavelA', rendimentoColectavelA);
+    //console.log('rendimentoColectavelB', rendimentoColectavelB);
+    //console.log('coletaTotalA', coletaTotalA);
+    //console.log('coletaTotalB', coletaTotalB);
+    //console.log('deducoesColetaA', deducoesColetaA);
+    //console.log('deducoesColetaB', deducoesColetaB);
+    //console.log('coletaLiquida', coletaLiquida);
   } else {
     // situações
     // estadoCivil==='Solteiro, divorciado, viúvo ou separado judicialmente'
@@ -358,19 +359,19 @@ function calcularIRS(rendimentoA, rendimentoB, estadoCivil, tributacao, ascenden
     // Deduçōes à Coleta
     coletaLiquida = coletaLiquida - deducoesColeta;
 
-    console.log('rendimentoAnualBrutoTotal', rendimentoAnualBrutoTotal);
-    console.log('rendimentoColectavelA', rendimentoColectavelA);
-    console.log('rendimentoColectavelB', rendimentoColectavelB);
-    console.log('rendimentoColectavelFinal', rendimentoColectavelFinal);
-    console.log('quoeficienteFamiliar', quoeficienteFamiliar);
-    console.log('coletaTotal', coletaTotal);
-    console.log('deducoesColeta', deducoesColeta);
-    console.log('coletaLiquida', coletaLiquida);
+    //console.log('rendimentoAnualBrutoTotal', rendimentoAnualBrutoTotal);
+    //console.log('rendimentoColectavelA', rendimentoColectavelA);
+    //console.log('rendimentoColectavelB', rendimentoColectavelB);
+    //console.log('rendimentoColectavelFinal', rendimentoColectavelFinal);
+    //console.log('quoeficienteFamiliar', quoeficienteFamiliar);
+    //console.log('coletaTotal', coletaTotal);
+    //console.log('deducoesColeta', deducoesColeta);
+    //console.log('coletaLiquida', coletaLiquida);
   }
 
   var irs = Math.max(0, coletaLiquida);
 
-  console.log('IRS', irs);
+  //console.log('IRS', irs);
 
   return [deducoesEspecificas, rendimentoColectavelA + rendimentoColectavelB, taxa, coletaTotal, deducoesColeta, irs];
 }
@@ -399,7 +400,7 @@ function calcularIRS_IL(rendimentoA, rendimentoB, dependentes, estadoCivil) {
     (rendimentoAnualBrutoA + rendimentoAnualBrutoB - valorIsencao) * 0.15
   );
 
-  console.log('IRS_IL', irs);
+  //console.log('IRS_IL', irs);
 
   return irs
 }
@@ -425,7 +426,10 @@ function calcularRendLiquido(rendimentoA, rendimentoB, pagarIRS) {
   // Quanto vai para o Estado
   var rendEstado = pagarIRS + tsuTrabalhador + tsuEmpresa;
 
-  return [rendTrabalhador, rendEstado]
+  // Pago pela empresa
+  var pagoEmpresa = rendimentoAnualBruto + tsuEmpresa;
+
+  return [rendTrabalhador, rendEstado, pagoEmpresa]
 
 }
 
@@ -513,6 +517,65 @@ function atualizarTabelaIRS(irsActual, irsIL, rendimentoA, rendimentoB, estadoCi
 }
 
 
+function pad(value) {
+  var v = numeral(value).format(formato2);
+
+  return v.padStart(9-v.length, "|").replaceAll("|", "&nbsp;");
+}
+
+
+function atualizarTabelaRendimentos(rendimentoBase, irsActualBase, valorTrabalhadorBase, valorEstadoBase, pagoEmpresaBase,
+  rendimentoA, rendimentoB, estadoCivil, tributacao, ascendentes, dependentes3Menos, dependentes3Mais,
+  despesasGerais, despesasSaude, despesasEducacao, despesasHabitacao, despesasLares, despesasPensoesAlimentos,
+  despesasAutomoveis, despesasMotociclos, despesasRestauracao, despesasCabeleireiros, despesasVeterinario, despesasPasses)
+  {
+
+    $("#tabelaRendimentos").empty()
+
+    $("#tabelaRendimentos").append(`
+      <thead>
+        <tr>
+          <th scope="col">Mensal</th>
+          <th scope="col">Rendimento Anual</th>
+          <th scope="col">Empresa pagou</th>
+          <th scope="col">Você recebeu</th>
+          <th scope="col">Estado recebeu</th>
+        </tr>
+      </thead>`
+    );
+
+    var tbody = '';
+
+    [0, 50, 100, 200, 300].forEach(incremento => {
+
+      var rendA = rendimentoA + incremento;
+      var rendB = rendimentoB > 0 ? rendimentoB + incremento : 0;
+
+      var irsActual = calcularIRS(
+        rendA, rendB, estadoCivil, tributacao, ascendentes, dependentes3Menos, dependentes3Mais,
+        despesasGerais, despesasSaude, despesasEducacao, despesasHabitacao, despesasLares, despesasPensoesAlimentos,
+        despesasAutomoveis, despesasMotociclos, despesasRestauracao, despesasCabeleireiros, despesasVeterinario, despesasPasses
+      )[5];
+
+      var [valorTrabalhador, valorEstado, pagoEmpresa] = calcularRendLiquido(rendA, rendB, irsActual);
+
+      tbody = tbody + `
+          <tr>
+            <td class="text-right">+${pad(incremento)}€</td>
+            <td class="text-right">+${pad((rendA+rendB)*14)}€ (+${pad((rendA+rendB)*14-rendimentoBase)}€)</td>
+            <td class="text-right">+${pad(pagoEmpresa)}€ (+${pad(pagoEmpresa-pagoEmpresaBase)}€)</td>
+            <td class="text-right">+${pad(valorTrabalhador)}€ (+${pad(valorTrabalhador-valorTrabalhadorBase)}€)</td>
+            <td class="text-right">+${pad(valorEstado)}€ (+${pad(valorEstado-valorEstadoBase)}€)</td>
+          </tr>`
+      ;
+
+    });
+
+    $("#tabelaRendimentos").append(tbody);
+
+}
+
+
 function main() {
 
     // Obter os valores inseridos pelo utilizador no formulário
@@ -549,18 +612,25 @@ function main() {
       rendimentoA, rendimentoB, estadoCivil, tributacao, ascendentes, dependentes3Menos, dependentes3Mais,
       despesasGerais, despesasSaude, despesasEducacao, despesasHabitacao, despesasLares, despesasPensoesAlimentos,
       despesasAutomoveis, despesasMotociclos, despesasRestauracao, despesasCabeleireiros, despesasVeterinario, despesasPasses
-    )
+    );
 
     var irsIL = calcularIRS_IL(
       rendimentoA, rendimentoB, dependentes3Menos + dependentes3Mais, estadoCivil
-    )
+    );
 
-    var [valorTrabalhador, valorEstado] = calcularRendLiquido(rendimentoA, rendimentoB, irsActual)
+    var [valorTrabalhador, valorEstado, pagoEmpresa] = calcularRendLiquido(rendimentoA, rendimentoB, irsActual);
 
     atualizarTabelaIRS(
       irsActual, irsIL, rendimentoA, rendimentoB, estadoCivil, tributacao, ascendentes, dependentes3Menos + dependentes3Mais,
       deducoesEspecificas, rendimentoColectavel, taxa, coletaTotal, deducoesColeta, valorTrabalhador, valorEstado
-    )
+    );
+
+    atualizarTabelaRendimentos(
+      (rendimentoA+rendimentoB)*14, irsActual, valorTrabalhador, valorEstado, pagoEmpresa,
+      rendimentoA, rendimentoB, estadoCivil, tributacao, ascendentes, dependentes3Menos, dependentes3Mais,
+      despesasGerais, despesasSaude, despesasEducacao, despesasHabitacao, despesasLares, despesasPensoesAlimentos,
+      despesasAutomoveis, despesasMotociclos, despesasRestauracao, despesasCabeleireiros, despesasVeterinario, despesasPasses
+    );
 
 }
 

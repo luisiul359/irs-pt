@@ -17,7 +17,6 @@ const solteiro = 'Solteiro, divorciado, viúvo ou separado judicialmente';
 const tributacaoConjunto = 'Conjunto';
 const tributacaoSeparado = 'Separado';
 
-// confirmar alteracao do minimo de existencia com +3 dependentes
 
 if (ano===2019) {
   // solteiro
@@ -354,7 +353,7 @@ if (ano===2019) {
     `Solteiro + deduçōes à coleta + habitação 1 + valor coleta`
   );
   var res = calcularIRS(
-    rendimentoA=500,
+    rendimentoA=3000,
     rendimentoB=0,
     estadoCivil=solteiro,
     tributacao=tributacaoSeparado,
@@ -364,11 +363,11 @@ if (ano===2019) {
     0,0,0,100000,0,0,0,0,0,0,0,0
   );
   assert(
-    withinMarginError(res[5],0),
+    withinMarginError(res[5],10362.33),
     `Solteiro + deduçōes à coleta + habitação 2 + IRS`
   );
   assert(
-    withinMarginError(res[4],800),
+    withinMarginError(res[4],502),
     `Solteiro + deduçōes à coleta + habitação 2 + valor coleta max`
   );
   var res = calcularIRS(
@@ -683,6 +682,8 @@ if (ano===2019) {
   );
 
   // deduçōes à coleta com dependentes
+  // TODO:
+  // confirmar alteracao do minimo de existencia com +3 dependentes
 
   // solteiro
   //var filhos = [3,4,5,6,7];
@@ -726,8 +727,6 @@ if (ano===2019) {
   //});
   // casado + tributacao separada
 
-
-  
 }
 
 if (ano===2020) {

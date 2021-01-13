@@ -234,10 +234,10 @@ function limitarDeducoesColeta(deducoesDespesasGerais, deducoesDependentesAscend
 }
 
 
-function abaixoMinimoExistencia(rendimentoAnualBruto, rendimentoColectavel, coletaLiquida, dependentes, tributacaoSeparado) {
+function abaixoMinimoExistencia(rendimentoAnualBruto, rendimentoColectavel, dependentes, tributacaoSeparado) {
   // https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs70.aspx
   if(rendimentoAnualBruto < minimoExistencia) {
-    return 0;
+    return true;
   }
 
   // TODO:
@@ -246,16 +246,16 @@ function abaixoMinimoExistencia(rendimentoAnualBruto, rendimentoColectavel, cole
   //if(dependentes === 3 || dependentes === 4) {
   //  var minimo = tributacaoSeparado ? 11320/2 : 11320;
   //  if(rendimentoColectavel <= minimo) {
-  //    return 0;
+  //    return true;
   //  }
   //} else if(dependentes >=5) {
   //  var minimo = tributacaoSeparado ? 15560/2 : 15560;
   //  if(rendimentoColectavel <= minimo) {
-  //    return 0;
+  //    return true;
   //  }
   //}
 
-  return coletaLiquida
+  return false
 }
 
 
@@ -263,6 +263,11 @@ function calcularIRS(rendimentoA, rendimentoB, estadoCivil, tributacao, ascenden
   despesasGerais, despesasSaude, despesasEducacao, despesasHabitacao, despesasLares, despesasPensoesAlimentos,
   despesasAutomoveis, despesasMotociclos, despesasRestauracao, despesasCabeleireiros, despesasVeterinario, despesasPasses)
   {
+
+  // ter a certeza que este rendimento é 0 nesta condição
+  if (estadoCivil==='Solteiro, divorciado, viúvo ou separado judicialmente') {
+    rendimentoB = 0;
+  }
 
   // Estamos a pedir o salário bruto mensal considerando 14 meses
   var rendimentoAnualBrutoA = rendimentoA * 14;
@@ -283,12 +288,9 @@ function calcularIRS(rendimentoA, rendimentoB, estadoCivil, tributacao, ascenden
     var coletaLiquidaA = calcularColetaLiquida(rendimentoAnualBrutoA, rendimentoAnualBrutoA, coletaTotalA, 1);
     var coletaLiquidaB = calcularColetaLiquida(rendimentoAnualBrutoB, rendimentoAnualBrutoB, coletaTotalB, 1);
 
-    // https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs70.aspx
-    var coletaLiquida = abaixoMinimoExistencia(rendimentoAnualBrutoA, rendimentoColectavelA, coletaLiquidaA, dependentes3Menos+dependentes3Mais, true) +
-                        abaixoMinimoExistencia(rendimentoAnualBrutoB, rendimentoColectavelB, coletaLiquidaB, dependentes3Menos+dependentes3Mais, true);
-
     // Garantir que a coleta liquida não é superior à total
-    coletaLiquida = Math.min(coletaLiquida, coletaTotal);
+    coletaLiquidaA = Math.min(coletaLiquidaA, coletaTotalA);
+    coletaLiquidaB = Math.min(coletaLiquidaB, coletaTotalB);
 
     // Ponto 7 do https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs78.aspx
     // Estamos a assumir que cada sujeito passivo foi responsável por 50% de cada despesa
@@ -306,18 +308,26 @@ function calcularIRS(rendimentoA, rendimentoB, estadoCivil, tributacao, ascenden
     var deducoesColetaA = limitarDeducoesColeta(deducoesDespesasGeraisA, deducoesDependentesAscendentesA, restantesDeducoesA, escalaoA.escalao, rendimentoColectavelA, dependentes3Menos+dependentes3Mais, true);
     var deducoesColetaB = limitarDeducoesColeta(deducoesDespesasGeraisB, deducoesDependentesAscendentesB, restantesDeducoesB, escalaoB.escalao, rendimentoColectavelB, dependentes3Menos+dependentes3Mais, true);
 
+    // https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs70.aspx
+    if (abaixoMinimoExistencia(rendimentoAnualBrutoA, rendimentoColectavelA, dependentes3Menos+dependentes3Mais, true)) {
+      deducoesColetaA = Math.min(deducoesColetaA,coletaTotalA);
+    }
+    if (abaixoMinimoExistencia(rendimentoAnualBrutoB, rendimentoColectavelB, dependentes3Menos+dependentes3Mais, true)) {
+      deducoesColetaB = Math.min(deducoesColetaB, coletaTotalB);
+    }
+
     // Deduçōes à Coleta
     // https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs78.aspx
     var deducoesColeta = deducoesColetaA + deducoesColetaB;
-    coletaLiquida = coletaLiquida - deducoesColeta;
+    var coletaLiquida = coletaLiquidaA + coletaLiquidaB - Math.min(coletaLiquidaA,deducoesColetaA) - Math.min(coletaLiquidaB,deducoesColetaB);
 
-    //console.log('rendimentoColectavelA', rendimentoColectavelA);
-    //console.log('rendimentoColectavelB', rendimentoColectavelB);
-    //console.log('coletaTotalA', coletaTotalA);
-    //console.log('coletaTotalB', coletaTotalB);
-    //console.log('deducoesColetaA', deducoesColetaA);
-    //console.log('deducoesColetaB', deducoesColetaB);
-    //console.log('coletaLiquida', coletaLiquida);
+    console.log('rendimentoColectavelA', rendimentoColectavelA);
+    console.log('rendimentoColectavelB', rendimentoColectavelB);
+    console.log('coletaTotalA', coletaTotalA);
+    console.log('coletaTotalB', coletaTotalB);
+    console.log('deducoesColetaA', deducoesColetaA);
+    console.log('deducoesColetaB', deducoesColetaB);
+    console.log('coletaLiquida', coletaLiquida);
   } else {
     // situações
     // estadoCivil==='Solteiro, divorciado, viúvo ou separado judicialmente'
@@ -341,9 +351,6 @@ function calcularIRS(rendimentoA, rendimentoB, estadoCivil, tributacao, ascenden
     var coletaLiquida = calcularColetaLiquida(rendimentoAnualBrutoTotal, rendimentoAnualBrutoA, coletaTotal, quoeficienteFamiliar) +
                         (rendimentoB>0 ? calcularColetaLiquida(rendimentoAnualBrutoTotal, rendimentoAnualBrutoB, coletaTotal, quoeficienteFamiliar): 0);
 
-    // https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs70.aspx
-    coletaLiquida = abaixoMinimoExistencia(rendimentoAnualBrutoTotal, rendimentoColectavelFinal, coletaLiquida, dependentes3Menos+dependentes3Mais, false);
-
     // Garantir que a coleta liquida não é superior à total
     coletaLiquida = Math.min(coletaLiquida, coletaTotal);
 
@@ -356,17 +363,22 @@ function calcularIRS(rendimentoA, rendimentoB, estadoCivil, tributacao, ascenden
 
     var deducoesColeta = limitarDeducoesColeta(deducoesDespesasGerais, deducoesDependentesAscendentes, restantesDeducoes, escalao.escalao, rendimentoColectavelFinal, dependentes3Menos+dependentes3Mais, false);
 
-    // Deduçōes à Coleta
-    coletaLiquida = coletaLiquida - deducoesColeta;
+    // https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs70.aspx
+    if (abaixoMinimoExistencia(rendimentoAnualBrutoTotal, rendimentoColectavelFinal, dependentes3Menos+dependentes3Mais, false)) {
+      deducoesColeta = Math.min(deducoesColeta, coletaTotal);
+    }
 
-    //console.log('rendimentoAnualBrutoTotal', rendimentoAnualBrutoTotal);
-    //console.log('rendimentoColectavelA', rendimentoColectavelA);
-    //console.log('rendimentoColectavelB', rendimentoColectavelB);
-    //console.log('rendimentoColectavelFinal', rendimentoColectavelFinal);
-    //console.log('quoeficienteFamiliar', quoeficienteFamiliar);
-    //console.log('coletaTotal', coletaTotal);
-    //console.log('deducoesColeta', deducoesColeta);
-    //console.log('coletaLiquida', coletaLiquida);
+    // Deduçōes à Coleta
+    coletaLiquida = coletaLiquida - Math.min(coletaLiquida, deducoesColeta);
+
+    console.log('rendimentoAnualBrutoTotal', rendimentoAnualBrutoTotal);
+    console.log('rendimentoColectavelA', rendimentoColectavelA);
+    console.log('rendimentoColectavelB', rendimentoColectavelB);
+    console.log('rendimentoColectavelFinal', rendimentoColectavelFinal);
+    console.log('quoeficienteFamiliar', quoeficienteFamiliar);
+    console.log('coletaTotal', coletaTotal);
+    console.log('deducoesColeta', deducoesColeta);
+    console.log('coletaLiquida', coletaLiquida);
   }
 
   var irs = Math.max(0, coletaLiquida);
@@ -380,6 +392,11 @@ function calcularIRS(rendimentoA, rendimentoB, estadoCivil, tributacao, ascenden
 function calcularIRS_IL(rendimentoA, rendimentoB, dependentes, estadoCivil) {
 
   // https://iniciativaliberal.pt/legislativas2019/propostas/taxa-irs-15/
+
+  // ter a certeza que este rendimento é 0 nesta condição
+  if (estadoCivil==='Solteiro, divorciado, viúvo ou separado judicialmente') {
+    rendimentoB = 0;
+  }
 
   // Estamos a pedir o salário bruto mensal considerando 14 meses
   var rendimentoAnualBrutoA = rendimentoA * 14;
@@ -536,7 +553,7 @@ function atualizarTabelaRendimentos(rendimentoBase, irsActualBase, valorTrabalha
       <thead>
         <tr>
           <th scope="col">Mensal</th>
-          <th scope="col">Rendimento Anual</th>
+          <th scope="col">Rendimento Anual Bruto</th>
           <th scope="col">Empresa pagou</th>
           <th scope="col">Você recebeu</th>
           <th scope="col">Estado recebeu</th>
@@ -562,10 +579,10 @@ function atualizarTabelaRendimentos(rendimentoBase, irsActualBase, valorTrabalha
       tbody = tbody + `
           <tr>
             <td class="text-right">+${pad(incremento)}€</td>
-            <td class="text-right">+${pad((rendA+rendB)*14)}€ (+${pad((rendA+rendB)*14-rendimentoBase)}€)</td>
-            <td class="text-right">+${pad(pagoEmpresa)}€ (+${pad(pagoEmpresa-pagoEmpresaBase)}€)</td>
-            <td class="text-right">+${pad(valorTrabalhador)}€ (+${pad(valorTrabalhador-valorTrabalhadorBase)}€)</td>
-            <td class="text-right">+${pad(valorEstado)}€ (+${pad(valorEstado-valorEstadoBase)}€)</td>
+            <td class="text-right">${pad((rendA+rendB)*14)}€ (+${pad((rendA+rendB)*14-rendimentoBase)}€)</td>
+            <td class="text-right">${pad(pagoEmpresa)}€ (+${pad(pagoEmpresa-pagoEmpresaBase)}€)</td>
+            <td class="text-right">${pad(valorTrabalhador)}€ (+${pad(valorTrabalhador-valorTrabalhadorBase)}€)</td>
+            <td class="text-right">${pad(valorEstado)}€ (+${pad(valorEstado-valorEstadoBase)}€)</td>
           </tr>`
       ;
 

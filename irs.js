@@ -321,13 +321,13 @@ function calcularIRS(rendimentoA, rendimentoB, estadoCivil, tributacao, ascenden
     var deducoesColeta = deducoesColetaA + deducoesColetaB;
     var coletaLiquida = coletaLiquidaA + coletaLiquidaB - Math.min(coletaLiquidaA,deducoesColetaA) - Math.min(coletaLiquidaB,deducoesColetaB);
 
-    console.log('rendimentoColectavelA', rendimentoColectavelA);
-    console.log('rendimentoColectavelB', rendimentoColectavelB);
-    console.log('coletaTotalA', coletaTotalA);
-    console.log('coletaTotalB', coletaTotalB);
-    console.log('deducoesColetaA', deducoesColetaA);
-    console.log('deducoesColetaB', deducoesColetaB);
-    console.log('coletaLiquida', coletaLiquida);
+    //console.log('rendimentoColectavelA', rendimentoColectavelA);
+    //console.log('rendimentoColectavelB', rendimentoColectavelB);
+    //console.log('coletaTotalA', coletaTotalA);
+    //console.log('coletaTotalB', coletaTotalB);
+    //console.log('deducoesColetaA', deducoesColetaA);
+    //console.log('deducoesColetaB', deducoesColetaB);
+    //console.log('coletaLiquida', coletaLiquida);
   } else {
     // situações
     // estadoCivil==='Solteiro, divorciado, viúvo ou separado judicialmente'
@@ -371,14 +371,14 @@ function calcularIRS(rendimentoA, rendimentoB, estadoCivil, tributacao, ascenden
     // Deduçōes à Coleta
     coletaLiquida = coletaLiquida - Math.min(coletaLiquida, deducoesColeta);
 
-    console.log('rendimentoAnualBrutoTotal', rendimentoAnualBrutoTotal);
-    console.log('rendimentoColectavelA', rendimentoColectavelA);
-    console.log('rendimentoColectavelB', rendimentoColectavelB);
-    console.log('rendimentoColectavelFinal', rendimentoColectavelFinal);
-    console.log('quoeficienteFamiliar', quoeficienteFamiliar);
-    console.log('coletaTotal', coletaTotal);
-    console.log('deducoesColeta', deducoesColeta);
-    console.log('coletaLiquida', coletaLiquida);
+    //console.log('rendimentoAnualBrutoTotal', rendimentoAnualBrutoTotal);
+    //console.log('rendimentoColectavelA', rendimentoColectavelA);
+    //console.log('rendimentoColectavelB', rendimentoColectavelB);
+    //console.log('rendimentoColectavelFinal', rendimentoColectavelFinal);
+    //console.log('quoeficienteFamiliar', quoeficienteFamiliar);
+    //console.log('coletaTotal', coletaTotal);
+    //console.log('deducoesColeta', deducoesColeta);
+    //console.log('coletaLiquida', coletaLiquida);
   }
 
   var irs = Math.max(0, coletaLiquida);

@@ -1,4 +1,4 @@
-const ano = 2019;
+var ano = 2019;
 const debug = true;
 
 // https://dre.pt/home/-/dre/117942337/details/maximized
@@ -63,6 +63,34 @@ const formato2 = '0,0';
 // TODO:
 // Ponto 1 d) do https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs78d.aspx
 // PPRs
+
+
+function carregarEscaloesIRS() {
+  if (ano===2019) {
+    escalao0 = {valor:   7091, percentagem: 0.145, escalao: 0};
+    escalao1 = {valor:  10700, percentagem: 0.230, escalao: 1};
+    escalao2 = {valor:  20261, percentagem: 0.285, escalao: 2};
+    escalao3 = {valor:  25000, percentagem: 0.350, escalao: 3};
+    escalao4 = {valor:  36856, percentagem: 0.370, escalao: 4};
+    // €80,000 e não €80,882 devido aos escalōes adicionais de solidariedade
+    escalao5 = {valor:  80000, percentagem: 0.450, escalao: 5};
+    escalao6 = {valor:  80640, percentagem: 0.475, escalao: 6};
+    escalao7 = {valor: 250000, percentagem: 0.505, escalao: 7};
+    escalao8 = {valor: 250000, percentagem: 0.530, escalao: 8};
+  } else {
+    escalao0 = {valor:   7112, percentagem: 0.145, escalao: 0};
+    escalao1 = {valor:  10732, percentagem: 0.230, escalao: 1};
+    escalao2 = {valor:  20322, percentagem: 0.285, escalao: 2};
+    escalao3 = {valor:  25075, percentagem: 0.350, escalao: 3};
+    escalao4 = {valor:  36967, percentagem: 0.370, escalao: 4};
+    // €80,000 e não €80,882 devido aos escalōes adicionais de solidariedade
+    escalao5 = {valor:  80000, percentagem: 0.450, escalao: 5};
+    escalao6 = {valor:  80882, percentagem: 0.475, escalao: 6};
+    escalao7 = {valor: 250000, percentagem: 0.505, escalao: 7};
+    escalao8 = {valor: 250000, percentagem: 0.530, escalao: 8};
+  }
+}
+
 
 function rendimentoColectavel(rendimentoAnualBruto) {
 
@@ -635,6 +663,9 @@ function main() {
     if (estadoCivil==='Solteiro, divorciado, viúvo ou separado judicialmente') {
       rendimentoB = 0;
     }
+
+    ano = Number($("#anoCivil").val());
+    carregarEscaloesIRS();
 
     var [deducoesEspecificas, rendimentoColectavel, taxa, coletaTotal, deducoesColeta, irsActual] = calcularIRS(
       rendimentoA, rendimentoB, estadoCivil, tributacao, ascendentes, dependentes3Menos, dependentes3Mais,

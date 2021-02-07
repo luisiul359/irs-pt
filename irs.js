@@ -1,4 +1,5 @@
 const ano = 2019;
+const debug = true;
 
 // https://dre.pt/home/-/dre/117942337/details/maximized
 // https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/legislacao/diplomas_legislativos/Documents/Portaria_27_2020.pdf
@@ -192,14 +193,16 @@ function calcularDeducoesColeta(rendimentoColectavel, quoeficienteFamiliar, asce
   // Ponto 3 do https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs78.aspx
   var restantesDeducoes = deducoesSaude + deducoesEducacao + deducoesHabitacao + deducoesPensoesAlimentos + deducoesIva + deducoesLares;
 
-  //console.log('deducoesDependentesAscendentes', deducoesDependentesAscendentes);
-  //console.log('deducoesDespesasGerais', deducoesDespesasGerais);
-  //console.log('deducoesSaude', deducoesSaude);
-  //console.log('deducoesEducacao', deducoesEducacao);
-  //console.log('deducoesHabitacao', deducoesHabitacao);
-  //console.log('deducoesPensoesAlimentos', deducoesPensoesAlimentos);
-  //console.log('deducoesIva', deducoesIva);
-  //console.log('deducoesLares', deducoesLares);
+  if (debug) {
+    console.log('deducoesDependentesAscendentes', deducoesDependentesAscendentes);
+    console.log('deducoesDespesasGerais', deducoesDespesasGerais);
+    console.log('deducoesSaude', deducoesSaude);
+    console.log('deducoesEducacao', deducoesEducacao);
+    console.log('deducoesHabitacao', deducoesHabitacao);
+    console.log('deducoesPensoesAlimentos', deducoesPensoesAlimentos);
+    console.log('deducoesIva', deducoesIva);
+    console.log('deducoesLares', deducoesLares);
+  }
 
   return [deducoesDespesasGerais, deducoesDependentesAscendentes, restantesDeducoes];
 }
@@ -229,7 +232,7 @@ function limitarDeducoesColeta(deducoesDespesasGerais, deducoesDependentesAscend
   if (dependentes>=3) {
     threshold = threshold * (1 + 0.05 * dependentes)
   }
-
+  
   return Math.min(restantesDeducoes, threshold) + deducoesDependentesAscendentes + deducoesDespesasGerais;
 }
 
@@ -321,13 +324,15 @@ function calcularIRS(rendimentoA, rendimentoB, estadoCivil, tributacao, ascenden
     var deducoesColeta = deducoesColetaA + deducoesColetaB;
     var coletaLiquida = coletaLiquidaA + coletaLiquidaB - Math.min(coletaLiquidaA,deducoesColetaA) - Math.min(coletaLiquidaB,deducoesColetaB);
 
-    //console.log('rendimentoColectavelA', rendimentoColectavelA);
-    //console.log('rendimentoColectavelB', rendimentoColectavelB);
-    //console.log('coletaTotalA', coletaTotalA);
-    //console.log('coletaTotalB', coletaTotalB);
-    //console.log('deducoesColetaA', deducoesColetaA);
-    //console.log('deducoesColetaB', deducoesColetaB);
-    //console.log('coletaLiquida', coletaLiquida);
+    if (debug) {
+      console.log('rendimentoColectavelA', rendimentoColectavelA);
+      console.log('rendimentoColectavelB', rendimentoColectavelB);
+      console.log('coletaTotalA', coletaTotalA);
+      console.log('coletaTotalB', coletaTotalB);
+      console.log('deducoesColetaA', deducoesColetaA);
+      console.log('deducoesColetaB', deducoesColetaB);
+      console.log('coletaLiquida', coletaLiquida);
+    }
   } else {
     // situações
     // estadoCivil==='Solteiro, divorciado, viúvo ou separado judicialmente'
@@ -337,7 +342,7 @@ function calcularIRS(rendimentoA, rendimentoB, estadoCivil, tributacao, ascenden
 
     // Quoeficiente Familiar
     // https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs69.aspx
-    var quoeficienteFamiliar = (tributacao==='Conjunto') && (rendimentoB > 0) ? 2 : 1;
+    var quoeficienteFamiliar = (tributacao==='Conjunto') && (estadoCivil==='Casado/Unido de facto') ? 2 : 1;
 
     // Ponto 1 do // https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs69.aspx
     var rendimentoColectavelFinal = (rendimentoColectavelA + rendimentoColectavelB) / quoeficienteFamiliar;
@@ -371,19 +376,23 @@ function calcularIRS(rendimentoA, rendimentoB, estadoCivil, tributacao, ascenden
     // Deduçōes à Coleta
     coletaLiquida = coletaLiquida - Math.min(coletaLiquida, deducoesColeta);
 
-    //console.log('rendimentoAnualBrutoTotal', rendimentoAnualBrutoTotal);
-    //console.log('rendimentoColectavelA', rendimentoColectavelA);
-    //console.log('rendimentoColectavelB', rendimentoColectavelB);
-    //console.log('rendimentoColectavelFinal', rendimentoColectavelFinal);
-    //console.log('quoeficienteFamiliar', quoeficienteFamiliar);
-    //console.log('coletaTotal', coletaTotal);
-    //console.log('deducoesColeta', deducoesColeta);
-    //console.log('coletaLiquida', coletaLiquida);
+    if (debug) {
+      console.log('rendimentoAnualBrutoTotal', rendimentoAnualBrutoTotal);
+      console.log('rendimentoColectavelA', rendimentoColectavelA);
+      console.log('rendimentoColectavelB', rendimentoColectavelB);
+      console.log('rendimentoColectavelFinal', rendimentoColectavelFinal);
+      console.log('quoeficienteFamiliar', quoeficienteFamiliar);
+      console.log('coletaTotal', coletaTotal);
+      console.log('deducoesColeta', deducoesColeta);
+      console.log('coletaLiquida', coletaLiquida);
+    }
   }
 
   var irs = Math.max(0, coletaLiquida);
 
-  //console.log('IRS', irs);
+  if (debug) {
+    console.log('IRS', irs);
+  }
 
   return [deducoesEspecificas, rendimentoColectavelA + rendimentoColectavelB, taxa, coletaTotal, deducoesColeta, irs];
 }
@@ -417,7 +426,9 @@ function calcularIRS_IL(rendimentoA, rendimentoB, dependentes, estadoCivil) {
     (rendimentoAnualBrutoA + rendimentoAnualBrutoB - valorIsencao) * 0.15
   );
 
-  //console.log('IRS_IL', irs);
+  if (debug) {
+    console.log('IRS_IL', irs);
+  }
 
   return irs
 }
@@ -465,7 +476,7 @@ function atualizarTabelaIRS(irsActual, irsIL, rendimentoA, rendimentoB, estadoCi
 
   // Resumo das opções escolhidas
   var p_summary = $('#summary');
-  var pRendimento = rendimentoB > 0 ? `${numeral(rendimentoA).format(formato)}€ + ${numeral(rendimentoB).format(formato)}€` : `${numeral(rendimentoA).format(formato)}€`;
+  var pRendimento = estadoCivil==='Casado/Unido de facto' ? `${numeral(rendimentoA).format(formato)}€ + ${numeral(rendimentoB).format(formato)}€` : `${numeral(rendimentoA).format(formato)}€`;
   var pEstadoCivilTributacao = estadoCivil==='Casado/Unido de facto' ? `Casado | ${tributacao}` : 'Solteiro';
   var pAscendetes = ascendentes===0 ? 'Sem ascendentes' : `${ascendentes} ascendente(s)`;
   var pDependentes = dependentes===0 ? 'Sem dependentes' : `${dependentes} dependente(s)`;

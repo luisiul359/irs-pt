@@ -3,23 +3,23 @@ const debug = true;
 
 // https://dre.pt/home/-/dre/117942337/details/maximized
 // https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/legislacao/diplomas_legislativos/Documents/Portaria_27_2020.pdf
-const IAS = ano===2019 ? 435.76 : 438.81;
+var IAS = ano===2019 ? 435.76 : 438.81;
 
 // Mínimo de Existência
 // https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs70.aspx
-const minimoExistencia = 1.5 * 14 * IAS;
+var minimoExistencia = 1.5 * 14 * IAS;
 
 // Salário mínimo nacional
 // https://dre.pt/home/-/dre/117503933/details/maximized
 // https://dre.pt/home/-/dre/126365738/details/maximized
-const salarioMinimo = ano===2019 ? 600 * 14 : 635 * 14;
+var salarioMinimo = ano===2019 ? 600 * 14 : 635 * 14;
 
 // Valor mínimo de Deduçōes Específicas
 // Página 8: https://info.portaldasfinancas.gov.pt/pt/apoio_contribuinte/Folhetos_informativos/Documents/IRS_folheto_2019.pdf
 const minDeducaoEspecifica = 4104;
 
 // Ponto 4 do https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs70.aspx
-const thresholdIRS = Math.max(minimoExistencia, salarioMinimo);
+var thresholdIRS = Math.max(minimoExistencia, salarioMinimo);
 
 // https://iniciativaliberal.pt/legislativas2019/propostas/taxa-irs-15/
 const isencaoMensalIL = 650;
@@ -89,6 +89,11 @@ function carregarEscaloesIRS() {
     escalao7 = {valor: 250000, percentagem: 0.505, escalao: 7};
     escalao8 = {valor: 250000, percentagem: 0.530, escalao: 8};
   }
+
+  IAS = ano===2019 ? 435.76 : 438.81;
+  minimoExistencia = 1.5 * 14 * IAS;
+  salarioMinimo = ano===2019 ? 600 * 14 : 635 * 14;
+  thresholdIRS = Math.max(minimoExistencia, salarioMinimo);
 }
 
 
@@ -159,7 +164,7 @@ function calcularColetaLiquida(rendimentoAnualBruto, rendimentoAnualBrutoSujeito
 }
 
 
-function calcularDeducoesColeta(rendimentoColectavel, quoeficienteFamiliar, ascendentes, dependentes3Menos, dependentes3Mais, tributacaoSeparado,
+function calcularDeducoesColeta(rendimentoColectavel, quoeficienteFamiliar, ascendentes, dependentes3Menos, dependentes3Mais, estadoCivil, tributacaoSeparado,
   despesasGerais, despesasSaude, despesasEducacao, despesasHabitacao, despesasLares, despesasPensoesAlimentos,
   despesasAutomoveis, despesasMotociclos, despesasRestauracao, despesasCabeleireiros, despesasVeterinario, despesasPasses)
   {
@@ -174,7 +179,7 @@ function calcularDeducoesColeta(rendimentoColectavel, quoeficienteFamiliar, asce
                                        dependentes3Mais*valorDependente3Mais +
                                        (ano===2020 ? Math.max(0, dependentes3Menos-1)*valorDependente3MenosExtra : 0) +
                                        ascendentes*valorAscendente;
-  if (tributacaoSeparado) {
+  if ((estadoCivil==='Casado/Unido de facto') && tributacaoSeparado) {
     deducoesDependentesAscendentes = deducoesDependentesAscendentes / 2;
   }
 
@@ -182,7 +187,7 @@ function calcularDeducoesColeta(rendimentoColectavel, quoeficienteFamiliar, asce
   // por cada sujeito passivo
   var deducoesDespesasGerais = Math.min(0.35*despesasGerais, 250*quoeficienteFamiliar);
   // Ponto 9 do https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs78b.aspx
-  if (quoeficienteFamiliar===1 && (dependentes3Menos+dependentes3Mais)>=1) {
+  if ((estadoCivil==='Solteiro, divorciado, viúvo ou separado judicialmente') && (dependentes3Menos+dependentes3Mais)>=1) {
     deducoesDespesasGerais = Math.min(0.45*despesasGerais, 335);
   }
 
@@ -260,7 +265,7 @@ function limitarDeducoesColeta(deducoesDespesasGerais, deducoesDependentesAscend
   if (dependentes>=3) {
     threshold = threshold * (1 + 0.05 * dependentes)
   }
-  
+
   return Math.min(restantesDeducoes, threshold) + deducoesDependentesAscendentes + deducoesDespesasGerais;
 }
 
@@ -326,12 +331,12 @@ function calcularIRS(rendimentoA, rendimentoB, estadoCivil, tributacao, ascenden
     // Ponto 7 do https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs78.aspx
     // Estamos a assumir que cada sujeito passivo foi responsável por 50% de cada despesa
     var [deducoesDespesasGeraisA, deducoesDependentesAscendentesA, restantesDeducoesA] = calcularDeducoesColeta(
-      rendimentoColectavelA, 1, ascendentes, dependentes3Menos, dependentes3Mais, true,
+      rendimentoColectavelA, 1, ascendentes, dependentes3Menos, dependentes3Mais, estadoCivil, true,
       despesasGerais/2, despesasSaude/2, despesasEducacao/2, despesasHabitacao/2, despesasLares/2, despesasPensoesAlimentos/2,
       despesasAutomoveis/2, despesasMotociclos/2, despesasRestauracao/2, despesasCabeleireiros/2, despesasVeterinario/2, despesasPasses/2
     );
     var [deducoesDespesasGeraisB, deducoesDependentesAscendentesB, restantesDeducoesB] = calcularDeducoesColeta(
-      rendimentoColectavelB, 1, ascendentes, dependentes3Menos, dependentes3Mais, true,
+      rendimentoColectavelB, 1, ascendentes, dependentes3Menos, dependentes3Mais, estadoCivil, true,
       despesasGerais/2, despesasSaude/2, despesasEducacao/2, despesasHabitacao/2, despesasLares/2, despesasPensoesAlimentos/2,
       despesasAutomoveis/2, despesasMotociclos/2, despesasRestauracao/2, despesasCabeleireiros/2, despesasVeterinario/2, despesasPasses/2
     );
@@ -389,7 +394,7 @@ function calcularIRS(rendimentoA, rendimentoB, estadoCivil, tributacao, ascenden
 
     // Ponto 7 do https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs78.aspx
     var [deducoesDespesasGerais, deducoesDependentesAscendentes, restantesDeducoes] = calcularDeducoesColeta(
-      rendimentoColectavelFinal, quoeficienteFamiliar, ascendentes, dependentes3Menos, dependentes3Mais, false,
+      rendimentoColectavelFinal, quoeficienteFamiliar, ascendentes, dependentes3Menos, dependentes3Mais, estadoCivil, false,
       despesasGerais, despesasSaude, despesasEducacao, despesasHabitacao, despesasLares, despesasPensoesAlimentos,
       despesasAutomoveis, despesasMotociclos, despesasRestauracao, despesasCabeleireiros, despesasVeterinario, despesasPasses
     );

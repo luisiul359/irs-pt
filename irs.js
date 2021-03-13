@@ -271,25 +271,23 @@ function limitarDeducoesColeta(deducoesDespesasGerais, deducoesDependentesAscend
 
 
 function abaixoMinimoExistencia(rendimentoAnualBruto, rendimentoColectavel, dependentes, tributacaoSeparado) {
-  // https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs70.aspx
+  // Pontos 1 e 4 do https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs70.aspx
   if(rendimentoAnualBruto < minimoExistencia) {
     return true;
   }
 
-  // TODO:
-  // nao consegui replicar no portal das financas nem no PwC
   // Pontos 2 e 3 do https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs70.aspx
-  //if(dependentes === 3 || dependentes === 4) {
-  //  var minimo = tributacaoSeparado ? 11320/2 : 11320;
-  //  if(rendimentoColectavel <= minimo) {
-  //    return true;
-  //  }
-  //} else if(dependentes >=5) {
-  //  var minimo = tributacaoSeparado ? 15560/2 : 15560;
-  //  if(rendimentoColectavel <= minimo) {
-  //    return true;
-  //  }
-  //}
+  if(dependentes === 3 || dependentes === 4) {
+    var minimo = tributacaoSeparado ? 11320/2 : 11320;
+    if(rendimentoColectavel <= minimo) {
+      return true;
+    }
+  } else if(dependentes >= 5) {
+    var minimo = tributacaoSeparado ? 15560/2 : 15560;
+    if(rendimentoColectavel <= minimo) {
+      return true;
+    }
+  }
 
   return false
 }
@@ -345,17 +343,19 @@ function calcularIRS(rendimentoA, rendimentoB, estadoCivil, tributacao, ascenden
     var deducoesColetaB = limitarDeducoesColeta(deducoesDespesasGeraisB, deducoesDependentesAscendentesB, restantesDeducoesB, escalaoB.escalao, rendimentoColectavelB, dependentes3Menos+dependentes3Mais, true);
 
     // https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs70.aspx
-    if (abaixoMinimoExistencia(rendimentoAnualBrutoA, rendimentoColectavelA, dependentes3Menos+dependentes3Mais, true)) {
-      deducoesColetaA = Math.min(deducoesColetaA,coletaTotalA);
+    var abaixoExistenciaA = abaixoMinimoExistencia(rendimentoAnualBrutoA, rendimentoColectavelA, dependentes3Menos+dependentes3Mais, true);
+    if (abaixoExistenciaA) {
+      deducoesColetaA = Math.min(deducoesColetaA, coletaTotalA);
     }
-    if (abaixoMinimoExistencia(rendimentoAnualBrutoB, rendimentoColectavelB, dependentes3Menos+dependentes3Mais, true)) {
+    var abaixoExistenciaB = abaixoMinimoExistencia(rendimentoAnualBrutoB, rendimentoColectavelB, dependentes3Menos+dependentes3Mais, true);
+    if (abaixoExistenciaB) {
       deducoesColetaB = Math.min(deducoesColetaB, coletaTotalB);
     }
 
     // Deduçōes à Coleta
     // https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs78.aspx
     var deducoesColeta = deducoesColetaA + deducoesColetaB;
-    var coletaLiquida = coletaLiquidaA + coletaLiquidaB - Math.min(coletaLiquidaA,deducoesColetaA) - Math.min(coletaLiquidaB,deducoesColetaB);
+    var coletaLiquida = (abaixoExistenciaA ? 0 : (coletaLiquidaA - Math.min(coletaLiquidaA,deducoesColetaA))) + (abaixoExistenciaB ? 0 : (coletaLiquidaB - Math.min(coletaLiquidaB,deducoesColetaB)));
 
     if (debug) {
       console.log('rendimentoColectavelA', rendimentoColectavelA);
@@ -402,12 +402,13 @@ function calcularIRS(rendimentoA, rendimentoB, estadoCivil, tributacao, ascenden
     var deducoesColeta = limitarDeducoesColeta(deducoesDespesasGerais, deducoesDependentesAscendentes, restantesDeducoes, escalao.escalao, rendimentoColectavelFinal, dependentes3Menos+dependentes3Mais, false);
 
     // https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs70.aspx
-    if (abaixoMinimoExistencia(rendimentoAnualBrutoTotal, rendimentoColectavelFinal, dependentes3Menos+dependentes3Mais, false)) {
+    var abaixoExistencia = abaixoMinimoExistencia(rendimentoAnualBrutoTotal, rendimentoColectavelFinal, dependentes3Menos+dependentes3Mais, false);
+    if (abaixoExistencia) {
       deducoesColeta = Math.min(deducoesColeta, coletaTotal);
     }
 
     // Deduçōes à Coleta
-    coletaLiquida = coletaLiquida - Math.min(coletaLiquida, deducoesColeta);
+    coletaLiquida = abaixoExistencia ? 0 : (coletaLiquida - Math.min(coletaLiquida, deducoesColeta));
 
     if (debug) {
       console.log('rendimentoAnualBrutoTotal', rendimentoAnualBrutoTotal);
@@ -596,11 +597,17 @@ function atualizarTabelaRendimentos(rendimentoBase, irsActualBase, valorTrabalha
     $("#tabelaRendimentos").append(`
       <thead>
         <tr>
-          <th scope="col">Mensal</th>
-          <th scope="col">Rendimento Anual Bruto</th>
-          <th scope="col">Empresa pagou</th>
-          <th scope="col">Você recebeu</th>
-          <th scope="col">Estado recebeu</th>
+          <th scope="colgroup" rowspan="2" class="text-center align-middle">Mensal</th>
+          <th scope="colgroup" rowspan="2" colspan="2" class="text-center align-middle">Rendimento Anual Bruto</th>
+          <th scope="col" colspan="2" rowspan="2" class="text-center align-middle" data-toggle="tooltip" data-placement="top" data-container="body" title="A contar com a TSU da empresa">Empresa pagou</th>
+          <th scope="col" colspan="4" class="text-center align-middle">Você recebe</th>
+          <th scope="col" colspan="4" class="text-center align-middle">Estado recebe</th>
+        </tr>
+        <tr>
+          <th scope="col" colspan="2">Sistema Actual</th>
+          <th scope="col" colspan="2">Com a IL</th>
+          <th scope="col" colspan="2">Sistema Actual</th>
+          <th scope="col" colspan="2">Com a IL</th>
         </tr>
       </thead>`
     );
@@ -618,22 +625,43 @@ function atualizarTabelaRendimentos(rendimentoBase, irsActualBase, valorTrabalha
         despesasAutomoveis, despesasMotociclos, despesasRestauracao, despesasCabeleireiros, despesasVeterinario, despesasPasses
       )[5];
 
+      var irsIL = calcularIRS_IL(
+        rendA, rendB, dependentes3Menos + dependentes3Mais, estadoCivil
+      );
+
       var [valorTrabalhador, valorEstado, pagoEmpresa] = calcularRendLiquido(rendA, rendB, irsActual);
+      var [valorTrabalhadorIL, valorEstadoIL, pagoEmpresaIL] = calcularRendLiquido(rendA, rendB, irsIL);
+
+      var d1 = valorTrabalhadorIL-valorTrabalhadorBase;
+      var d2 = valorEstadoIL-valorEstadoBase;
 
       tbody = tbody + `
           <tr>
             <td class="text-right">+${pad(incremento)}€</td>
-            <td class="text-right">${pad((rendA+rendB)*14)}€ (+${pad((rendA+rendB)*14-rendimentoBase)}€)</td>
-            <td class="text-right">${pad(pagoEmpresa)}€ (+${pad(pagoEmpresa-pagoEmpresaBase)}€)</td>
-            <td class="text-right">${pad(valorTrabalhador)}€ (+${pad(valorTrabalhador-valorTrabalhadorBase)}€)</td>
-            <td class="text-right">${pad(valorEstado)}€ (+${pad(valorEstado-valorEstadoBase)}€)</td>
+
+            <td class="text-right">${pad((rendA+rendB)*14)}€</td>
+            <td class="text-right text-muted"><small>+${pad((rendA+rendB)*14-rendimentoBase)}€</small></td>
+
+            <td class="text-right">${pad(pagoEmpresa)}€</td>
+            <td class="text-right text-muted"><small>+${pad(pagoEmpresa-pagoEmpresaBase)}€</small></td>
+
+            <td class="text-right">${pad(valorTrabalhador)}€</td>
+            <td class="text-right text-muted"><small>+${pad(valorTrabalhador-valorTrabalhadorBase)}€</small></td>
+
+            <td class="text-right">${pad(valorTrabalhadorIL)}€</td>
+            <td class="text-right text-muted"><small>${d1 > 0 ? '+' : '-'}${pad(Math.abs(d1))}€</small></td>
+
+            <td class="text-right">${pad(valorEstado)}€</td>
+            <td class="text-right text-muted"><small>+${pad(valorEstado-valorEstadoBase)}€</small></td>
+
+            <td class="text-right">${pad(valorEstadoIL)}€</td>
+            <td class="text-right text-muted"><small>${d2 > 0 ? '+' : '-'}${pad(Math.abs(d2))}€</small></td>
           </tr>`
       ;
 
     });
 
-    $("#tabelaRendimentos").append(tbody);
-
+    $("#tabelaRendimentos").append(`<tbody>${tbody}</tbody>`).hide();
 }
 
 
@@ -714,11 +742,15 @@ function main() {
           event.preventDefault()
           event.stopPropagation()
         } else {
-          main();
+          if ($(form).attr('id') === "formIRS") {
+            main();
+          } else {
+            $("#tabelaRendimentos").show();
+          }
           // Avoid form from resetting the selected values
-          event.preventDefault()
+          event.preventDefault();
         }
-        form.classList.add('was-validated')
+        form.classList.add('was-validated');
       }, false)
     });
 
@@ -733,7 +765,7 @@ function main() {
       }
     });
 
-    // eneable tooltips
+    // enable tooltips
     $('input').tooltip();
     $('[data-toggle="tooltip"]').tooltip();
   }, false)

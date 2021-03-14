@@ -54,3 +54,7 @@
   left:0px;
   background-color:#f8f9fa!important;
 }
+
+div.row ul {
+  text-align: left!important;  
+}

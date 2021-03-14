@@ -39,6 +39,7 @@
     <div class="tab-content">
       <div class="tab-pane fade show active" id="nav-irs" role="tabpanel" aria-labelledby="nav-irs-tab">
         <div class="container">
+
           <div class="row">
             <div class="col-md-12 py-5 text-center">
               <h2 class="pt-5">Simulador de IRS</h2>
@@ -429,17 +430,61 @@
 
       <div class="tab-pane fade" id="nav-info" role="tabpanel" aria-labelledby="nav-info-tab">
         <div class="container">
+
           <div class="row">
             <div class="col-md-12 pt-5 text-center">
-              <h2 class="pt-5">Como é que isto funciona?</h2>
-              <p class="lead">Colocar aqui um texto explicativo e comparativo com a IL.</p>
+              <h2 class="pt-5">O que é o IRS?</h2>
+              <p class="lead">O IRS é a sigla para <span class="fw-bold">I</span>mposto sobre os <span class="fw-bold">R</span>endimentos de pessoas <span class="fw-bold">S</span>ingulares. Ou seja, sobre o imposto que é tributado sobre os rendimentos dos contribuintes.</p>
+              <p class="lead">Todos os cidadãos que trabalham são obrigados a entregar uma parte dos seus rendimentos. Este imposto incide sobre os <a href="https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs2.aspx" target="_blank">rendimentos que são atribuídos diretamente aos cidadãos</a>, sejam residentes em Portugal ou os chamados não residentes que auferem rendimentos em território nacional.</p>
+              <p class="lead">O cálculo do IRS é feito mediante a situação económica dos contribuintes e do respectivo agregado familiar (estado civil, número de dependentes/ascendentes, património, grau de deficiência, entre outros).</p>
             </div>
           </div>
+
+          <div class="row pt-3">
+            <div class="col-md-12 text-center">
+              <h2>Como é calculado o IRS?</h2>
+
+              <h5 class="fw-bold">1º passo: Calcular o rendimento anual bruto do agregado familiar</h5>
+              <p class="lead my-text-left">Para determinar o rendimento anual bruto do agregado familiar é necessário sumar todos os rendimentos mensais brutos (incluíndo o subsídio de férias e natal) de todos os elementos do agregado. Se algum dos membros do agregado apenas tiver rendimentos em parte do ano deve incluir todo esse valor. Neste simulador deve incluir os rendimentos de ascendentes, mas não de descendentes.</p>
+              <p class="lead my-text-left">Considere-se, por exemplo, um rendimento mensal de 850€. Esse totaliza um rendimento anual bruto de 11 900€.</p>
+
+              <h5 class="fw-bold">2º passo: Calcular o rendimento coletável</h5>
+              <p class="lead my-text-left">Ao rendimento anual bruto do agregado são <a href="https://info.portaldasfinancas.gov.pt/pt/apoio_contribuinte/Folhetos_informativos/Documents/IRS_folheto_2019.pdf" target="_blank">retiradas as deduções específicas</a>. Para cada sujeito passivo é considerado o maior de: 1) 4,104€ e 2) contribuição da Segurança Social. No caso de um casal é logo abatido o valor de, pelo menos, 8 208€.</p>
+              <p class="lead my-text-left">Dessa forma o rendimento coletável do nosso exemplo é de 7 796€ (11 900€ - 4 104€).</p>
+
+              <h5 class="fw-bold">3º passo: Identificar o quoeficiente familiar</h5>
+              <p class="lead my-text-left">No caso de um <a href="https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs69.aspx" target="_blank">casal que opte pela tributação conjunta</a> é 2, ou seja, é necessário dividir o rendimento colectável por 2. Nas restantes situações nada se faz, sem mesmo na existência de descententes.</p>
+              <p class="lead my-text-left">Assim sendo, como no nosso exemplo o agregado familiar é composto por apenas 1 sujeito passivo o valor do rendimento colectável é o mesmo: 7 796€.</p>
+
+              <h5 class="fw-bold">4º passo: Identificar o escalão e a taxa de IRS</h5>
+
+              <h5 class="fw-bold">5º passo: Calcular a coleta total</h5>
+
+              <h5 class="fw-bold">6º passo: Calcular as deduções à coleta</h5>
+
+              <h5 class="fw-bold">7º passo: Calcular a coleta líquida</h5>
+
+              <h5 class="fw-bold">8º passo: tenho IRS a pagar?</h5>
+
+              <p class="lead my-text-left">.</p>
+              <p class="lead my-text-left">.</p>
+            </div>
+          </div>
+
+          <div class="row pt-3">
+            <div class="col-md-12 text-center">
+              <h2>Como é calculado o IRS?</h2>
+              <p class="lead">.</p>
+              <p class="lead">.</p>
+            </div>
+          </div>
+
         </div>
       </div>
 
       <div class="tab-pane fade" id="nav-disclaimer" role="tabpanel" aria-labelledby="nav-disclaimer-tab">
         <div class="container">
+
           <div class="row">
             <div class="col-md-12 pt-5 text-center">
               <h2 class="pt-5">Proteção dos dados</h2>
@@ -449,7 +494,7 @@
 
           <div class="row pt-3">
             <div class="col-md-12 text-center">
-              <h2>Verificação dos cálculos</h4>
+              <h2>Verificação dos cálculos</h2>
               <p class="lead">Todos os cálculos foram validados no <a href="https://irs.portaldasfinancas.gov.pt/home.action" target="_blank">Portal das Finanças</a> e/ou no <a href="https://www.pwc.pt/pt/servicos/fiscalidade/simulador-irs.html" target="_blank">simulador da PwC</a>, bem como por fiscalistas independentes.</p>
               <p class="lead">Como os cálculos são complexos e para mostrar total transparência nos mesmos, o código fonte pode ser encontrado neste <a href="#" target="_blank">repositório</a>. São aceites propostas de alteração ou correção de erros.</p>
             </div>

@@ -59,7 +59,11 @@
   background-color:#f8f9fa!important;
 }
 
-div.row ul {
+div.row ul, div.row h5 {
+  text-align: left!important;
+}
+
+.my-text-left {
   text-align: left!important;
 }
 

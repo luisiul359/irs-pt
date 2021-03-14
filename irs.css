@@ -35,6 +35,10 @@
   border: 0px;
 }
 
+.bg-il {
+  background-color: #00aeef!important;
+}
+
 @font-face {
   font-family: 'MyWebFont';
   src: url('webfont.eot'); /* IE9 Compat Modes */
@@ -68,4 +72,9 @@ div.row ul {
     font-size: 1.25rem;
     font-weight: 300;
   }
+}
+
+.btn-primary {
+  background-color: #005289;
+  border-color: #005289;
 }

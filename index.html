@@ -23,10 +23,10 @@
         <div class="navbar-collapse collapse" id="navbarCollapse">
           <ul class="nav navbar-nav me-auto mb-2 mb-md-0" role="tablist">
             <li class="nav-item" role="presentation">
-              <a class="nav-link active" id="nav-irs-tab" data-bs-toggle="tab" data-bs-target="#nav-irs" type="button" role="tab" aria-controls="nav-irs" aria-selected="true">IRS</a>
+              <a class="nav-link active" id="nav-simulador-tab" data-bs-toggle="tab" data-bs-target="#nav-simulador" type="button" role="tab" aria-controls="nav-simulador" aria-selected="true">Simulador</a>
             </li>
             <li class="nav-item" role="presentation">
-              <a class="nav-link" id="nav-info-tab" data-bs-toggle="tab" data-bs-target="#nav-info" type="button" role="tab" aria-controls="nav-info" aria-selected="false">Informaçōes</a>
+              <a class="nav-link" id="nav-irs-tab" data-bs-toggle="tab" data-bs-target="#nav-irs" type="button" role="tab" aria-controls="nav-irs" aria-selected="false">IRS</a>
             </li>
             <li class="nav-item" role="presentation">
               <a class="nav-link" id="nav-disclaimer-tab" data-bs-toggle="tab" data-bs-target="#nav-disclaimer" type="button" role="tab" aria-controls="nav-disclaimer" aria-selected="false">Disclaimer</a>
@@ -37,7 +37,7 @@
     </nav>
 
     <div class="tab-content">
-      <div class="tab-pane fade show active" id="nav-irs" role="tabpanel" aria-labelledby="nav-irs-tab">
+      <div class="tab-pane fade show active" id="nav-simulador" role="tabpanel" aria-labelledby="nav-simulador-tab">
         <div class="container">
 
           <div class="row">
@@ -428,11 +428,11 @@
         </div>
       </div>
 
-      <div class="tab-pane fade" id="nav-info" role="tabpanel" aria-labelledby="nav-info-tab">
+      <div class="tab-pane fade" id="nav-irs" role="tabpanel" aria-labelledby="nav-irs-tab">
         <div class="container">
 
           <div class="row">
-            <div class="col-md-12 pt-5 text-center">
+            <div class="col-md-12 pt-5">
               <h2 class="pt-5">O que é o IRS?</h2>
               <p class="lead">O IRS é a sigla para <span class="fw-bold">I</span>mposto sobre os <span class="fw-bold">R</span>endimentos de pessoas <span class="fw-bold">S</span>ingulares. Ou seja, sobre o imposto que é tributado sobre os rendimentos dos contribuintes.</p>
               <p class="lead">Todos os cidadãos que trabalham são obrigados a entregar uma parte dos seus rendimentos. Este imposto incide sobre os <a href="https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs2.aspx" target="_blank">rendimentos que são atribuídos diretamente aos cidadãos</a>, sejam residentes em Portugal ou os chamados não residentes que auferem rendimentos em território nacional.</p>
@@ -441,40 +441,106 @@
           </div>
 
           <div class="row pt-3">
-            <div class="col-md-12 text-center">
+            <div class="col-md-12">
               <h2>Como é calculado o IRS?</h2>
 
               <h5 class="fw-bold">1º passo: Calcular o rendimento anual bruto do agregado familiar</h5>
-              <p class="lead my-text-left">Para determinar o rendimento anual bruto do agregado familiar é necessário sumar todos os rendimentos mensais brutos (incluíndo o subsídio de férias e natal) de todos os elementos do agregado. Se algum dos membros do agregado apenas tiver rendimentos em parte do ano deve incluir todo esse valor. Neste simulador deve incluir os rendimentos de ascendentes, mas não de descendentes.</p>
-              <p class="lead my-text-left">Considere-se, por exemplo, um rendimento mensal de 850€. Esse totaliza um rendimento anual bruto de 11 900€.</p>
+              <p class="lead">Para determinar o rendimento anual bruto do agregado familiar é necessário sumar todos os rendimentos mensais brutos (incluíndo o subsídio de férias e natal) de todos os elementos do agregado. Se algum dos membros do agregado apenas tiver rendimentos em parte do ano deve incluir todo esse valor. Neste simulador deve incluir os rendimentos de ascendentes, mas não de descendentes.</p>
+              <p class="lead">Considere-se, por exemplo, um rendimento mensal de 850€. Esse totaliza um rendimento anual bruto de 11 900€.</p>
 
               <h5 class="fw-bold">2º passo: Calcular o rendimento coletável</h5>
-              <p class="lead my-text-left">Ao rendimento anual bruto do agregado são <a href="https://info.portaldasfinancas.gov.pt/pt/apoio_contribuinte/Folhetos_informativos/Documents/IRS_folheto_2019.pdf" target="_blank">retiradas as deduções específicas</a>. Para cada sujeito passivo é considerado o maior de: 1) 4,104€ e 2) contribuição da Segurança Social. No caso de um casal é logo abatido o valor de, pelo menos, 8 208€.</p>
-              <p class="lead my-text-left">Dessa forma o rendimento coletável do nosso exemplo é de 7 796€ (11 900€ - 4 104€).</p>
+              <p class="lead">Ao rendimento anual bruto do agregado são <a href="https://info.portaldasfinancas.gov.pt/pt/apoio_contribuinte/Folhetos_informativos/Documents/IRS_folheto_2019.pdf" target="_blank">retiradas as deduções específicas</a>. Para cada sujeito passivo é considerado o maior de: 1) 4,104€ e 2) contribuição da Segurança Social. No caso de um casal é logo abatido o valor de, pelo menos, 8 208€.</p>
+              <p class="lead">Dessa forma o rendimento coletável do nosso exemplo é de 7 796€ (11 900€ - 4 104€).</p>
 
               <h5 class="fw-bold">3º passo: Identificar o quoeficiente familiar</h5>
-              <p class="lead my-text-left">No caso de um <a href="https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs69.aspx" target="_blank">casal que opte pela tributação conjunta</a> é 2, ou seja, é necessário dividir o rendimento colectável por 2. Nas restantes situações nada se faz, sem mesmo na existência de descententes.</p>
-              <p class="lead my-text-left">Assim sendo, como no nosso exemplo o agregado familiar é composto por apenas 1 sujeito passivo o valor do rendimento colectável é o mesmo: 7 796€.</p>
+              <p class="lead">No caso de um <a href="https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs69.aspx" target="_blank">casal que opte pela tributação conjunta</a> é 2, ou seja, é necessário dividir o rendimento colectável por 2. Nas restantes situações o quoeficiente é de 1, ou seja, nada se faz, sem mesmo na existência de descententes.</p>
+              <p class="lead">Assim sendo, como no nosso exemplo o agregado familiar é composto por apenas 1 sujeito passivo o valor do rendimento colectável é o mesmo: 7 796€.</p>
 
               <h5 class="fw-bold">4º passo: Identificar o escalão e a taxa de IRS</h5>
+              <p class="lead">Para identificar o escalão de IRS basta verificar na <a href="https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs68.aspx" target="_blank">tabela de taxas gerais</a>, sem nunca esquecer as <a href="https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs68a.aspx" target="_blank">taxas adicionais de solidariedade</a>, a que intervalo corresponte o rendimento colectável.</p>
+            </div>
+          </div>
+
+          <div class="row justify-content-center">
+            <div class="table-responsive col-md-6">
+              <table class="table table-hover table-sm">
+                <thead>
+                  <tr>
+                    <th scope="col">Escalão</th>
+                    <th scope="col">Rendimento coletável</th>
+                    <th scope="col">Taxa</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th>1º</th>
+                    <td>Até 7 112€</td>
+                    <td>14.5%</td>
+                  </tr>
+                  <tr>
+                    <th>2º</th>
+                    <td>De mais de 7 112€ até 10 732€</td>
+                    <td>23.0%</td>
+                  </tr>
+                  <tr>
+                    <th>3º</th>
+                    <td>De mais de 10 732€ até 20 322€</td>
+                    <td>28.5%</td>
+                  </tr>
+                  <tr>
+                    <th>4º</th>
+                    <td> De mais de 20 322€ até 25 075€</td>
+                    <td>35.0%</td>
+                  </tr>
+                  <tr>
+                    <th>5º</th>
+                    <td>De mais de 25 075€ até 36 967€</td>
+                    <td>37.0%</td>
+                  </tr>
+                  <tr>
+                    <th>6º</th>
+                    <td>De mais de 36 967€ até 80 000€</td>
+                    <td>45.0%</td>
+                  </tr>
+                  <tr>
+                    <th>7º</th>
+                    <td>De mais de 80 000€ até 80 882€</td>
+                    <td>47.5%</td>
+                  </tr>
+                  <tr>
+                    <th>8º</th>
+                    <td>De mais de 80 882€ até 250 000€</td>
+                    <td>50.5%</td>
+                  </tr>
+                  <tr>
+                    <th>9º</th>
+                    <td>Superior a 250 000€</td>
+                    <td>53.0%</td>
+                  </tr>
+
+                </tbody>
+
+              </table>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <p class="lead">O rendimento colectável de 7 796€ enquadra-se no 2º escalão, ao qual corresponde uma taxa de 23%.</p>
 
               <h5 class="fw-bold">5º passo: Calcular a coleta total</h5>
+              <p class="lead">Uma das formas de calcular a coleta total é multiplicar o rendimento coletável que coube em cada intervalo pela taxa correspondente.</p>
+              <p class="lead">Portanto, no nosso exemplo as contas seriam: 1) 7 112€ x 14.5% e 2) 684€ (7 796€ - 7 112€) x 23%. Fazendo uma coleta total de 1 189€. Este valor é, por fim, <a href="https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs69.aspx" target="_blank">multiplicado pelo quoeficiente familiar</a>, neste caso o quoefience é de 1.</p>
+              <p class="lead">Se o rendimento bruto anual menos a <a href="https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs70.aspx" target="_blank">coleta total for inferior ao mínimo de existência ou inferior ao salário mínimo</a> então não há existência de pagamento de IRS.</p>
 
               <h5 class="fw-bold">6º passo: Calcular as deduções à coleta</h5>
 
               <h5 class="fw-bold">7º passo: Calcular a coleta líquida</h5>
 
-              <h5 class="fw-bold">8º passo: tenho IRS a pagar?</h5>
+              <h5 class="fw-bold">8º passo: Tenho IRS a pagar?</h5>
 
-              <p class="lead my-text-left">.</p>
-              <p class="lead my-text-left">.</p>
-            </div>
-          </div>
+              <h5 class="fw-bold">9º passo: Como seria com a flat tax?</h5>
 
-          <div class="row pt-3">
-            <div class="col-md-12 text-center">
-              <h2>Como é calculado o IRS?</h2>
-              <p class="lead">.</p>
               <p class="lead">.</p>
             </div>
           </div>
@@ -486,14 +552,14 @@
         <div class="container">
 
           <div class="row">
-            <div class="col-md-12 pt-5 text-center">
+            <div class="col-md-12 pt-5">
               <h2 class="pt-5">Proteção dos dados</h2>
               <p class="lead">Nenhuma informação inserida neste site é guardada ou enviada para a Iniciativa Liberal, nem para nenhum outro site.</p>
             </div>
           </div>
 
           <div class="row pt-3">
-            <div class="col-md-12 text-center">
+            <div class="col-md-12">
               <h2>Verificação dos cálculos</h2>
               <p class="lead">Todos os cálculos foram validados no <a href="https://irs.portaldasfinancas.gov.pt/home.action" target="_blank">Portal das Finanças</a> e/ou no <a href="https://www.pwc.pt/pt/servicos/fiscalidade/simulador-irs.html" target="_blank">simulador da PwC</a>, bem como por fiscalistas independentes.</p>
               <p class="lead">Como os cálculos são complexos e para mostrar total transparência nos mesmos, o código fonte pode ser encontrado neste <a href="#" target="_blank">repositório</a>. São aceites propostas de alteração ou correção de erros.</p>
@@ -501,7 +567,7 @@
           </div>
 
           <div class="row pt-3">
-            <div class="col-md-12 text-center">
+            <div class="col-md-12">
               <h2>Pressupostos</h2>
               <ul>
                 <li class="lead">Estamos a assumir que os trabalhadores se encontram no regime geral da TSU, ou seja, 11% de Segurança Social;</li>
@@ -512,7 +578,7 @@
           </div>
 
           <div class="row pt-3">
-            <div class="col-md-12 text-center">
+            <div class="col-md-12">
               <h2>Situações não contempladas neste simulador</h2>
               <ul>
                 <li class="lead">Residentes fiscais nos Açores e na Madeira;</li>
@@ -525,7 +591,7 @@
           </div>
 
           <div class="row pt-3">
-            <div class="col-md-12 text-center">
+            <div class="col-md-12">
               <h2>Fontes de informação usadas</h2>
               <p class="lead">A principal fonte de dados foi o <a href="https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/codigo-do-irs-indice.aspx" target="_blank">código do imposto sobre o rendimento das pessoas singulares (CIRS)</a> para o sistema em vigor e a <a href="https://iniciativaliberal.pt/legislativas2019/propostas/taxa-irs-15/" target="_blank">proposta de uma flat tax</a> da Iniciativa Liberal. Fontes adicionais:</p>
               <ul>

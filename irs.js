@@ -377,13 +377,13 @@ function calcularIRS(rendimentoA, rendimentoB, estadoCivil, tributacao, ascenden
     // https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs69.aspx
     var quoeficienteFamiliar = (tributacao==='Conjunto') && (estadoCivil==='Casado/Unido de facto') ? 2 : 1;
 
-    // Ponto 1 do // https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs69.aspx
+    // Ponto 1 do https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs69.aspx
     var rendimentoColectavelFinal = (rendimentoColectavelA + rendimentoColectavelB) / quoeficienteFamiliar;
 
     var [coletaTotal, escalao] = calcularColetaTotal(rendimentoColectavelFinal);
     var taxa = `${numeral(escalao.percentagem*100).format('0,0.0')}%`;
 
-    // Ponto 3 do // https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs69.aspx
+    // Ponto 3 do https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs69.aspx
     coletaTotal = coletaTotal * quoeficienteFamiliar;
 
     var coletaLiquida = calcularColetaLiquida(rendimentoAnualBrutoTotal, rendimentoAnualBrutoA, coletaTotal, quoeficienteFamiliar) +

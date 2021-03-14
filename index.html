@@ -39,9 +39,11 @@
     <div class="tab-content">
       <div class="tab-pane fade show active" id="nav-irs" role="tabpanel" aria-labelledby="nav-irs-tab">
         <div class="container">
-          <div class="py-5 text-center">
-            <h2 class="pt-5">Simulador de IRS</h2>
-            <p class="lead">Simulador para os rendimentos obtidos no ano de 2020 (a serem declarados em 2021). Tem como objectivo comparar o actual sistema com o apresentado no programa da Iniciativa Liberal. Neste simulador verá também a percentagem do seu rendimento anual que vai para o Estado.</p>
+          <div class="row">
+            <div class="col-md-12 py-5 text-center">
+              <h2 class="pt-5">Simulador de IRS</h2>
+              <p class="lead">Simulador para os rendimentos obtidos no ano de 2020 (a serem declarados em 2021). Tem como objectivo comparar o actual sistema com o apresentado no programa da Iniciativa Liberal. Neste simulador verá também a percentagem do seu rendimento anual que vai para o Estado.</p>
+            </div>
           </div>
 
           <div class="row">
@@ -427,49 +429,33 @@
 
       <div class="tab-pane fade" id="nav-info" role="tabpanel" aria-labelledby="nav-info-tab">
         <div class="container">
-          <div class="py-5 text-center">
-            <h2 class="pt-5">Variação do seu rendimento</h2>
-            <p class="lead">Com base nos rendimentos fornecidos na tab de IRS mostramos vários aumentos mensais, e quanto desse aumento é seu e quanto é imposto para o Estado.</p>
-
-            tributacao separada 50% das despesas para cada sujeito passivo
-            deducoes do iva estamos a assumir X% de IVA
-            para a SS estamos a assumir a taxa de 11%, "Trabalhadores em geral"
-          </div>
-        </div>
-      </div>
-
-      <div class="tab-pane fade" id="nav-disclaimer" role="tabpanel" aria-labelledby="nav-disclaimer-tab">
-        <div class="container">
-          <div class="py-5 text-center">
-            <h2 class="pt-5">Proteção dos dados</h2>
-            <p class="lead">Nenhuma informação inserida neste site é guardada ou enviada para a Iniciativa Liberal, nem para nenhum outro site.</p>
-          </div>
-
-          <div class="row">
+          <div class="row pt-5">
             <div class="col-md-12 text-center">
-              <h4 class="pt-3">Verificação dos cálculos</h4>
-              <p class="lead">Todos os cálculos foram validados no <a href="https://irs.portaldasfinancas.gov.pt/home.action" target="_blank">Portal das Finanças</a> e/ou no <a href="https://www.pwc.pt/pt/servicos/fiscalidade/simulador-irs.html" target="_blank">simulador da PwC</a>, bem como por fiscalistas independentes.</p>
-              <p class="lead">Como os cálculos são complexos e para mostrar total transparência nos mesmos, o código fonte pode ser encontrado neste <a href="#" target="_blank">repositório</a>. São aceites propostas de alteração ou correção de erros.</p>
+              <h2 class="pt-5">Pressupostos</h2>
+              <ul>
+                <li class="lead">Estamos a assumir que os trabalhadores se encontram no regime geral da TSU, ou seja, 11% de Segurança Social;</li>
+                <li class="lead">No caso de tributação separada assumimos que cada sujeito passivo terá 50% das deduções à coleta;</li>
+                <li class="lead">Na dedução à coleta do IVA assumimos que todos os artigos foram taxados a 23%;</li>
+              </ul>
             </div>
           </div>
 
-          <div class="row pt-5">
+          <div class="row pt-3">
             <div class="col-md-12 text-center">
-              <h4 class="pt-3">Situações não contempladas neste simulador</h4>
+              <h2>Situações não contempladas neste simulador</h2>
               <ul>
                 <li class="lead">Residentes fiscais nos Açores e na Madeira;</li>
                 <li class="lead">Sujeitos passivos deficientes;</li>
                 <li class="lead">Agregados familiares em que os dependentes ou os ascendentes aufiram rendimentos;</li>
                 <li class="lead">Deduções de PPRs;</li>
-                <li class="lead">Rendimentos de pensões;</li>
                 <li class="lead">Rendimentos das categorias B, E, F, G e H.</li>
               </ul>
             </div>
           </div>
 
-          <div class="row pt-5">
+          <div class="row pt-3">
             <div class="col-md-12 text-center">
-              <h4 class="pt-3">Fontes de informações usadas</h4>
+              <h2>Fontes de informações usadas</h2>
               <p class="lead">A principal fonte de dados foi o <a href="https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/codigo-do-irs-indice.aspx" target="_blank">código do imposto sobre o rendimento das pessoas singulares (CIRS)</a> para o sistema em vigor e a <a href="https://iniciativaliberal.pt/legislativas2019/propostas/taxa-irs-15/" target="_blank">proposta de uma flat tax</a> da Iniciativa Liberal. Fontes adicionais:</p>
               <ul>
                 <li class="lead">IAS: <a href="https://dre.pt/home/-/dre/117942337/details/maximized" target="_blank">2019</a> e <a href="https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/legislacao/diplomas_legislativos/Documents/Portaria_27_2020.pdf" target="_blank">2020</a>;</li>
@@ -479,6 +465,26 @@
               </ul>
             </div>
           </div>
+        </div>
+      </div>
+
+      <div class="tab-pane fade" id="nav-disclaimer" role="tabpanel" aria-labelledby="nav-disclaimer-tab">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-12 pt-5 text-center">
+              <h2 class="pt-5">Proteção dos dados</h2>
+              <p class="lead">Nenhuma informação inserida neste site é guardada ou enviada para a Iniciativa Liberal, nem para nenhum outro site.</p>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12 text-center">
+              <h2 class="pt-3">Verificação dos cálculos</h4>
+              <p class="lead">Todos os cálculos foram validados no <a href="https://irs.portaldasfinancas.gov.pt/home.action" target="_blank">Portal das Finanças</a> e/ou no <a href="https://www.pwc.pt/pt/servicos/fiscalidade/simulador-irs.html" target="_blank">simulador da PwC</a>, bem como por fiscalistas independentes.</p>
+              <p class="lead">Como os cálculos são complexos e para mostrar total transparência nos mesmos, o código fonte pode ser encontrado neste <a href="#" target="_blank">repositório</a>. São aceites propostas de alteração ou correção de erros.</p>
+            </div>
+          </div>
+
         </div>
       </div>
 

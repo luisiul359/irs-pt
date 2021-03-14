@@ -48,3 +48,9 @@
 #tabelaRendimentos {
   font-family: 'MyWebFont', Fallback, sans-serif;
 }
+
+#tabelaRendimentos tr:first-child th:first-child, #tabelaRendimentos td:first-child {
+  position:sticky;
+  left:0px;
+  background-color:#f8f9fa!important;
+}

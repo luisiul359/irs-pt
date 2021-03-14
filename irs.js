@@ -604,10 +604,10 @@ function atualizarTabelaRendimentos(rendimentoBase, irsActualBase, valorTrabalha
           <th scope="col" colspan="4" class="text-center align-middle">Estado recebe</th>
         </tr>
         <tr>
-          <th scope="col" colspan="2">Sistema Actual</th>
-          <th scope="col" colspan="2">Com a IL</th>
-          <th scope="col" colspan="2">Sistema Actual</th>
-          <th scope="col" colspan="2">Com a IL</th>
+          <th scope="col" colspan="2" class="text-center align-middle">Sistema Actual</th>
+          <th scope="col" colspan="2" class="text-center align-middle">Com a IL</th>
+          <th scope="col" colspan="2" class="text-center align-middle">Sistema Actual</th>
+          <th scope="col" colspan="2" class="text-center align-middle">Com a IL</th>
         </tr>
       </thead>`
     );
@@ -649,13 +649,13 @@ function atualizarTabelaRendimentos(rendimentoBase, irsActualBase, valorTrabalha
             <td class="text-right text-muted"><small>+${pad(valorTrabalhador-valorTrabalhadorBase)}€</small></td>
 
             <td class="text-right">${pad(valorTrabalhadorIL)}€</td>
-            <td class="text-right text-muted"><small>${d1 > 0 ? '+' : '-'}${pad(Math.abs(d1))}€</small></td>
+            <td class="text-right text-muted"><small>${d1 >= 0 ? '+' : '-'}${pad(Math.abs(d1))}€</small></td>
 
             <td class="text-right">${pad(valorEstado)}€</td>
             <td class="text-right text-muted"><small>+${pad(valorEstado-valorEstadoBase)}€</small></td>
 
             <td class="text-right">${pad(valorEstadoIL)}€</td>
-            <td class="text-right text-muted"><small>${d2 > 0 ? '+' : '-'}${pad(Math.abs(d2))}€</small></td>
+            <td class="text-right text-muted"><small>${d2 >= 0 ? '+' : '-'}${pad(Math.abs(d2))}€</small></td>
           </tr>`
       ;
 

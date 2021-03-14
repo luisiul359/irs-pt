@@ -56,5 +56,16 @@
 }
 
 div.row ul {
-  text-align: left!important;  
+  text-align: left!important;
+}
+
+.lead, .blockquote {
+  font-size: calc(1rem + .3vw);
+  font-weight: 300;
+}
+@media (min-width: 1200px){
+  .lead, .blockquote {
+    font-size: 1.25rem;
+    font-weight: 300;
+  }
 }

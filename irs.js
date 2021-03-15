@@ -768,5 +768,10 @@ function main() {
     // enable tooltips
     $('input').tooltip();
     $('[data-toggle="tooltip"]').tooltip();
+
+    // auto collapse the navbar
+    $('#navbarCollapse a').click(function(){
+      $('#navbarCollapse').collapse('hide');
+    });
   }, false)
 }())

@@ -59,6 +59,15 @@
   background-color:#f8f9fa!important;
 }
 
+#tableEscalaoIRS {
+  margin-bottom: 1rem;
+}
+
+#tableEscalaoIRS tr th {
+  vertical-align: middle!important;
+  text-align: center!important;
+}
+
 div.row h2 {
   text-align: center!important;
 }

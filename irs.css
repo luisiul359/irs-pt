@@ -91,3 +91,9 @@ div.row h2 {
   background-color: #005289;
   border-color: #005289;
 }
+
+.btnVideosHover {
+  color: #fff;
+  background-color: #6c757d;
+  border-color: #6c757d;
+}

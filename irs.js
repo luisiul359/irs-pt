@@ -727,6 +727,30 @@ function main() {
 }
 
 
+function changeVideo(btn,ep) {
+  $('.btnVideos').each(function(i, obj) {
+    $(obj).removeClass('btnVideosHover');
+  });
+  $(btn).toggleClass('btnVideosHover');
+
+  if (ep===1) {
+    $('#video').attr('src', 'https://www.youtube.com/embed/up0Gfd5c0cM');
+    $('#descVideo').text('Video 1');
+  } else if (ep===2) {
+    $('#video').attr('src', 'https://www.youtube.com/embed/2nBGppKe1z4');
+    $('#descVideo').text('Video 2');
+  } else if (ep===3) {
+    $('#video').attr('src', 'https://www.youtube.com/embed/OERxKenLIo8');
+    $('#descVideo').text('Video 3');
+  } else if (ep===4) {
+
+  } else {
+
+  }
+
+}
+
+
 (function () {
   'use strict'
 

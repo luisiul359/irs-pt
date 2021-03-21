@@ -29,6 +29,9 @@
               <a class="nav-link" id="nav-irs-tab" data-bs-toggle="tab" data-bs-target="#nav-irs" type="button" role="tab" aria-controls="nav-irs" aria-selected="false">IRS</a>
             </li>
             <li class="nav-item" role="presentation">
+              <a class="nav-link" id="nav-videos-tab" data-bs-toggle="tab" data-bs-target="#nav-videos" type="button" role="tab" aria-controls="nav-videos" aria-selected="false">Vídeos</a>
+            </li>
+            <li class="nav-item" role="presentation">
               <a class="nav-link" id="nav-disclaimer-tab" data-bs-toggle="tab" data-bs-target="#nav-disclaimer" type="button" role="tab" aria-controls="nav-disclaimer" aria-selected="false">Disclaimer</a>
             </li>
           </ul>
@@ -452,7 +455,7 @@
               <nav class="navbar navbar-expand-md">
                 <ul class="nav nav-pills mx-auto mb-3" role="tablist">
                   <li class="nav-item text-center" role="presentation">
-                    <a class="nav-link active" id="pill-irs-il" data-bs-toggle="pill" href="#irs-il" role="tab" aria-controls="irs-il" aria-selected="false">Flax Tax</a>
+                    <a class="nav-link active" id="pill-irs-il" data-bs-toggle="pill" href="#irs-il" role="tab" aria-controls="irs-il" aria-selected="false">Flat Tax</a>
                   </li>
                   <li class="nav-item text-center" role="presentation">
                     <a class="nav-link" id="pill-irs-actual" data-bs-toggle="pill" href="#irs-actual" role="tab" aria-controls="irs-actual" aria-selected="true">Sistema Actual</a>
@@ -489,7 +492,7 @@
                   <div class="container">
                     <div class="row">
                       <div class="col-md-12">
-                        <p class="small"><span class="fw-bold">Nota:</span> apesar de as contas já terem algum nível de complexidade, são uma simplificação.</p>
+                        <p class="small"><span class="fw-bold">Nota:</span> apesar das contas já terem algum nível de complexidade, apresentamos abaixo uma simplificação.</p>
 
                         <h5 class="fw-bold">1º passo: Calcular o rendimento anual bruto do agregado familiar</h5>
                         <p class="lead">Para determinar o rendimento anual bruto do agregado familiar é necessário sumar todos os rendimentos mensais brutos (incluíndo o subsídio de férias e natal) de todos os elementos do agregado. Se algum dos membros do agregado apenas tiver rendimentos em parte do ano deve incluir todo esse valor. Neste simulador deve incluir os rendimentos de ascendentes, mas não de descendentes.</p>
@@ -616,6 +619,43 @@
         </div>
       </div>
 
+      <div class="tab-pane fade" id="nav-videos" role="tabpanel" aria-labelledby="nav-videos-tab">
+        <div class="container">
+
+          <div class="row justify-content-center">
+            <div class="col-md-8 pt-5">
+              <h2 class="pt-5 pb-3">Episódios Simulador IRS</h2>
+
+              <div class="embed-responsive embed-responsive-16by9">
+                <iframe id="video" class="embed-responsive-item" width="100%" height="315" src="https://www.youtube.com/embed/up0Gfd5c0cM" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="row justify-content-center pt-3">
+            <div class="col-md-8 text-center">
+
+              <p class="lead" id="descVideo">Video 1</p>
+
+            </div>
+          </div>
+
+          <div class="row justify-content-center pt-3">
+            <div class="col-md-8 text-center">
+
+              <button onclick="changeVideo(this,1)" type="button" class="btn btn-outline-secondary mx-2 mb-2 btnVideos btnVideosHover">Ep. 1</button>
+              <button onclick="changeVideo(this,2)" type="button" class="btn btn-outline-secondary mx-2 mb-2 btnVideos">Ep. 2</button>
+              <button onclick="changeVideo(this,3)" type="button" class="btn btn-outline-secondary mx-2 mb-2 btnVideos">Ep. 3</button>
+              <button onclick="changeVideo(this,4)" type="button" class="btn btn-outline-secondary mx-2 mb-2 btnVideos">Ep. 4</button>
+              <button onclick="changeVideo(this,5)" type="button" class="btn btn-outline-secondary mx-2 mb-2 btnVideos">Ep. 5</button>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+
       <div class="tab-pane fade" id="nav-disclaimer" role="tabpanel" aria-labelledby="nav-disclaimer-tab">
         <div class="container">
 
@@ -630,7 +670,7 @@
             <div class="col-md-12">
               <h2>Verificação dos cálculos</h2>
               <p class="lead">Todos os cálculos foram validados no <a href="https://irs.portaldasfinancas.gov.pt/home.action" target="_blank">Portal das Finanças</a> e/ou no <a href="https://www.pwc.pt/pt/servicos/fiscalidade/simulador-irs.html" target="_blank">simulador da PwC</a>, bem como por fiscalistas independentes.</p>
-              <p class="lead">Como os cálculos são complexos e para mostrar total transparência nos mesmos, o código fonte pode ser encontrado neste <a href="#" target="_blank">repositório</a>. São aceites propostas de alteração ou correção de erros.</p>
+              <p class="lead">Como os cálculos do sistema actual são complexos e para mostrar total transparência nos mesmos, o código fonte pode ser encontrado neste <a href="#" target="_blank">repositório</a>. São aceites propostas de alteração ou correção de erros.</p>
             </div>
           </div>
 
@@ -651,7 +691,7 @@
               <ul>
                 <li class="lead">Residentes fiscais nos Açores e na Madeira;</li>
                 <li class="lead">Sujeitos passivos deficientes;</li>
-                <li class="lead">Agregados familiares em que os dependentes ou os ascendentes aufiram rendimentos;</li>
+                <li class="lead">Agregados familiares em que os descendentes ou os ascendentes aufiram rendimentos;</li>
                 <li class="lead">Deduções de PPRs;</li>
                 <li class="lead">Rendimentos das categorias B, E, F, G e H.</li>
               </ul>

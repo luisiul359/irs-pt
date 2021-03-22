@@ -1,5 +1,5 @@
-var ano = 2019;
-const debug = true;
+var ano = 2020;
+const debug = false;
 
 // https://dre.pt/home/-/dre/117942337/details/maximized
 // https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/legislacao/diplomas_legislativos/Documents/Portaria_27_2020.pdf
@@ -697,8 +697,8 @@ function main() {
       rendimentoB = 0;
     }
 
-    ano = Number($("#anoCivil").val());
-    carregarEscaloesIRS();
+    //ano = Number($("#anoCivil").val());
+    //carregarEscaloesIRS();
 
     var [deducoesEspecificas, rendimentoColectavel, taxa, coletaTotal, deducoesColeta, irsActual] = calcularIRS(
       rendimentoA, rendimentoB, estadoCivil, tributacao, ascendentes, dependentes3Menos, dependentes3Mais,

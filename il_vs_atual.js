@@ -73,8 +73,12 @@ sujeitoA.forEach(rendimentoA => {
                   despesasAutomoveis, despesasMotociclos, despesasRestauracao, despesasCabeleireiros, despesasVeterinario, despesasPasses
                 );
 
-                var irsIL = calcularIRS_IL(
-                  rendimentoA, rendimentoB, dependentes3Menos + dependentes3Mais, estadoCivil
+                //var irsIL = calcularIRS_IL(
+                //  rendimentoA, rendimentoB, dependentes3Menos + dependentes3Mais, estadoCivil
+                //);
+
+                var irsIL = calcularIRS_IL_3escaloes(
+                  rendimentoA, rendimentoB, estadoCivil, tributacao, dependentes3Menos, dependentes3Mais, despesasPensoesAlimentos
                 );
 
                 if (irsActual > 0 && irsActual - irsIL < 100) {

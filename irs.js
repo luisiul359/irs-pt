@@ -881,7 +881,7 @@ function main() {
 
 }
 
-
+/*
 function changeVideo(btn,ep) {
   $('.btnVideos').each(function(i, obj) {
     $(obj).removeClass('btnVideosHover');
@@ -904,6 +904,7 @@ function changeVideo(btn,ep) {
   }
 
 }
+*/
 
 
 (function () {

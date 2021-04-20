@@ -404,13 +404,13 @@
                 <li class="list-group-item d-flex justify-content-between lh-condensed">
                   <div>
                     <h6 class="my-0">Proposta IL</h6>
-                    <small class="text-muted">2 escalões</small>
+                    <small class="text-muted">2 escalões (15%; 27.5%)</small>
                   </div>
                   <span class="text-muted pr-4" id="irsIL3e"></span>
                 </li>
               </ul>
               <h4 class="d-flex justify-content-between align-items-center mb-3">
-                <span class="text-muted">Diferença IRS flat tax</span>
+                <span class="text-muted">Poupança IRS flat tax</span>
                 <span class="badge badge-secondary badge-pill" id="diff"></span>
               </h4>
             </div>
@@ -478,22 +478,64 @@
                 <div class="tab-pane fade show active" id="irs-il" role="tabpanel" aria-labelledby="pill-irs-il">
                   <div class="container">
                     <div class="row">
-                      <div class="col-md-12">
-                        <h5 class="fw-bold">1º passo: Calcular o rendimento anual bruto do agregado familiar</h5>
-                        <p class="lead">Para determinar o rendimento anual bruto do agregado familiar é necessário sumar todos os rendimentos mensais brutos (incluíndo o subsídio de férias e natal) de todos os elementos do agregado. Se algum dos membros do agregado apenas tiver rendimentos em parte do ano deve incluir todo esse valor. Neste simulador deve incluir os rendimentos de ascendentes, mas não de descendentes.</p>
-                        <p class="lead">Considere-se, por exemplo, um rendimento mensal de 850€. Esse totaliza um rendimento anual bruto de 11 900€.</p>
+                      <div class="col-md-12 accordion" id="accordionIRSIL">
 
-                        <h5 class="fw-bold">2º passo: Calcular o valor de isenção</h5>
-                        <p class="lead">Segundo a <a href="https://iniciativaliberal.pt/legislativas2019/propostas/taxa-irs-15/" target="_blank">proposta da Iniciativa Liberal</a> os primeiros 650€ ficam isentos de tributação. Ou seja, dos 850€ de rendimento mensal apenas 200€ são alvo de tributação.</p>
-                        <p class="lead">Adicionalmente, por cada descendente o valor de isenção sobe em 200€ e se o aggregado familiar for uma família monoparental o limite sobe em 400€ por cada descendente.</p>
-                        <p class="lead">Como no nosso exemplo existe apenas um sujeito passivo e um descendente, o valor de isenção é de 1 050€, ou seja, só serão tributados rendimentos brutos mensais acima deste valor.</p>
+                        <div class="accordion-item">
+                          <h2 class="accordion-header" id="irsILHeading1">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#irsILCollapse1" aria-expanded="false" aria-controls="irsILCollapse1">
+                              <span class="fw-bold">1º passo: Calcular o rendimento anual bruto do agregado familiar</span>
+                            </button>
+                          </h2>
+                          <div id="irsILCollapse1" class="accordion-collapse collapse" aria-labelledby="irsILHeading1" data-bs-parent="#accordionIRSIL">
+                            <div class="accordion-body">
+                              <p class="lead">Para determinar o rendimento anual bruto do agregado familiar é necessário sumar todos os rendimentos mensais brutos (incluíndo o subsídio de férias e natal) de todos os elementos do agregado. Se algum dos membros do agregado apenas tiver rendimentos em parte do ano deve incluir todo esse valor. Neste simulador deve incluir os rendimentos de ascendentes, mas não de descendentes.</p>
+                              <p class="lead">Considere-se, por exemplo, um rendimento mensal de 850€. Esse totaliza um rendimento anual bruto de 11 900€.</p>
+                            </div>
+                          </div>
+                        </div>
 
-                        <h5 class="fw-bold">3º passo: Calcular a coleta líquida</h5>
-                        <p class="lead">Pela proposta da Iniciativa Liberal, os rendimentos acima do limite identificado no ponto anterior são tributados a uma taxa única de 15%. No exemplo que demos o rendimento bruto mensal é inferior ao valor de isenção, portanto esse aggregado familiar terá uma coleta líquida de 0€.</p>
-                        <p class="lead">Se o rendimento mensal bruto do exemplo fosse de 1 500€, o valor da coleta líquida seria de (1 500€ - 1 050€) x 14 x 15% = 945€.</p>
+                        <div class="accordion-item">
+                          <h2 class="accordion-header" id="irsILHeading2">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#irsILCollapse2" aria-expanded="false" aria-controls="irsILCollapse2">
+                              <span class="fw-bold">2º passo: Calcular o valor de isenção</span>
+                            </button>
+                          </h2>
+                          <div id="irsILCollapse2" class="accordion-collapse collapse" aria-labelledby="irsILHeading2" data-bs-parent="#accordionIRSIL">
+                            <div class="accordion-body">
+                              <p class="lead">Segundo a <a href="https://iniciativaliberal.pt/legislativas2019/propostas/taxa-irs-15/" target="_blank">proposta da Iniciativa Liberal</a> os primeiros 650€ ficam isentos de tributação. Ou seja, dos 850€ de rendimento mensal apenas 200€ são alvo de tributação.</p>
+                              <p class="lead">Adicionalmente, por cada descendente o valor de isenção sobe em 200€ e se o aggregado familiar for uma família monoparental o limite sobe em 400€ por cada descendente.</p>
+                              <p class="lead">Como no nosso exemplo existe apenas um sujeito passivo e um descendente, o valor de isenção é de 1 050€, ou seja, só serão tributados rendimentos brutos mensais acima deste valor.</p>
+                            </div>
+                          </div>
+                        </div>
 
-                        <h5 class="fw-bold">4º passo: Tenho IRS a pagar?</h5>
-                        <p class="lead">Todos os meses tem de pagar retenção na fonte. Se a soma do que pagou ao longo do ano em retenção na fonte for superior à coleta líquida calculado no ponto anterior tem direito a uma devolução por parte do Estado, caso contrário tem de pagar a diferença.</p>
+                        <div class="accordion-item">
+                          <h2 class="accordion-header" id="irsILHeading3">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#irsILCollapse3" aria-expanded="false" aria-controls="irsILCollapse3">
+                              <span class="fw-bold">3º passo: Calcular a coleta líquida</span>
+                            </button>
+                          </h2>
+                          <div id="irsILCollapse3" class="accordion-collapse collapse" aria-labelledby="irsILHeading3" data-bs-parent="#accordionIRSIL">
+                            <div class="accordion-body collapsed">
+                              <p class="lead">Pela proposta da Iniciativa Liberal, os rendimentos acima do limite identificado no ponto anterior são tributados a uma taxa única de 15%. No exemplo que demos o rendimento bruto mensal é inferior ao valor de isenção, portanto esse aggregado familiar terá uma coleta líquida de 0€.</p>
+                              <p class="lead">Se o rendimento mensal bruto do exemplo fosse de 1 500€, o valor da coleta líquida seria de (1 500€ - 1 050€) x 14 x 15% = 945€.</p>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="accordion-item">
+                          <h2 class="accordion-header" id="irsILHeading4">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#irsILCollapse4" aria-expanded="false" aria-controls="irsILCollapse4">
+                              <span class="fw-bold">4º passo: Tenho IRS a pagar?</span>
+                            </button>
+                          </h2>
+                          <div id="irsILCollapse4" class="accordion-collapse collapse" aria-labelledby="irsILHeading3" data-bs-parent="#accordionIRSIL">
+                            <div class="accordion-body">
+                              <p class="lead">Todos os meses tem de pagar retenção na fonte. Se a soma do que pagou ao longo do ano em retenção na fonte for superior à coleta líquida calculado no ponto anterior tem direito a uma devolução por parte do Estado, caso contrário tem de pagar a diferença.</p>
+                            </div>
+                          </div>
+                        </div>
+
                       </div>
                     </div>
                   </div>
@@ -502,120 +544,197 @@
                 <div class="tab-pane fade" id="irs-actual" role="tabpanel" aria-labelledby="pill-irs-actual">
                   <div class="container">
                     <div class="row">
-                      <div class="col-md-12">
+                      <div class="col-md-12 accordion" id="accordionIRS">
                         <p class="small"><span class="fw-bold">Nota:</span> apesar das contas já terem algum nível de complexidade, apresentamos abaixo uma simplificação.</p>
 
-                        <h5 class="fw-bold">1º passo: Calcular o rendimento anual bruto do agregado familiar</h5>
-                        <p class="lead">Para determinar o rendimento anual bruto do agregado familiar é necessário sumar todos os rendimentos mensais brutos (incluíndo o subsídio de férias e natal) de todos os elementos do agregado. Se algum dos membros do agregado apenas tiver rendimentos em parte do ano deve incluir todo esse valor. Neste simulador deve incluir os rendimentos de ascendentes, mas não de descendentes.</p>
-                        <p class="lead">Considere-se, por exemplo, um rendimento mensal de 850€. Esse totaliza um rendimento anual bruto de 11 900€.</p>
-
-                        <h5 class="fw-bold">2º passo: Calcular o rendimento coletável</h5>
-                        <p class="lead">Ao rendimento anual bruto do agregado são <a href="https://info.portaldasfinancas.gov.pt/pt/apoio_contribuinte/Folhetos_informativos/Documents/IRS_folheto_2019.pdf" target="_blank">retiradas as deduções específicas</a>. Para cada sujeito passivo é considerado o maior de: 1) 4 104€ e 2) contribuição da Segurança Social. No caso de um casal é logo abatido o valor de, pelo menos, 8 208€.</p>
-                        <p class="lead">Dessa forma o rendimento coletável do nosso exemplo é de 7 796€ (11 900€ - 4 104€).</p>
-
-                        <h5 class="fw-bold">3º passo: Identificar o quoeficiente familiar</h5>
-                        <p class="lead">No caso de um <a href="https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs69.aspx" target="_blank">casal que opte pela tributação conjunta</a> é 2, ou seja, é necessário dividir o rendimento coletável por 2. Nas restantes situações o quoeficiente é de 1, ou seja, nada se faz, nem mesmo na existência de descententes.</p>
-                        <p class="lead">Assim sendo, como no nosso exemplo o agregado familiar é composto por apenas 1 sujeito passivo o valor do rendimento coletável é o mesmo: 7 796€.</p>
-
-                        <h5 class="fw-bold">4º passo: Identificar o escalão e a taxa de IRS</h5>
-                        <p class="lead">Para identificar o escalão de IRS basta verificar na <a href="https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs68.aspx" target="_blank">tabela de taxas gerais</a>, sem nunca esquecer as <a href="https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs68a.aspx" target="_blank">taxas adicionais de solidariedade</a>, a que intervalo corresponte o rendimento coletável.<p>
-                      </div>
-                    </div>
-
-                    <div class="row justify-content-center">
-                      <div class="col-md-6">
-                        <div class="table-responsive-sm">
-                          <table class="table table-hover table-sm" id="tableEscalaoIRS">
-                            <thead>
-                              <tr>
-                                <th scope="col" class="text-center align-middle">Escalão</th>
-                                <th scope="col" class="text-center align-middle">Rendimento coletável</th>
-                                <th scope="col" class="text-center align-middle">Taxa</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <th>1º</th>
-                                <td>Até 7 112€</td>
-                                <td>14.5%</td>
-                              </tr>
-                              <tr>
-                                <th>2º</th>
-                                <td>De mais de 7 112€ até 10 732€</td>
-                                <td>23.0%</td>
-                              </tr>
-                              <tr>
-                                <th>3º</th>
-                                <td>De mais de 10 732€ até 20 322€</td>
-                                <td>28.5%</td>
-                              </tr>
-                              <tr>
-                                <th>4º</th>
-                                <td> De mais de 20 322€ até 25 075€</td>
-                                <td>35.0%</td>
-                              </tr>
-                              <tr>
-                                <th>5º</th>
-                                <td>De mais de 25 075€ até 36 967€</td>
-                                <td>37.0%</td>
-                              </tr>
-                              <tr>
-                                <th>6º</th>
-                                <td>De mais de 36 967€ até 80 000€</td>
-                                <td>45.0%</td>
-                              </tr>
-                              <tr>
-                                <th>7º</th>
-                                <td>De mais de 80 000€ até 80 882€</td>
-                                <td>47.5%</td>
-                              </tr>
-                              <tr>
-                                <th>8º</th>
-                                <td>De mais de 80 882€ até 250 000€</td>
-                                <td>50.5%</td>
-                              </tr>
-                              <tr>
-                                <th>9º</th>
-                                <td>Superior a 250 000€</td>
-                                <td>53.0%</td>
-                              </tr>
-
-                            </tbody>
-                          </table>
+                        <div class="accordion-item">
+                          <h2 class="accordion-header" id="irsHeading1">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#irsCollapse1" aria-expanded="false" aria-controls="irsCollapse1">
+                              <span class="fw-bold">1º passo: Calcular o rendimento anual bruto do agregado familiar</span>
+                            </button>
+                          </h2>
+                          <div id="irsCollapse1" class="accordion-collapse collapse" aria-labelledby="irsHeading1" data-bs-parent="#accordionIRS">
+                            <div class="accordion-body">
+                              <p class="lead">Para determinar o rendimento anual bruto do agregado familiar é necessário sumar todos os rendimentos mensais brutos (incluíndo o subsídio de férias e natal) de todos os elementos do agregado. Se algum dos membros do agregado apenas tiver rendimentos em parte do ano deve incluir todo esse valor. Neste simulador deve incluir os rendimentos de ascendentes, mas não de descendentes.</p>
+                              <p class="lead">Considere-se, por exemplo, um rendimento mensal de 850€. Esse totaliza um rendimento anual bruto de 11 900€.</p>
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
 
-                    <div class="row">
-                      <div class="col-md-12">
-                        <p class="lead">O rendimento coletável de 7 796€ enquadra-se no 2º escalão, ao qual corresponde uma taxa de 23%.</p>
+                        <div class="accordion-item">
+                          <h2 class="accordion-header" id="irsHeading2">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#irsCollapse2" aria-expanded="false" aria-controls="irsCollapse2">
+                              <span class="fw-bold">2º passo: Calcular o rendimento coletável</span>
+                            </button>
+                          </h2>
+                          <div id="irsCollapse2" class="accordion-collapse collapse" aria-labelledby="irsHeading2" data-bs-parent="#accordionIRS">
+                            <div class="accordion-body">
+                              <p class="lead">Ao rendimento anual bruto do agregado são <a href="https://info.portaldasfinancas.gov.pt/pt/apoio_contribuinte/Folhetos_informativos/Documents/IRS_folheto_2019.pdf" target="_blank">retiradas as deduções específicas</a>. Para cada sujeito passivo é considerado o maior de: 1) 4 104€ e 2) contribuição da Segurança Social. No caso de um casal é logo abatido o valor de, pelo menos, 8 208€.</p>
+                              <p class="lead">Dessa forma o rendimento coletável do nosso exemplo é de 7 796€ (11 900€ - 4 104€).</p>
+                            </div>
+                          </div>
+                        </div>
 
-                        <h5 class="fw-bold">5º passo: Calcular a coleta total</h5>
-                        <p class="lead">Uma das formas de calcular a coleta total é multiplicar o rendimento coletável que coube em cada intervalo pela taxa correspondente.</p>
-                        <p class="lead">Portanto, no nosso exemplo as contas seriam: 1) 7 112€ x 14.5% e 2) 684€ (7 796€ - 7 112€) x 23%. Fazendo uma coleta total de 1 189€. Este valor é, por fim, <a href="https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs69.aspx" target="_blank">multiplicado pelo quoeficiente familiar</a>, neste caso o quoefience é de 1.</p>
-                        <p class="lead">Se o rendimento bruto anual menos a <a href="https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs70.aspx" target="_blank">coleta total for inferior ao mínimo de existência ou inferior ao salário mínimo</a> então não há existência de pagamentos em sede de IRS.</p>
+                        <div class="accordion-item">
+                          <h2 class="accordion-header" id="irsHeading3">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#irsCollapse3" aria-expanded="false" aria-controls="irsCollapse3">
+                              <span class="fw-bold">3º passo: Identificar o quoeficiente familiar</span>
+                            </button>
+                          </h2>
+                          <div id="irsCollapse3" class="accordion-collapse collapse" aria-labelledby="irsHeading3" data-bs-parent="#accordionIRS">
+                            <div class="accordion-body">
+                              <p class="lead">No caso de um <a href="https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs69.aspx" target="_blank">casal que opte pela tributação conjunta</a> é 2, ou seja, é necessário dividir o rendimento coletável por 2. Nas restantes situações o quoeficiente é de 1, ou seja, nada se faz, nem mesmo na existência de descententes.</p>
+                              <p class="lead">Assim sendo, como no nosso exemplo o agregado familiar é composto por apenas 1 sujeito passivo o valor do rendimento coletável é o mesmo: 7 796€.</p>
+                            </div>
+                          </div>
+                        </div>
 
-                        <h5 class="fw-bold">6º passo: Calcular as deduções à coleta</h5>
-                        <p class="lead">À coleta total é depois <a href="https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs78.aspx" target="_blank">removido as deduções à coleta</a>. Essas deduções têm como base as faturas declarados no ano civil ao que o IRS diz respeito e são as seguintes:</p>
-                        <ul>
-                          <li><a href="https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs78a.aspx" target="_blank">Deduções dos descendentes e ascendentes</a>: 726€ por cada dependente com menos de 3 anos de idade, 600€ por cada dependente com mais de 3 anos de idade, e 525€ por cada ascendente. Em famílias monopareintais o valor por ascendente é de 635€. Existe também um extra por cada dependente após o 1º filho;</li>
-                          <li><a href="https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs78b.aspx" target="_blank">Dedução das despesas gerais familiares</a>: 35% das despesas que não entram nas restantes categorias até um máximo de 250€ por cada sujeito passivo. No caso de famílias monoparentais a dedução é de 45% até o limite de 335€;</li>
-                          <li><a href="https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs78c.aspx" target="_blank">Dedução de despesas de saúde</a>: 15% até um limite de 1 000€;</li>
-                          <li><a href="https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs78d.aspx" target="_blank">Dedução de despesas de formação e educação</a>: 30% até um limite de 800€;</li>
-                          <li><a href="https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs78e.aspx" target="_blank">Dedução de encargos com imóveis</a>: 15% até um máximo que varia em função do rendimento coletável;</li>
-                          <li><a href="https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs78f.aspx" target="_blank">Dedução pela exigência de fatura</a>: valor do IVA de despesas com automóveis, motociclos, restauração, cabeleireiros e veterinários;</li>
-                          <li><a href="https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs83a.aspx" target="_blank">Dedução respeitantes a pensões de alimentos</a>: 20% do valor pago sem limite;</li>
-                          <li><a href="https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs84.aspx" target="_blank">Dedução com encargos com lares</a>: 25% até um limite de 403.75€;</li>
-                        </ul>
-                        <p class="lead">Tirando as deduções dos descendentes e ascendentes e das despesas gerais familiares existe um <a href="https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs78.aspx" target="_blank"> máximo de dedução</a> que varia em função do rendimento coletável. No exemplo considerado é de 2 486€.</p>
-                        <p class="lead">No exemplo que temos considerado, assumindo 87.5€ de dedução das despesas gerais familiares, 150€ de dedução de despesas de saúde, 240€ de dedução de despesas de formação e educação, e 600€ de eduções dos descendentes e ascendentes temos uma dedução à coleta de 1 078€.</p>
+                        <div class="accordion-item">
+                          <h2 class="accordion-header" id="irsHeading4">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#irsCollapse4" aria-expanded="false" aria-controls="irsCollapse4">
+                              <span class="fw-bold">4º passo: Identificar o escalão e a taxa de IRS</span>
+                            </button>
+                          </h2>
+                          <div id="irsCollapse4" class="accordion-collapse collapse" aria-labelledby="irsHeading4" data-bs-parent="#accordionIRS">
+                            <div class="accordion-body">
+                              <p class="lead">Para identificar o escalão de IRS basta verificar na <a href="https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs68.aspx" target="_blank">tabela de taxas gerais</a>, sem nunca esquecer as <a href="https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs68a.aspx" target="_blank">taxas adicionais de solidariedade</a>, a que intervalo corresponte o rendimento coletável.<p>
 
-                        <h5 class="fw-bold">7º passo: Calcular a coleta líquida</h5>
-                        <p class="lead">A coleta líquida é a coleta total (ponto 5) menos as deduções à coleta (ponto 6).</p>
-                        <p class="lead">No exemplo que temos considerado, o valor de IRS será de 1 189€ - 1 078€ = 111€.</p>
+                              <div class="row justify-content-center">
+                                <div class="col-md-6">
+                                  <div class="table-responsive-sm">
+                                    <table class="table table-hover table-sm" id="tableEscalaoIRS">
+                                      <thead>
+                                        <tr>
+                                          <th scope="col" class="text-center align-middle">Escalão</th>
+                                          <th scope="col" class="text-center align-middle">Rendimento coletável</th>
+                                          <th scope="col" class="text-center align-middle">Taxa</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        <tr>
+                                          <th>1º</th>
+                                          <td>Até 7 112€</td>
+                                          <td>14.5%</td>
+                                        </tr>
+                                        <tr>
+                                          <th>2º</th>
+                                          <td>De mais de 7 112€ até 10 732€</td>
+                                          <td>23.0%</td>
+                                        </tr>
+                                        <tr>
+                                          <th>3º</th>
+                                          <td>De mais de 10 732€ até 20 322€</td>
+                                          <td>28.5%</td>
+                                        </tr>
+                                        <tr>
+                                          <th>4º</th>
+                                          <td> De mais de 20 322€ até 25 075€</td>
+                                          <td>35.0%</td>
+                                        </tr>
+                                        <tr>
+                                          <th>5º</th>
+                                          <td>De mais de 25 075€ até 36 967€</td>
+                                          <td>37.0%</td>
+                                        </tr>
+                                        <tr>
+                                          <th>6º</th>
+                                          <td>De mais de 36 967€ até 80 000€</td>
+                                          <td>45.0%</td>
+                                        </tr>
+                                        <tr>
+                                          <th>7º</th>
+                                          <td>De mais de 80 000€ até 80 882€</td>
+                                          <td>47.5%</td>
+                                        </tr>
+                                        <tr>
+                                          <th>8º</th>
+                                          <td>De mais de 80 882€ até 250 000€</td>
+                                          <td>50.5%</td>
+                                        </tr>
+                                        <tr>
+                                          <th>9º</th>
+                                          <td>Superior a 250 000€</td>
+                                          <td>53.0%</td>
+                                        </tr>
 
-                        <h5 class="fw-bold">8º passo: Tenho IRS a pagar?</h5>
-                        <p class="lead">Todos os meses tem de pagar retenção na fonte. Se a soma do que pagou ao longo do ano em retenção na fonte for superior à coleta líquida calculado no ponto anterior tem direito a uma devolução por parte do Estado, caso contrário tem de pagar a diferença.</p>
+                                      </tbody>
+                                    </table>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <p class="lead">O rendimento coletável de 7 796€ enquadra-se no 2º escalão, ao qual corresponde uma taxa de 23%.</p>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="accordion-item">
+                          <h2 class="accordion-header" id="irsHeading5">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#irsCollapse5" aria-expanded="false" aria-controls="irsCollapse5">
+                              <span class="fw-bold">5º passo: Calcular a coleta total</span>
+                            </button>
+                          </h2>
+                          <div id="irsCollapse5" class="accordion-collapse collapse" aria-labelledby="irsHeading5" data-bs-parent="#accordionIRS">
+                            <div class="accordion-body">
+                              <p class="lead">Uma das formas de calcular a coleta total é multiplicar o rendimento coletável que coube em cada intervalo pela taxa correspondente.</p>
+                              <p class="lead">Portanto, no nosso exemplo as contas seriam: 1) 7 112€ x 14.5% e 2) 684€ (7 796€ - 7 112€) x 23%. Fazendo uma coleta total de 1 189€. Este valor é, por fim, <a href="https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs69.aspx" target="_blank">multiplicado pelo quoeficiente familiar</a>, neste caso o quoefience é de 1.</p>
+                              <p class="lead">Se o rendimento bruto anual menos a <a href="https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs70.aspx" target="_blank">coleta total for inferior ao mínimo de existência ou inferior ao salário mínimo</a> então não há existência de pagamentos em sede de IRS.</p>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="accordion-item">
+                          <h2 class="accordion-header" id="irsHeading6">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#irsCollapse6" aria-expanded="false" aria-controls="irsCollapse6">
+                              <span class="fw-bold">6º passo: Calcular as deduções à coleta</span>
+                            </button>
+                          </h2>
+                          <div id="irsCollapse6" class="accordion-collapse collapse" aria-labelledby="irsHeading6" data-bs-parent="#accordionIRS">
+                            <div class="accordion-body">
+                              <p class="lead">À coleta total é depois <a href="https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs78.aspx" target="_blank">removido as deduções à coleta</a>. Essas deduções têm como base as faturas declarados no ano civil ao que o IRS diz respeito e são as seguintes:</p>
+                              <ul>
+                                <li><a href="https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs78a.aspx" target="_blank">Deduções dos descendentes e ascendentes</a>: 726€ por cada dependente com menos de 3 anos de idade, 600€ por cada dependente com mais de 3 anos de idade, e 525€ por cada ascendente. Em famílias monopareintais o valor por ascendente é de 635€. Existe também um extra por cada dependente após o 1º filho;</li>
+                                <li><a href="https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs78b.aspx" target="_blank">Dedução das despesas gerais familiares</a>: 35% das despesas que não entram nas restantes categorias até um máximo de 250€ por cada sujeito passivo. No caso de famílias monoparentais a dedução é de 45% até o limite de 335€;</li>
+                                <li><a href="https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs78c.aspx" target="_blank">Dedução de despesas de saúde</a>: 15% até um limite de 1 000€;</li>
+                                <li><a href="https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs78d.aspx" target="_blank">Dedução de despesas de formação e educação</a>: 30% até um limite de 800€;</li>
+                                <li><a href="https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs78e.aspx" target="_blank">Dedução de encargos com imóveis</a>: 15% até um máximo que varia em função do rendimento coletável;</li>
+                                <li><a href="https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs78f.aspx" target="_blank">Dedução pela exigência de fatura</a>: valor do IVA de despesas com automóveis, motociclos, restauração, cabeleireiros e veterinários;</li>
+                                <li><a href="https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs83a.aspx" target="_blank">Dedução respeitantes a pensões de alimentos</a>: 20% do valor pago sem limite;</li>
+                                <li><a href="https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs84.aspx" target="_blank">Dedução com encargos com lares</a>: 25% até um limite de 403.75€;</li>
+                              </ul>
+                              <p class="lead">Tirando as deduções dos descendentes e ascendentes e das despesas gerais familiares existe um <a href="https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs78.aspx" target="_blank"> máximo de dedução</a> que varia em função do rendimento coletável. No exemplo considerado é de 2 486€.</p>
+                              <p class="lead">No exemplo que temos considerado, assumindo 87.5€ de dedução das despesas gerais familiares, 150€ de dedução de despesas de saúde, 240€ de dedução de despesas de formação e educação, e 600€ de eduções dos descendentes e ascendentes temos uma dedução à coleta de 1 078€.</p>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="accordion-item">
+                          <h2 class="accordion-header" id="irsHeading7">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#irsCollapse7" aria-expanded="false" aria-controls="irsCollapse7">
+                              <span class="fw-bold">7º passo: Calcular a coleta líquida</span>
+                            </button>
+                          </h2>
+                          <div id="irsCollapse7" class="accordion-collapse collapse" aria-labelledby="irsHeading7" data-bs-parent="#accordionIRS">
+                            <div class="accordion-body">
+                              <h5 class="fw-bold"></h5>
+                              <p class="lead">A coleta líquida é a coleta total (ponto 5) menos as deduções à coleta (ponto 6).</p>
+                              <p class="lead">No exemplo que temos considerado, o valor de IRS será de 1 189€ - 1 078€ = 111€.</p>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="accordion-item">
+                          <h2 class="accordion-header" id="irsHeading8">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#irsCollapse8" aria-expanded="false" aria-controls="irsCollapse8">
+                              <span class="fw-bold">8º passo: Tenho IRS a pagar?</span>
+                            </button>
+                          </h2>
+                          <div id="irsCollapse8" class="accordion-collapse collapse" aria-labelledby="irsHeading7" data-bs-parent="#accordionIRS">
+                            <div class="accordion-body">
+                              <p class="lead">Todos os meses tem de pagar retenção na fonte. Se a soma do que pagou ao longo do ano em retenção na fonte for superior à coleta líquida calculado no ponto anterior tem direito a uma devolução por parte do Estado, caso contrário tem de pagar a diferença.</p>
+                            </div>
+                          </div>
+                        </div>
 
                       </div>
                     </div>
@@ -683,7 +802,7 @@
             <div class="col-md-12">
               <h2>Verificação dos cálculos</h2>
               <p class="lead">Todos os cálculos foram validados no <a href="https://irs.portaldasfinancas.gov.pt/home.action" target="_blank">Portal das Finanças</a> e/ou no <a href="https://www.pwc.pt/pt/servicos/fiscalidade/simulador-irs.html" target="_blank">simulador da PwC</a>, bem como por fiscalistas independentes.</p>
-              <p class="lead">Como os cálculos do sistema actual são complexos e para mostrar total transparência nos mesmos, o código fonte pode ser encontrado neste <a href="#" target="_blank">repositório</a>. São aceites propostas de alteração ou correção de erros.</p>
+              <p class="lead">Como os cálculos do sistema actual são complexos e para mostrar total transparência nos mesmos, o código fonte pode ser encontrado neste <a href="https://github.com/il-intelligence/simulador-irs" target="_blank">repositório</a>. São aceites propostas de alteração ou correção de erros.</p>
             </div>
           </div>
 

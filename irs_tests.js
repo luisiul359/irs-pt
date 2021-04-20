@@ -22,26 +22,26 @@ if (ano===2019) {
   // solteiro
   var tests = [
     // [rendimento, valor obtido pelo simulador da pwc - similar ao simulador do Portal das Finanças]
-    [  500,      0.00],
-    [  550,      0.00],
-    [  635,      0.00],
-    [  650,      0.00],
-    [  675,    299.04],
-    [  700,    649.04],
-    [ 1200,   2427.13],
-    [ 1500,   3624.13],
-    [ 2000,   5855.49],
-    [ 2200,   6869.27],
-    [ 2800,   9900.31],
-    [ 3000,  10864.33],
-    [ 3500,  13667.83],
-    [ 4000,  16471.33],
-    [ 5750,  26283.58],
-    [ 6430,  30099.29],
-    [ 6500,  30523.87],
-    [ 8000,  39962.32],
-    [12285,  66924.83],
-    [25000, 148468.92]
+    [  500*14,      0.00],
+    [  550*14,      0.00],
+    [  635*14,      0.00],
+    [  650*14,      0.00],
+    [  675*14,    299.04],
+    [  700*14,    649.04],
+    [ 1200*14,   2427.13],
+    [ 1500*14,   3624.13],
+    [ 2000*14,   5855.49],
+    [ 2200*14,   6869.27],
+    [ 2800*14,   9900.31],
+    [ 3000*14,  10864.33],
+    [ 3500*14,  13667.83],
+    [ 4000*14,  16471.33],
+    [ 5750*14,  26283.58],
+    [ 6430*14,  30099.29],
+    [ 6500*14,  30523.87],
+    [ 8000*14,  39962.32],
+    [12285*14,  66924.83],
+    [25000*14, 148468.92]
   ];
   tests.forEach(test => {
     // há pequenas diferenças de arredondamentos, daí estarmos a garantir um erro máximo de 1€
@@ -85,7 +85,7 @@ if (ano===2019) {
       withinMarginError(
         calcularIRS(
           rendimentoA=test[0],
-          rendimentoB=1000,
+          rendimentoB=1000*14,
           estadoCivil=solteiro,
           tributacao=tributacaoSeparado,
           ascendentes=0,
@@ -101,7 +101,7 @@ if (ano===2019) {
       withinMarginError(
         calcularIRS(
           rendimentoA=test[0],
-          rendimentoB=1000,
+          rendimentoB=1000*14,
           estadoCivil=solteiro,
           tributacao=tributacaoConjunto,
           ascendentes=0,
@@ -118,28 +118,28 @@ if (ano===2019) {
   // casado + tributacao conjunta
   var tests = [
     // [rendimento A, redimento B, valor obtido pelo simulador do Portal das Finanças - o simulador da PWC aparenta estar errado quando é necessário considerar o Mínimo de Existência]
-    [   500,   100,      0.00],
-    [   500,   500,      0.00],
-    [   750,   500,   1347.34],
-    [  1000,   500,   1854.84],
-    [   635,   635,      0.00],
-    [   650,   635,      0.00],
-    [   675,   635,    299.04],
-    [   700,   635,    649.04],
-    [   900,   635,   1925.89],
-    [  1000,   635,   2171.39],
-    [  1000,  1000,   3346,68],
-    [  1500,  1000,   5253.26],
-    [  2500,  1500,  11710.98],
-    [  2500,  2000,  14256.54],  // 37%
-    [  3500,  2500,  21614.36],  // 45%
-    [  7000,  5000,  55370.66],  // 45%
-    [  7025,  5000,  55510.84],  // 45%
-    [  7500,  5000,  58174.16],  // 45%
-    [  7500,  5400,  60435.31],  // 47.5%
-    [  9000,  9000,  92509.24],  // 50.5%
-    [ 15000, 15000, 168016.84],  // 50.5%
-    [ 25000, 25000, 296937.84]   // 53%
+    [   500*14,   100*14,      0.00],
+    [   500*14,   500*14,      0.00],
+    [   750*14,   500*14,   1347.34],
+    [  1000*14,   500*14,   1854.84],
+    [   635*14,   635*14,      0.00],
+    [   650*14,   635*14,      0.00],
+    [   675*14,   635*14,    299.04],
+    [   700*14,   635*14,    649.04],
+    [   900*14,   635*14,   1925.89],
+    [  1000*14,   635*14,   2171.39],
+    [  1000*14,  1000*14,   3346,68],
+    [  1500*14,  1000*14,   5253.26],
+    [  2500*14,  1500*14,  11710.98],
+    [  2500*14,  2000*14,  14256.54],  // 37%
+    [  3500*14,  2500*14,  21614.36],  // 45%
+    [  7000*14,  5000*14,  55370.66],  // 45%
+    [  7025*14,  5000*14,  55510.84],  // 45%
+    [  7500*14,  5000*14,  58174.16],  // 45%
+    [  7500*14,  5400*14,  60435.31],  // 47.5%
+    [  9000*14,  9000*14,  92509.24],  // 50.5%
+    [ 15000*14, 15000*14, 168016.84],  // 50.5%
+    [ 25000*14, 25000*14, 296937.84]   // 53%
   ];
   tests.forEach(test => {
     // há pequenas diferenças de arredondamentos, daí estarmos a garantir um erro máximo de 1€
@@ -180,28 +180,28 @@ if (ano===2019) {
   // casado + tributacao separada
   var tests = [
     // [rendimento A, redimento B, valor obtido pelo simulador do Portal das Finanças]
-    [   500,   100,      0.00],
-    [   500,   500,      0.00],
-    [   750,   500,   1347.34],
-    [  1000,   500,   1854.84],
-    [   635,   635,      0.00],
-    [   650,   635,      0.00],
-    [   675,   635,    299.04],
-    [   700,   635,    649.04],
-    [   900,   635,   1925.89],
-    [  1000,   635,   2171.39],
-    [  1000,  1000,   3346,68],
-    [  1500,  1000,   5253.26],
-    [  2500,  1500,  11710.98],
-    [  2500,  2000,  14256.54],
-    [  3500,  2500,  21614.36],
-    [  7000,  5000,  55370.66],
-    [  7025,  5000,  55510.84],
-    [  7500,  5000,  58174.16],
-    [  7500,  5400,  60435.31],
-    [  9000,  9000,  92509.24],
-    [ 15000, 15000, 168016.84],
-    [ 25000, 25000, 296937.84]
+    [   500*14,   100*14,      0.00],
+    [   500*14,   500*14,      0.00],
+    [   750*14,   500*14,   1347.34],
+    [  1000*14,   500*14,   1854.84],
+    [   635*14,   635*14,      0.00],
+    [   650*14,   635*14,      0.00],
+    [   675*14,   635*14,    299.04],
+    [   700*14,   635*14,    649.04],
+    [   900*14,   635*14,   1925.89],
+    [  1000*14,   635*14,   2171.39],
+    [  1000*14,  1000*14,   3346,68],
+    [  1500*14,  1000*14,   5253.26],
+    [  2500*14,  1500*14,  11710.98],
+    [  2500*14,  2000*14,  14256.54],
+    [  3500*14,  2500*14,  21614.36],
+    [  7000*14,  5000*14,  55370.66],
+    [  7025*14,  5000*14,  55510.84],
+    [  7500*14,  5000*14,  58174.16],
+    [  7500*14,  5400*14,  60435.31],
+    [  9000*14,  9000*14,  92509.24],
+    [ 15000*14, 15000*14, 168016.84],
+    [ 25000*14, 25000*14, 296937.84]
   ];
   tests.forEach(test => {
     // há pequenas diferenças de arredondamentos, daí estarmos a garantir um erro máximo de 1€
@@ -334,7 +334,7 @@ if (ano===2019) {
   assert(
     withinMarginError(
       calcularIRS(
-        rendimentoA=1000,
+        rendimentoA=1000*14,
         rendimentoB=0,
         estadoCivil=solteiro,
         tributacao=tributacaoSeparado,
@@ -349,7 +349,7 @@ if (ano===2019) {
   );
   // deduçōes à coleta - habitação
   var res = calcularIRS(
-    rendimentoA=500,
+    rendimentoA=500*14,
     rendimentoB=0,
     estadoCivil=solteiro,
     tributacao=tributacaoSeparado,
@@ -367,7 +367,7 @@ if (ano===2019) {
     `Solteiro + deduçōes à coleta + habitação 1 + valor coleta`
   );
   var res = calcularIRS(
-    rendimentoA=3000,
+    rendimentoA=3000*14,
     rendimentoB=0,
     estadoCivil=solteiro,
     tributacao=tributacaoSeparado,
@@ -385,7 +385,7 @@ if (ano===2019) {
     `Solteiro + deduçōes à coleta + habitação 2 + valor coleta max`
   );
   var res = calcularIRS(
-    rendimentoA=14562/14,
+    rendimentoA=14562,
     rendimentoB=0,
     estadoCivil=solteiro,
     tributacao=tributacaoSeparado,
@@ -403,7 +403,7 @@ if (ano===2019) {
     `Solteiro + deduçōes à coleta + habitação 3 + valor coleta max`
   );
   var res = calcularIRS(
-    rendimentoA=10000,
+    rendimentoA=10000*14,
     rendimentoB=0,
     estadoCivil=solteiro,
     tributacao=tributacaoSeparado,
@@ -421,7 +421,7 @@ if (ano===2019) {
     `Solteiro + deduçōes à coleta + habitação 4 + valor coleta max`
   );
   var res = calcularIRS(
-    rendimentoA=2000,
+    rendimentoA=2000*14,
     rendimentoB=0,
     estadoCivil=solteiro,
     tributacao=tributacaoSeparado,
@@ -445,8 +445,8 @@ if (ano===2019) {
   assert(
     withinMarginError(
       calcularIRS(
-        rendimentoA=1000,
-        rendimentoB=1000,
+        rendimentoA=1000*14,
+        rendimentoB=1000*14,
         estadoCivil=casado,
         tributacao=tributacaoConjunto,
         ascendentes=0,
@@ -460,8 +460,8 @@ if (ano===2019) {
   );
   // deduçōes à coleta - habitação
   var res = calcularIRS(
-    rendimentoA=1000,
-    rendimentoB=1000,
+    rendimentoA=1000*14,
+    rendimentoB=1000*14,
     estadoCivil=casado,
     tributacao=tributacaoConjunto,
     ascendentes=0,
@@ -478,8 +478,8 @@ if (ano===2019) {
     `Casado + Conjunto + deduçōes à coleta + habitação 1 + valor coleta`
   );
   var res = calcularIRS(
-    rendimentoA=500,
-    rendimentoB=500,
+    rendimentoA=500*14,
+    rendimentoB=500*14,
     estadoCivil=casado,
     tributacao=tributacaoConjunto,
     ascendentes=0,
@@ -496,8 +496,8 @@ if (ano===2019) {
     `Casado + Conjunto + deduçōes à coleta + habitação 2 + valor coleta max`
   );
   var res = calcularIRS(
-    rendimentoA=1000,
-    rendimentoB=1000,
+    rendimentoA=1000*14,
+    rendimentoB=1000*14,
     estadoCivil=casado,
     tributacao=tributacaoConjunto,
     ascendentes=0,
@@ -514,8 +514,8 @@ if (ano===2019) {
     `Casado + Conjunto + deduçōes à coleta + habitação 3 + valor coleta max`
   );
   var res = calcularIRS(
-    rendimentoA=10000,
-    rendimentoB=10000,
+    rendimentoA=10000*14,
+    rendimentoB=10000*14,
     estadoCivil=casado,
     tributacao=tributacaoConjunto,
     ascendentes=0,
@@ -532,8 +532,8 @@ if (ano===2019) {
     `Casado + Conjunto + deduçōes à coleta + habitação 4 + valor coleta max`
   );
   var res = calcularIRS(
-    rendimentoA=1000,
-    rendimentoB=1000,
+    rendimentoA=1000*14,
+    rendimentoB=1000*14,
     estadoCivil=casado,
     tributacao=tributacaoConjunto,
     ascendentes=0,
@@ -550,8 +550,8 @@ if (ano===2019) {
     `Casado + Conjunto + deduçōes à coleta + habitação 5 + valor coleta max`
   );
   var res = calcularIRS(
-    rendimentoA=10000,
-    rendimentoB=10000,
+    rendimentoA=10000*14,
+    rendimentoB=10000*14,
     estadoCivil=casado,
     tributacao=tributacaoConjunto,
     ascendentes=0,
@@ -576,8 +576,8 @@ if (ano===2019) {
   assert(
     withinMarginError(
       calcularIRS(
-        rendimentoA=1500,
-        rendimentoB=1000,
+        rendimentoA=1500*14,
+        rendimentoB=1000*14,
         estadoCivil=casado,
         tributacao=tributacaoSeparado,
         ascendentes=0,
@@ -586,7 +586,7 @@ if (ano===2019) {
         0,100,100,0,100,100,0,0,0,0,0,0
       )[5],
       calcularIRS(
-        rendimentoA=1500,
+        rendimentoA=1500*14,
         rendimentoB=0,
         estadoCivil=solteiro,
         tributacao=tributacaoSeparado,
@@ -596,7 +596,7 @@ if (ano===2019) {
         0,100/2,100/2,0,100/2,100/2,0,0,0,0,0,0
       )[5] +
       calcularIRS(
-        rendimentoA=1000,
+        rendimentoA=1000*14,
         rendimentoB=0,
         estadoCivil=solteiro,
         tributacao=tributacaoSeparado,
@@ -611,8 +611,8 @@ if (ano===2019) {
   assert(
     withinMarginError(
       calcularIRS(
-        rendimentoA=1000,
-        rendimentoB=1500,
+        rendimentoA=1000*14,
+        rendimentoB=1500*14,
         estadoCivil=casado,
         tributacao=tributacaoSeparado,
         ascendentes=0,
@@ -621,7 +621,7 @@ if (ano===2019) {
         0,100,100,0,100,100,0,0,0,0,0,0
       )[5],
       calcularIRS(
-        rendimentoA=1500,
+        rendimentoA=1500*14,
         rendimentoB=0,
         estadoCivil=solteiro,
         tributacao=tributacaoSeparado,
@@ -631,7 +631,7 @@ if (ano===2019) {
         0,100/2,100/2,0,100/2,100/2,0,0,0,0,0,0
       )[5] +
       calcularIRS(
-        rendimentoA=1000,
+        rendimentoA=1000*14,
         rendimentoB=0,
         estadoCivil=solteiro,
         tributacao=tributacaoSeparado,
@@ -647,8 +647,8 @@ if (ano===2019) {
   assert(
     withinMarginError(
       calcularIRS(
-        rendimentoA=10000,
-        rendimentoB=10000,
+        rendimentoA=10000*14,
+        rendimentoB=10000*14,
         estadoCivil=casado,
         tributacao=tributacaoSeparado,
         ascendentes=0,
@@ -696,49 +696,47 @@ if (ano===2019) {
   );
 
   // deduçōes à coleta com dependentes
-  // TODO:
-  // confirmar alteracao do minimo de existencia com +3 dependentes
 
   // solteiro
-  //var filhos = [3,4,5,6,7];
-  //filhos.forEach(dependentes => {
-  //  assert(
-  //    withinMarginError(
-  //      calcularIRS(
-  //        rendimentoA=750,
-  //        rendimentoB=0,
-  //        estadoCivil=solteiro,
-  //        tributacao=tributacaoSeparado,
-  //        ascendentes=0,
-  //        dependentes3Menos=dependentes,
-  //        dependentes3Mais=0,
-  //        0,0,0,0,0,0,0,0,0,0,0,0
-  //      )[5],
-  //      0
-  //    ),
-  //    `Solteiro + dependentes ${dependentes}+ abaixo do mínimo de existência`
-  //  );
-  //});
+  var filhos = [3,4,5,6,7];
+  filhos.forEach(dependentes => {
+    assert(
+      withinMarginError(
+        calcularIRS(
+          rendimentoA=750*14,
+          rendimentoB=0,
+          estadoCivil=solteiro,
+          tributacao=tributacaoSeparado,
+          ascendentes=0,
+          dependentes3Menos=dependentes,
+          dependentes3Mais=0,
+          0,0,0,0,0,0,0,0,0,0,0,0
+        )[5],
+        0
+      ),
+      `Solteiro + dependentes ${dependentes}+ abaixo do mínimo de existência`
+    );
+  });
   // casado + tributacao conjunta
-  //var filhos = [3,4,5,6,7];
-  //filhos.forEach(dependentes => {
-  //  assert(
-  //    withinMarginError(
-  //      calcularIRS(
-  //        rendimentoA=750,
-  //        rendimentoB=1300,
-  //        estadoCivil=casado,
-  //        tributacao=tributacaoConjunto,
-  //        ascendentes=0,
-  //        dependentes3Menos=dependentes,
-  //        dependentes3Mais=0,
-  //        0,0,0,0,0,0,0,0,0,0,0,0
-  //      )[5],
-  //      0
-  //    ),
-  //    `Casado + Conjunto + dependentes ${dependentes}+ abaixo do mínimo de existência`
-  //  );
-  //});
+  var filhos = [3,4,5,6,7];
+  filhos.forEach(dependentes => {
+    assert(
+      withinMarginError(
+        calcularIRS(
+          rendimentoA=750*14,
+          rendimentoB=1300*14,
+          estadoCivil=casado,
+          tributacao=tributacaoConjunto,
+          ascendentes=0,
+          dependentes3Menos=dependentes,
+          dependentes3Mais=0,
+          0,0,0,0,0,0,0,0,0,0,0,0
+        )[5],
+        0
+      ),
+      `Casado + Conjunto + dependentes ${dependentes}+ abaixo do mínimo de existência`
+    );
+  });
   // casado + tributacao separada
 }
 
@@ -746,26 +744,26 @@ if (ano===2020) {
   // solteiro
   var tests = [
     // [rendimento, valor obtido pelo simulador da pwc - aparenta estar errado quando é necessário considerar o Mínimo de Existência]
-    [  500,      0.00],
-    [  550,      0.00],
-    [  635,      0.00],
-    [  650,      0.00],
-    [  675,    234.99],
-    [  700,    584.99],
-    [ 1200,   2423.56],
-    [ 1500,   3620.56],
-    [ 2000,   5847.97],
-    [ 2200,   6860.25],
-    [ 2800,   9891.29],
-    [ 3000,  10846.46],
-    [ 3500,  13649.96],
-    [ 4000,  16453.46],
-    [ 5750,  26265.71],
-    [ 6430,  30081.42],
-    [ 6500,  30498.74],
-    [ 8000,  39937.19],
-    [12285,  66899.70],
-    [25000, 148443.79]
+    [  500*14,      0.00],
+    [  550*14,      0.00],
+    [  635*14,      0.00],
+    [  650*14,      0.00],
+    [  675*14,    234.99],
+    [  700*14,    584.99],
+    [ 1200*14,   2423.56],
+    [ 1500*14,   3620.56],
+    [ 2000*14,   5847.97],
+    [ 2200*14,   6860.25],
+    [ 2800*14,   9891.29],
+    [ 3000*14,  10846.46],
+    [ 3500*14,  13649.96],
+    [ 4000*14,  16453.46],
+    [ 5750*14,  26265.71],
+    [ 6430*14,  30081.42],
+    [ 6500*14,  30498.74],
+    [ 8000*14,  39937.19],
+    [12285*14,  66899.70],
+    [25000*14, 148443.79]
   ];
   tests.forEach(test => {
     // há pequenas diferenças de arredondamentos, daí estarmos a garantir um erro máximo de 1€
@@ -809,7 +807,7 @@ if (ano===2020) {
       withinMarginError(
         calcularIRS(
           rendimentoA=test[0],
-          rendimentoB=1000,
+          rendimentoB=1000*14,
           estadoCivil=solteiro,
           tributacao=tributacaoSeparado,
           ascendentes=0,
@@ -825,7 +823,7 @@ if (ano===2020) {
       withinMarginError(
         calcularIRS(
           rendimentoA=test[0],
-          rendimentoB=1000,
+          rendimentoB=1000*14,
           estadoCivil=solteiro,
           tributacao=tributacaoConjunto,
           ascendentes=0,
@@ -842,28 +840,28 @@ if (ano===2020) {
   // casado + tributacao conjunta
   var tests = [
     // [rendimento A, redimento B, valor obtido pelo simulador da pwc - o simulador da PWC aparenta estar errado quando é necessário considerar o Mínimo de Existência]
-    [   500,   100,      0.00],
-    [   500,   500,      0.00],
-    [   750,   500,   1284.99],
-    [  1000,   500,   1854.84],
-    [   635,   635,      0.00],
-    [   650,   635,      0.00],
-    [   675,   635,    234.99],
-    [   700,   635,    584.99],
-    [   900,   635,   1925.90],
-    [  1000,   635,   2167.77],
-    [  1000,  1000,   3343.07],
-    [  1500,  1000,   5246.11],
-    [  2500,  1500,  11695.93],
-    [  2500,  2000,  14238.49],  // 37%
-    [  3500,  2500,  21578.63],  // 45%
-    [  7000,  5000,  55334.93],  // 45%
-    [  7025,  5000,  55475.11],  // 45%
-    [  7500,  5000,  58138.43],  // 45%
-    [  7500,  5400,  60399.58],  // 47.5%
-    [  9000,  9000,  92458.99],  // 50.5%
-    [ 15000, 15000, 167966.59],  // 50.5%
-    [ 25000, 25000, 296887.59]   // 53%
+    [   500*14,   100*14,      0.00],
+    [   500*14,   500*14,      0.00],
+    [   750*14,   500*14,   1284.99],
+    [  1000*14,   500*14,   1854.84],
+    [   635*14,   635*14,      0.00],
+    [   650*14,   635*14,      0.00],
+    [   675*14,   635*14,    234.99],
+    [   700*14,   635*14,    584.99],
+    [   900*14,   635*14,   1925.90],
+    [  1000*14,   635*14,   2167.77],
+    [  1000*14,  1000*14,   3343.07],
+    [  1500*14,  1000*14,   5246.11],
+    [  2500*14,  1500*14,  11695.93],
+    [  2500*14,  2000*14,  14238.49],  // 37%
+    [  3500*14,  2500*14,  21578.63],  // 45%
+    [  7000*14,  5000*14,  55334.93],  // 45%
+    [  7025*14,  5000*14,  55475.11],  // 45%
+    [  7500*14,  5000*14,  58138.43],  // 45%
+    [  7500*14,  5400*14,  60399.58],  // 47.5%
+    [  9000*14,  9000*14,  92458.99],  // 50.5%
+    [ 15000*14, 15000*14, 167966.59],  // 50.5%
+    [ 25000*14, 25000*14, 296887.59]   // 53%
   ];
   tests.forEach(test => {
     // há pequenas diferenças de arredondamentos, daí estarmos a garantir um erro máximo de 1€
@@ -904,28 +902,28 @@ if (ano===2020) {
   // casado + tributacao separada
   var tests = [
     // [rendimento A, redimento B, valor obtido pelo simulador da pwc - o simulador da PWC aparenta estar errado quando é necessário considerar o Mínimo de Existência]
-    [   500,   100,      0.00],
-    [   500,   500,      0.00],
-    [   750,   500,   1284.99],
-    [  1000,   500,   1854.84],
-    [   635,   635,      0.00],
-    [   650,   635,      0.00],
-    [   675,   635,    234.99],
-    [   700,   635,    584.99],
-    [   900,   635,   1925.90],
-    [  1000,   635,   2167.77],
-    [  1000,  1000,   3343.07],
-    [  1500,  1000,   5246.11],
-    [  2500,  1500,  11695.93],
-    [  2500,  2000,  14238.49],
-    [  3500,  2500,  21578.63],
-    [  7000,  5000,  55334.93],
-    [  7025,  5000,  55475.11],
-    [  7500,  5000,  58138.43],
-    [  7500,  5400,  60399.58],
-    [  9000,  9000,  92458.99],
-    [ 15000, 15000, 167966.59],
-    [ 25000, 25000, 296887.59]
+    [   500*14,   100*14,      0.00],
+    [   500*14,   500*14,      0.00],
+    [   750*14,   500*14,   1284.99],
+    [  1000*14,   500*14,   1854.84],
+    [   635*14,   635*14,      0.00],
+    [   650*14,   635*14,      0.00],
+    [   675*14,   635*14,    234.99],
+    [   700*14,   635*14,    584.99],
+    [   900*14,   635*14,   1925.90],
+    [  1000*14,   635*14,   2167.77],
+    [  1000*14,  1000*14,   3343.07],
+    [  1500*14,  1000*14,   5246.11],
+    [  2500*14,  1500*14,  11695.93],
+    [  2500*14,  2000*14,  14238.49],
+    [  3500*14,  2500*14,  21578.63],
+    [  7000*14,  5000*14,  55334.93],
+    [  7025*14,  5000*14,  55475.11],
+    [  7500*14,  5000*14,  58138.43],
+    [  7500*14,  5400*14,  60399.58],
+    [  9000*14,  9000*14,  92458.99],
+    [ 15000*14, 15000*14, 167966.59],
+    [ 25000*14, 25000*14, 296887.59]
   ];
   tests.forEach(test => {
     // há pequenas diferenças de arredondamentos, daí estarmos a garantir um erro máximo de 1€
@@ -1346,7 +1344,7 @@ assert(
 // sem dependentes
 assert(
   withinMarginError(
-    calcularIRS_IL(1000, 0, 0, solteiro),
+    calcularIRS_IL(1000*14, 0, 0, solteiro),
     0.15*14*(1000-650)
   ),
   `Proposta IL solteiro sem dependentes 1`
@@ -1354,7 +1352,7 @@ assert(
 // o rendimento do sujeito passivo B deve ser ignorado
 assert(
   withinMarginError(
-    calcularIRS_IL(1000, 100000, 0, solteiro),
+    calcularIRS_IL(1000*14, 100000*14, 0, solteiro),
     0.15*14*(1000-650)
   ),
   `Proposta IL solteiro sem dependentes 2`
@@ -1365,7 +1363,7 @@ assert(
 // sem dependentes
 assert(
   withinMarginError(
-    calcularIRS_IL(1000, 750, 0, casado),
+    calcularIRS_IL(1000*14, 750*14, 0, casado),
     0.15*14*(1000+750-650*2)
   ),
   `Proposta IL casado sem dependentes`
@@ -1377,7 +1375,7 @@ var filhos = [1,2,3];
 filhos.forEach(dependentes => {
   assert(
     withinMarginError(
-      calcularIRS_IL(2000, 0, dependentes, solteiro),
+      calcularIRS_IL(2000*14, 0, dependentes, solteiro),
       0.15*14*(2000-(650+400*dependentes))
     ),
     `Proposta IL solteiro com ${dependentes} dependentes`
@@ -1386,7 +1384,7 @@ filhos.forEach(dependentes => {
 // minimo de IRS é 0
 assert(
   withinMarginError(
-    calcularIRS_IL(1000, 0, 10, solteiro),
+    calcularIRS_IL(1000*14, 0, 10, solteiro),
     0
   ),
   `Proposta IL solteiro com 10 dependentes`
@@ -1399,7 +1397,7 @@ var filhos = [1,2,3];
 filhos.forEach(dependentes => {
   assert(
     withinMarginError(
-      calcularIRS_IL(2500, 1500, dependentes, casado),
+      calcularIRS_IL(2500*14, 1500*14, dependentes, casado),
       0.15*14*(2500-(650+200*dependentes)+1500-(650+200*dependentes))
     ),
     `Proposta IL casado com ${dependentes} dependentes`

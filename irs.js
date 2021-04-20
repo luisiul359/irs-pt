@@ -295,24 +295,20 @@ function abaixoMinimoExistencia(rendimentoAnualBruto, rendimentoColectavel, depe
 }
 
 
-function calcularIRS(rendimentoA, rendimentoB, estadoCivil, tributacao, ascendentes, dependentes3Menos, dependentes3Mais,
+function calcularIRS(rendimentoAnualBrutoA, rendimentoAnualBrutoB, estadoCivil, tributacao, ascendentes, dependentes3Menos, dependentes3Mais,
   despesasGerais, despesasSaude, despesasEducacao, despesasHabitacao, despesasLares, despesasPensoesAlimentos,
   despesasAutomoveis, despesasMotociclos, despesasRestauracao, despesasCabeleireiros, despesasVeterinario, despesasPasses)
   {
 
   // ter a certeza que este rendimento é 0 nesta condição
   if (estadoCivil==='Solteiro, divorciado, viúvo ou separado judicialmente') {
-    rendimentoB = 0;
+    rendimentoAnualBrutoB = 0;
   }
-
-  // Estamos a pedir o salário bruto mensal considerando 14 meses
-  var rendimentoAnualBrutoA = rendimentoA * 14;
-  var rendimentoAnualBrutoB = rendimentoB * 14;
 
   // Rendimento Colectável
   var [rendimentoColectavelA, deducaoEspecificaA] = rendimentoColectavel(rendimentoAnualBrutoA);
   var [rendimentoColectavelB, deducaoEspecificaB] = rendimentoColectavel(rendimentoAnualBrutoB);
-  var deducoesEspecificas = deducaoEspecificaA + (rendimentoB>0 ? deducaoEspecificaB: 0);
+  var deducoesEspecificas = deducaoEspecificaA + (rendimentoAnualBrutoB>0 ? deducaoEspecificaB: 0);
 
   // calcular o IRS progressivamente
   var escaloes = [escalao0, escalao1, escalao2, escalao3, escalao4,
@@ -393,7 +389,7 @@ function calcularIRS(rendimentoA, rendimentoB, estadoCivil, tributacao, ascenden
     coletaTotal = coletaTotal * quoeficienteFamiliar;
 
     var coletaLiquida = calcularColetaLiquida(rendimentoAnualBrutoTotal, rendimentoAnualBrutoA, coletaTotal, quoeficienteFamiliar, thresholdIRS) +
-                        (rendimentoB>0 ? calcularColetaLiquida(rendimentoAnualBrutoTotal, rendimentoAnualBrutoB, coletaTotal, quoeficienteFamiliar, thresholdIRS): 0);
+                        (rendimentoAnualBrutoB>0 ? calcularColetaLiquida(rendimentoAnualBrutoTotal, rendimentoAnualBrutoB, coletaTotal, quoeficienteFamiliar, thresholdIRS): 0);
 
     // Garantir que a coleta liquida não é superior à total
     coletaLiquida = Math.min(coletaLiquida, coletaTotal);
@@ -438,26 +434,22 @@ function calcularIRS(rendimentoA, rendimentoB, estadoCivil, tributacao, ascenden
 }
 
 
-function calcularIRS_IL(rendimentoA, rendimentoB, dependentes, estadoCivil) {
+function calcularIRS_IL(rendimentoAnualBrutoA, rendimentoAnualBrutoB, dependentes, estadoCivil) {
 
   // https://iniciativaliberal.pt/legislativas2019/propostas/taxa-irs-15/
 
   // ter a certeza que este rendimento é 0 nesta condição
   if (estadoCivil==='Solteiro, divorciado, viúvo ou separado judicialmente') {
-    rendimentoB = 0;
+    rendimentoAnualBrutoB = 0;
   }
 
-  // Estamos a pedir o salário bruto mensal considerando 14 meses
-  var rendimentoAnualBrutoA = rendimentoA * 14;
-  var rendimentoAnualBrutoB = rendimentoB * 14;
-
-  var sujeitosPassivos = rendimentoB > 0 ? 2 : 1;
+  var sujeitosPassivos = rendimentoAnualBrutoB > 0 ? 2 : 1;
 
   // Ponto C.6 do https://iniciativaliberal.pt/legislativas2019/propostas/taxa-irs-15/
   var valorIsencao = isencaoMensalIL * 14 * sujeitosPassivos;
 
   // Ponto D.5 do https://iniciativaliberal.pt/legislativas2019/propostas/taxa-irs-15/
-  var isencaoMensalILExtra = rendimentoB > 0 ? 200 : 400;
+  var isencaoMensalILExtra = rendimentoAnualBrutoB > 0 ? 200 : 400;
   valorIsencao += isencaoMensalILExtra * dependentes * 14 * sujeitosPassivos;
 
   // Ponto C.1 do https://iniciativaliberal.pt/legislativas2019/propostas/taxa-irs-15/
@@ -498,18 +490,14 @@ function calcularDeducoesColeta_IL_3escaloes(dependentes3Menos, dependentes3Mais
 }
 
 
-function calcularIRS_IL_3escaloes(rendimentoA, rendimentoB, estadoCivil, tributacao, dependentes3Menos, dependentes3Mais,despesasPensoesAlimentos) {
+function calcularIRS_IL_3escaloes(rendimentoAnualBrutoA, rendimentoAnualBrutoB, estadoCivil, tributacao, dependentes3Menos, dependentes3Mais,despesasPensoesAlimentos) {
 
   // https://app.parlamento.pt/webutils/docs/doc.pdf?Path=6148523063446f764c304653546d56304c334e706447567a4c31684a566b784652793950525338794d4449784d6a41794d4445774d544976554545764f57457859324d324e444d745a6a557a595330304d7a63314c546c6b59546b744e57566c5a6d4934595452685932466d4c6e426b5a673d3d&Fich=9a1cc643-f53a-4375-9da9-5eefb8a4acaf.pdf&Inline=true
 
   // ter a certeza que este rendimento é 0 nesta condição
   if (estadoCivil==='Solteiro, divorciado, viúvo ou separado judicialmente') {
-    rendimentoB = 0;
+    rendimentoAnualBrutoB = 0;
   }
-
-  // Estamos a pedir o salário bruto mensal considerando 14 meses
-  var rendimentoAnualBrutoA = rendimentoA * 14;
-  var rendimentoAnualBrutoB = rendimentoB * 14;
 
   var ilescalao0 = {valor:   9800, percentagem: 0.000, escalao: 0};
   var ilescalao1 = {valor:  50000, percentagem: 0.150, escalao: 1};
@@ -576,7 +564,7 @@ function calcularIRS_IL_3escaloes(rendimentoA, rendimentoB, estadoCivil, tributa
     coletaTotal = coletaTotal * quoeficienteFamiliar;
 
     var coletaLiquida = calcularColetaLiquida(rendimentoAnualBrutoTotal, rendimentoAnualBrutoA, coletaTotal, quoeficienteFamiliar, thresholdIRSIL) +
-                        (rendimentoB>0 ? calcularColetaLiquida(rendimentoAnualBrutoTotal, rendimentoAnualBrutoB, coletaTotal, quoeficienteFamiliar, thresholdIRSIL): 0);
+                        (rendimentoAnualBrutoB>0 ? calcularColetaLiquida(rendimentoAnualBrutoTotal, rendimentoAnualBrutoB, coletaTotal, quoeficienteFamiliar, thresholdIRSIL): 0);
 
     // Garantir que a coleta liquida não é superior à total
     coletaLiquida = Math.min(coletaLiquida, coletaTotal);
@@ -614,11 +602,9 @@ function calcularIRS_IL_3escaloes(rendimentoA, rendimentoB, estadoCivil, tributa
 }
 
 
-function calcularRendLiquido(rendimentoA, rendimentoB, pagarIRS) {
+function calcularRendLiquido(rendimentoAnualBrutoA, rendimentoAnualBrutoB, pagarIRS) {
 
-  // Estamos a pedir o salário bruto mensal considerando 14 meses
-  var rendimentoAnualBrutoA = rendimentoA * 14;
-  var rendimentoAnualBrutoB = rendimentoB * 14;
+  // Estamos a pedir o salário bruto anual considerando 14 meses
   var rendimentoAnualBruto = rendimentoAnualBrutoA + rendimentoAnualBrutoB;
 
   // Contribuições: TSU trabalhador (Quota parte da contribuição para a Segurança Social)
@@ -652,11 +638,11 @@ function atualizarTabelaIRS(irsActual, irsIL, irsIL3e, rendimentoA, rendimentoB,
     rendimentoB = 0;
   }
 
-  var rendimentoAnual = (rendimentoA+rendimentoB)*14;
+  var rendimentoAnual = rendimentoA+rendimentoB;
 
   // Resumo das opções escolhidas
   var p_summary = $('#summary');
-  var pRendimento = estadoCivil==='Casado/Unido de facto' ? `${numeral(rendimentoA).format(formato)}€ + ${numeral(rendimentoB).format(formato)}€` : `${numeral(rendimentoA).format(formato)}€`;
+  var pRendimento = estadoCivil==='Casado/Unido de facto' ? `${numeral(rendimentoA).format(formato)}€ + ${numeral(rendimentoB/14).format(formato)}€` : `${numeral(rendimentoA/14).format(formato)}€`;
   var pEstadoCivilTributacao = estadoCivil==='Casado/Unido de facto' ? `Casado | ${tributacao}` : 'Solteiro';
   var pAscendetes = ascendentes===0 ? 'Sem ascendentes' : `${ascendentes} ascendente(s)`;
   var pDependentes = dependentes===0 ? 'Sem dependentes' : `${dependentes} dependente(s)`;
@@ -767,8 +753,8 @@ function atualizarTabelaRendimentos(rendimentoBase, irsActualBase, valorTrabalha
 
     [0, 50, 100, 200, 300].forEach(incremento => {
 
-      var rendA = rendimentoA + incremento;
-      var rendB = rendimentoB > 0 ? rendimentoB + incremento : 0;
+      var rendA = rendimentoA + incremento*14;
+      var rendB = rendimentoB > 0 ? rendimentoB + incremento*14 : 0;
 
       var irsActual = calcularIRS(
         rendA, rendB, estadoCivil, tributacao, ascendentes, dependentes3Menos, dependentes3Mais,
@@ -790,8 +776,8 @@ function atualizarTabelaRendimentos(rendimentoBase, irsActualBase, valorTrabalha
           <tr>
             <td class="text-right">+${pad(incremento)}€</td>
 
-            <td class="text-right">${pad((rendA+rendB)*14)}€</td>
-            <td class="text-right text-muted"><small>+${pad((rendA+rendB)*14-rendimentoBase)}€</small></td>
+            <td class="text-right">${pad(rendA+rendB)}€</td>
+            <td class="text-right text-muted"><small>+${pad(rendA+rendB-rendimentoBase)}€</small></td>
 
             <td class="text-right">${pad(pagoEmpresa)}€</td>
             <td class="text-right text-muted"><small>+${pad(pagoEmpresa-pagoEmpresaBase)}€</small></td>
@@ -873,7 +859,7 @@ function main() {
     );
 
     atualizarTabelaRendimentos(
-      (rendimentoA+rendimentoB)*14, irsActual, valorTrabalhador, valorEstado, pagoEmpresa,
+      (rendimentoA+rendimentoB), irsActual, valorTrabalhador, valorEstado, pagoEmpresa,
       rendimentoA, rendimentoB, estadoCivil, tributacao, ascendentes, dependentes3Menos, dependentes3Mais,
       despesasGerais, despesasSaude, despesasEducacao, despesasHabitacao, despesasLares, despesasPensoesAlimentos,
       despesasAutomoveis, despesasMotociclos, despesasRestauracao, despesasCabeleireiros, despesasVeterinario, despesasPasses
@@ -954,4 +940,4 @@ function changeVideo(btn,ep) {
       $('#navbarCollapse').collapse('hide');
     });
   }, false)
-}())
+}());

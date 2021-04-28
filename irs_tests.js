@@ -1344,7 +1344,7 @@ assert(
 // sem dependentes
 assert(
   withinMarginError(
-    calcularIRS_IL(1000*14, 0, 0, solteiro),
+    calcularIRS_IL(1000*14, 0, solteiro, tributacaoSeparado, 0, 0, 0),
     0.15*14*(1000-650)
   ),
   `Proposta IL solteiro sem dependentes 1`
@@ -1352,7 +1352,7 @@ assert(
 // o rendimento do sujeito passivo B deve ser ignorado
 assert(
   withinMarginError(
-    calcularIRS_IL(1000*14, 100000*14, 0, solteiro),
+    calcularIRS_IL(1000*14, 100000*14, solteiro, tributacaoSeparado, 0, 0, 0),
     0.15*14*(1000-650)
   ),
   `Proposta IL solteiro sem dependentes 2`
@@ -1363,7 +1363,7 @@ assert(
 // sem dependentes
 assert(
   withinMarginError(
-    calcularIRS_IL(1000*14, 750*14, 0, casado),
+    calcularIRS_IL(1000*14, 750*14, casado, tributacaoSeparado, 0, 0, 0),
     0.15*14*(1000+750-650*2)
   ),
   `Proposta IL casado sem dependentes`
@@ -1375,7 +1375,7 @@ var filhos = [1,2,3];
 filhos.forEach(dependentes => {
   assert(
     withinMarginError(
-      calcularIRS_IL(2000*14, 0, dependentes, solteiro),
+      calcularIRS_IL(2000*14, 0, solteiro, tributacaoSeparado, dependentes, 0, 0),
       0.15*14*(2000-(650+400*dependentes))
     ),
     `Proposta IL solteiro com ${dependentes} dependentes`
@@ -1384,7 +1384,7 @@ filhos.forEach(dependentes => {
 // minimo de IRS é 0
 assert(
   withinMarginError(
-    calcularIRS_IL(1000*14, 0, 10, solteiro),
+    calcularIRS_IL(1000*14, 0, solteiro, tributacaoSeparado, 10, 0, 0),
     0
   ),
   `Proposta IL solteiro com 10 dependentes`
@@ -1397,7 +1397,7 @@ var filhos = [1,2,3];
 filhos.forEach(dependentes => {
   assert(
     withinMarginError(
-      calcularIRS_IL(2500*14, 1500*14, dependentes, casado),
+      calcularIRS_IL(2500*14, 1500*14, casado, tributacaoSeparado, dependentes, 0, 0),
       0.15*14*(2500-(650+200*dependentes)+1500-(650+200*dependentes))
     ),
     `Proposta IL casado com ${dependentes} dependentes`

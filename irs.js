@@ -434,9 +434,11 @@ function calcularIRS(rendimentoAnualBrutoA, rendimentoAnualBrutoB, estadoCivil, 
 }
 
 
-function calcularIRS_IL(rendimentoAnualBrutoA, rendimentoAnualBrutoB, dependentes, estadoCivil) {
+function calcularIRS_IL(rendimentoAnualBrutoA, rendimentoAnualBrutoB, estadoCivil, tributacao, dependentes3Menos, dependentes3Mais, despesasPensoesAlimentos) {
 
   // https://iniciativaliberal.pt/legislativas2019/propostas/taxa-irs-15/
+
+  dependentes = dependentes3Menos + dependentes3Mais;
 
   // ter a certeza que este rendimento é 0 nesta condição
   if (estadoCivil==='Solteiro, divorciado, viúvo ou separado judicialmente') {
@@ -490,7 +492,7 @@ function calcularDeducoesColeta_IL_3escaloes(dependentes3Menos, dependentes3Mais
 }
 
 
-function calcularIRS_IL_3escaloes(rendimentoAnualBrutoA, rendimentoAnualBrutoB, estadoCivil, tributacao, dependentes3Menos, dependentes3Mais,despesasPensoesAlimentos) {
+function calcularIRS_IL_3escaloes(rendimentoAnualBrutoA, rendimentoAnualBrutoB, estadoCivil, tributacao, dependentes3Menos, dependentes3Mais, despesasPensoesAlimentos) {
 
   // https://app.parlamento.pt/webutils/docs/doc.pdf?Path=6148523063446f764c304653546d56304c334e706447567a4c31684a566b784652793950525338794d4449784d6a41794d4445774d544976554545764f57457859324d324e444d745a6a557a595330304d7a63314c546c6b59546b744e57566c5a6d4934595452685932466d4c6e426b5a673d3d&Fich=9a1cc643-f53a-4375-9da9-5eefb8a4acaf.pdf&Inline=true
 
@@ -628,7 +630,7 @@ function calcularRendLiquido(rendimentoAnualBrutoA, rendimentoAnualBrutoB, pagar
 }
 
 
-function atualizarTabelaIRS(irsActual, irsIL, irsIL3e, rendimentoA, rendimentoB, estadoCivil,
+function atualizarTabelaIRS(irsActual, irsIL, il_escaloes, rendimentoA, rendimentoB, estadoCivil,
   tributacao, ascendentes, dependentes, deducoesEspecificas, rendimentoColectavel,
   taxa, coletaTotal, deducoesColeta, valorTrabalhador, valorEstado)
 {
@@ -692,10 +694,13 @@ function atualizarTabelaIRS(irsActual, irsIL, irsIL3e, rendimentoA, rendimentoB,
   var fIrsIL = numeral(irsIL).format(formato);
   span_irsIL.text(`${fIrsIL}€`);
 
-  // Onde irá aparecer o valor de IRS segundo a proposta da IL de 2 escalões
-  var span_irsIL3e = $('#irsIL3e');
-  var fIrsIL3e = numeral(irsIL3e).format(formato);
-  span_irsIL3e.text(`${fIrsIL3e}€`);
+  var span_irsILTexto = $('#nomeProposta');
+  if (il_escaloes === "1") {
+    var fIrsILTexto = "Flat tax (15%)";
+  } else {
+    var fIrsILTexto = "2 escalões (15%; 27.5%)";
+  }
+  span_irsILTexto.text(fIrsILTexto);
 
   // Diferença entre o IRS do actual sistema e da proposta da IL
   var span_diff = $('#diff');
@@ -726,7 +731,7 @@ function pad(value) {
 function atualizarTabelaRendimentos(rendimentoBase, irsActualBase, valorTrabalhadorBase, valorEstadoBase, pagoEmpresaBase,
   rendimentoA, rendimentoB, estadoCivil, tributacao, ascendentes, dependentes3Menos, dependentes3Mais,
   despesasGerais, despesasSaude, despesasEducacao, despesasHabitacao, despesasLares, despesasPensoesAlimentos,
-  despesasAutomoveis, despesasMotociclos, despesasRestauracao, despesasCabeleireiros, despesasVeterinario, despesasPasses)
+  despesasAutomoveis, despesasMotociclos, despesasRestauracao, despesasCabeleireiros, despesasVeterinario, despesasPasses, fn)
   {
 
     $("#tabelaRendimentos").empty()
@@ -762,8 +767,8 @@ function atualizarTabelaRendimentos(rendimentoBase, irsActualBase, valorTrabalha
         despesasAutomoveis, despesasMotociclos, despesasRestauracao, despesasCabeleireiros, despesasVeterinario, despesasPasses
       )[5];
 
-      var irsIL = calcularIRS_IL(
-        rendA, rendB, dependentes3Menos + dependentes3Mais, estadoCivil
+      var irsIL = fn(
+        rendA, rendB, estadoCivil, tributacao, dependentes3Menos, dependentes3Mais, despesasPensoesAlimentos, estadoCivil
       );
 
       var [valorTrabalhador, valorEstado, pagoEmpresa] = calcularRendLiquido(rendA, rendB, irsActual);
@@ -802,7 +807,7 @@ function atualizarTabelaRendimentos(rendimentoBase, irsActualBase, valorTrabalha
 }
 
 
-function main() {
+function main(il_escaloes) {
 
     // Obter os valores inseridos pelo utilizador no formulário
     var rendimentoA = Number($("#rendA").val());
@@ -834,6 +839,10 @@ function main() {
       rendimentoB = 0;
     }
 
+    if (debug) {
+      console.log(il_escaloes);
+    }
+
     //ano = Number($("#anoCivil").val());
     //carregarEscaloesIRS();
 
@@ -843,18 +852,22 @@ function main() {
       despesasAutomoveis, despesasMotociclos, despesasRestauracao, despesasCabeleireiros, despesasVeterinario, despesasPasses
     );
 
-    var irsIL = calcularIRS_IL(
-      rendimentoA, rendimentoB, dependentes3Menos + dependentes3Mais, estadoCivil
-    );
-
-    var irsIL3e = calcularIRS_IL_3escaloes(
-      rendimentoA, rendimentoB, estadoCivil, tributacao, dependentes3Menos, dependentes3Mais,despesasPensoesAlimentos
-    );
+    if (il_escaloes === "1") {
+      var irsIL = calcularIRS_IL(
+        rendimentoA, rendimentoB, estadoCivil, tributacao, dependentes3Menos, dependentes3Mais,despesasPensoesAlimentos
+      );
+      var fn = calcularIRS_IL;
+    } else {
+      var irsIL = calcularIRS_IL_3escaloes(
+        rendimentoA, rendimentoB, estadoCivil, tributacao, dependentes3Menos, dependentes3Mais,despesasPensoesAlimentos
+      );
+      var fn = calcularIRS_IL_3escaloes;
+    }
 
     var [valorTrabalhador, valorEstado, pagoEmpresa] = calcularRendLiquido(rendimentoA, rendimentoB, irsActual);
 
     atualizarTabelaIRS(
-      irsActual, irsIL, irsIL3e, rendimentoA, rendimentoB, estadoCivil, tributacao, ascendentes, dependentes3Menos + dependentes3Mais,
+      irsActual, irsIL, il_escaloes, rendimentoA, rendimentoB, estadoCivil, tributacao, ascendentes, dependentes3Menos + dependentes3Mais,
       deducoesEspecificas, rendimentoColectavel, taxa, coletaTotal, deducoesColeta, valorTrabalhador, valorEstado
     );
 
@@ -862,7 +875,7 @@ function main() {
       (rendimentoA+rendimentoB), irsActual, valorTrabalhador, valorEstado, pagoEmpresa,
       rendimentoA, rendimentoB, estadoCivil, tributacao, ascendentes, dependentes3Menos, dependentes3Mais,
       despesasGerais, despesasSaude, despesasEducacao, despesasHabitacao, despesasLares, despesasPensoesAlimentos,
-      despesasAutomoveis, despesasMotociclos, despesasRestauracao, despesasCabeleireiros, despesasVeterinario, despesasPasses
+      despesasAutomoveis, despesasMotociclos, despesasRestauracao, despesasCabeleireiros, despesasVeterinario, despesasPasses, fn
     );
 
 }
@@ -909,7 +922,7 @@ function changeVideo(btn,ep) {
           event.stopPropagation()
         } else {
           if ($(form).attr('id') === "formIRS") {
-            main();
+            main($(event.submitter).val());
           } else {
             $("#tabelaRendimentos").show();
           }

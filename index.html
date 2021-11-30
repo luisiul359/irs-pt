@@ -420,6 +420,38 @@
           </div>
 
           <div class="row">
+            <hr class="mb-4">
+            <div class="col-md-12">
+              <form class="needs-validation" novalidate="" id="formAumento">
+                <div class="row text-center">
+                  
+                    <div class="col-md-6 mb-3">
+                      <button class="btn btn-primary btn-md btn-block" type="submit">Se a minha empresa me aumentasse em?</button>
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text">EUR</span>
+                        </div>
+                        <input type="number" min="0" class="form-control" id="aumento" placeholder="" value="" required="">
+                        <div class="invalid-feedback">
+                          Valor inválido ou falta rendimento sujeito passivo.
+                        </div>
+                      </div>
+                    </div>
+                  
+                </div>
+              </form>
+            </div>
+            <div class="py-2 px-3 text-center col-md-12">
+              <p class="blockquote d-none" id="aumentoTexto"></p>
+            </div>
+            <hr class="mb-4">
+          </div>
+
+          <!--
+          <div class="row">
             <div class="col-md-12">
               <form class="needs-validation" novalidate="" id="formRend">
                 <hr class="mb-4">
@@ -441,6 +473,7 @@
               </div>
             </div>
           </div>
+        -->
 
         </div>
       </div>

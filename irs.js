@@ -871,14 +871,77 @@ function main(il_escaloes) {
       deducoesEspecificas, rendimentoColectavel, taxa, coletaTotal, deducoesColeta, valorTrabalhador, valorEstado
     );
 
-    atualizarTabelaRendimentos(
-      (rendimentoA+rendimentoB), irsActual, valorTrabalhador, valorEstado, pagoEmpresa,
-      rendimentoA, rendimentoB, estadoCivil, tributacao, ascendentes, dependentes3Menos, dependentes3Mais,
-      despesasGerais, despesasSaude, despesasEducacao, despesasHabitacao, despesasLares, despesasPensoesAlimentos,
-      despesasAutomoveis, despesasMotociclos, despesasRestauracao, despesasCabeleireiros, despesasVeterinario, despesasPasses, fn
-    );
+    //atualizarTabelaRendimentos(
+    //  (rendimentoA+rendimentoB), irsActual, valorTrabalhador, valorEstado, pagoEmpresa,
+    //  rendimentoA, rendimentoB, estadoCivil, tributacao, ascendentes, dependentes3Menos, dependentes3Mais,
+    //  despesasGerais, despesasSaude, despesasEducacao, despesasHabitacao, despesasLares, despesasPensoesAlimentos,
+    //  despesasAutomoveis, despesasMotociclos, despesasRestauracao, despesasCabeleireiros, despesasVeterinario, despesasPasses, fn
+    //);
 
 }
+
+function aumento() {
+
+  // Obter os valores inseridos pelo utilizador no formulário
+  var rendimentoA = Number($("#rendA").val());
+  // Quando não há rendimento fica com 0
+  var rendimentoB = Number($("#rendB").val());
+  var estadoCivil = $("#estadoCivil option:selected").text();
+  var tributacao = $("#tributacao option:selected").text();
+  var ascendentes = Number($("#ascendentes").val());
+  var dependentes3Menos = Number($("#dependentes3menos").val());
+  // Maior ou igual
+  var dependentes3Mais = Number($("#dependentes3mais").val());
+
+  // Deduçōes à coleta - quando não há valor fica com 0
+  var despesasGerais = Number($("#despesasGerais").val());
+  var despesasSaude = Number($("#despesasSaude").val());
+  var despesasEducacao = Number($("#despesasEducacao").val());
+  var despesasHabitacao = Number($("#despesasHabitacao").val());
+  var despesasLares = Number($("#despesasLares").val());
+  var despesasPensoesAlimentos = Number($("#despesasPensoesAlimentos").val());
+  var despesasAutomoveis = Number($("#despesasAutomoveis").val());
+  var despesasMotociclos = Number($("#despesasMotociclos").val());
+  var despesasRestauracao = Number($("#despesasRestauracao").val());
+  var despesasCabeleireiros = Number($("#despesasCabeleireiros").val());
+  var despesasVeterinario = Number($("#despesasVeterinario").val());
+  var despesasPasses = Number($("#despesasPasses").val());
+
+  // ter a certeza que este rendimento é 0 nesta condição
+  if (estadoCivil==='Solteiro, divorciado, viúvo ou separado judicialmente') {
+    rendimentoB = 0;
+  }
+
+  var irsActualBase = calcularIRS(
+    rendimentoA, rendimentoB, estadoCivil, tributacao, ascendentes, dependentes3Menos, dependentes3Mais,
+    despesasGerais, despesasSaude, despesasEducacao, despesasHabitacao, despesasLares, despesasPensoesAlimentos,
+    despesasAutomoveis, despesasMotociclos, despesasRestauracao, despesasCabeleireiros, despesasVeterinario, despesasPasses
+  )[5];
+
+  var [valorTrabalhadorBase, valorEstadoBase, pagoEmpresaBase] = calcularRendLiquido(rendimentoA, rendimentoB, irsActualBase);
+
+  var aumento = Number($("#aumento").val());
+  var rendA = rendimentoA + aumento*14;
+  var rendB = rendimentoB > 0 ? rendimentoB + aumento*14 : 0;
+
+  var irsActual = calcularIRS(
+    rendA, rendB, estadoCivil, tributacao, ascendentes, dependentes3Menos, dependentes3Mais,
+    despesasGerais, despesasSaude, despesasEducacao, despesasHabitacao, despesasLares, despesasPensoesAlimentos,
+    despesasAutomoveis, despesasMotociclos, despesasRestauracao, despesasCabeleireiros, despesasVeterinario, despesasPasses
+  )[5];
+
+  var [valorTrabalhador, valorEstado, pagoEmpresa] = calcularRendLiquido(rendA, rendB, irsActual);
+  
+  var d1 = numeral((valorTrabalhador-valorTrabalhadorBase)/14).format(formato);
+  var d2 = numeral((valorEstado-valorEstadoBase)/14).format(formato);
+  var d3 = numeral((pagoEmpresa-pagoEmpresaBase)/14).format(formato);
+
+  p_aumento = $('#aumentoTexto');
+  p_aumento.text(`Se a tua empresa te aumentar em ${aumento}€ bruto mensal: ela paga ${d3}€, o estado fica com ${d1}€ e tu ficas com ${d2}€.`);
+  p_aumento.removeClass('d-none');
+  
+}
+
 
 /*
 function changeVideo(btn,ep) {
@@ -924,7 +987,15 @@ function changeVideo(btn,ep) {
           if ($(form).attr('id') === "formIRS") {
             main($(event.submitter).val());
           } else {
-            $("#tabelaRendimentos").show();
+            //$("#tabelaRendimentos").show();
+            if ($('#formIRS')[0].checkValidity()) {
+              aumento();
+            } else {
+              event.preventDefault()
+              event.stopPropagation()
+              $('#formAumento').addClass('was-validated');
+
+            }
           }
           // Avoid form from resetting the selected values
           event.preventDefault();

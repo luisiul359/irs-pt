@@ -937,7 +937,7 @@ function aumento() {
   var d3 = numeral((pagoEmpresa-pagoEmpresaBase)/14).format(formato);
 
   p_aumento = $('#aumentoTexto');
-  p_aumento.text(`Se a tua empresa te aumentar em ${aumento}€ bruto mensal: ela paga ${d3}€, o estado fica com ${d1}€ e tu ficas com ${d2}€.`);
+  p_aumento.text(`Se a tua empresa te aumentar em ${aumento}€ bruto mensal: ela paga ${d3}€, o estado fica com ${d2}€ e tu ficas com ${d1}€.`);
   p_aumento.removeClass('d-none');
   
 }

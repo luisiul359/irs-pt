@@ -68,17 +68,17 @@ sujeitoA.forEach(rendimentoA => {
                 }
 
                 var [deducoesEspecificas, rendimentoColectavel, taxa, coletaTotal, deducoesColeta, irsActual] = calcularIRS(
-                  rendimentoA, rendimentoB, estadoCivil, tributacao, ascendentes, dependentes3Menos, dependentes3Mais,
+                  rendimentoA*14, rendimentoB*14, estadoCivil, tributacao, ascendentes, dependentes3Menos, dependentes3Mais,
                   despesasGerais, despesasSaude, despesasEducacao, despesasHabitacao, despesasLares, despesasPensoesAlimentos,
                   despesasAutomoveis, despesasMotociclos, despesasRestauracao, despesasCabeleireiros, despesasVeterinario, despesasPasses
                 );
 
                 //var irsIL = calcularIRS_IL(
-                //  rendimentoA, rendimentoB, dependentes3Menos + dependentes3Mais, estadoCivil
+                //  rendimentoA*14, rendimentoB*14, estadoCivil, tributacao, dependentes3Menos, dependentes3Mais, despesasPensoesAlimentos
                 //);
 
                 var irsIL = calcularIRS_IL_3escaloes(
-                  rendimentoA, rendimentoB, estadoCivil, tributacao, dependentes3Menos, dependentes3Mais, despesasPensoesAlimentos
+                  rendimentoA*14, rendimentoB*14, estadoCivil, tributacao, dependentes3Menos, dependentes3Mais, despesasPensoesAlimentos
                 );
 
                 if (irsActual > 0 && irsActual - irsIL < 100) {

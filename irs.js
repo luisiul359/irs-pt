@@ -644,7 +644,7 @@ function atualizarTabelaIRS(irsActual, irsIL, il_escaloes, rendimentoA, rendimen
 
   // Resumo das opções escolhidas
   var p_summary = $('#summary');
-  var pRendimento = estadoCivil==='Casado/Unido de facto' ? `${numeral(rendimentoA).format(formato)}€ + ${numeral(rendimentoB/14).format(formato)}€` : `${numeral(rendimentoA/14).format(formato)}€`;
+  var pRendimento = estadoCivil==='Casado/Unido de facto' ? `${numeral(rendimentoA/14).format(formato)}€ + ${numeral(rendimentoB/14).format(formato)}€` : `${numeral(rendimentoA/14).format(formato)}€`;
   var pEstadoCivilTributacao = estadoCivil==='Casado/Unido de facto' ? `Casado | ${tributacao}` : 'Solteiro';
   var pAscendetes = ascendentes===0 ? 'Sem ascendentes' : `${ascendentes} ascendente(s)`;
   var pDependentes = dependentes===0 ? 'Sem dependentes' : `${dependentes} dependente(s)`;
@@ -768,7 +768,7 @@ function atualizarTabelaRendimentos(rendimentoBase, irsActualBase, valorTrabalha
       )[5];
 
       var irsIL = fn(
-        rendA, rendB, estadoCivil, tributacao, dependentes3Menos, dependentes3Mais, despesasPensoesAlimentos, estadoCivil
+        rendA, rendB, estadoCivil, tributacao, dependentes3Menos, dependentes3Mais, despesasPensoesAlimentos
       );
 
       var [valorTrabalhador, valorEstado, pagoEmpresa] = calcularRendLiquido(rendA, rendB, irsActual);

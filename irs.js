@@ -29,8 +29,8 @@ var thresholdIRS = Math.max(minimoExistencia, salarioMinimo);
 // https://app.parlamento.pt/webutils/docs/doc.pdf?Path=6148523063446f764c304653546d56304c334e706447567a4c31684a566b784652793950525338794d4449784d6a41794d4445774d544976554545764f57457859324d324e444d745a6a557a595330304d7a63314c546c6b59546b744e57566c5a6d4934595452685932466d4c6e426b5a673d3d&Fich=9a1cc643-f53a-4375-9da9-5eefb8a4acaf.pdf&Inline=true
 var thresholdIRSIL = Math.max(minimoExistenciaIL, salarioMinimo);
 
-// https://iniciativaliberal.pt/legislativas2019/propostas/taxa-irs-15/
-const isencaoMensalIL = 650;
+// TODO: adicionar url
+const isencaoMensalIL = 664;
 
 // Escalões IRS
 // 2019
@@ -406,9 +406,9 @@ function calcularIRS(rendimentoAnualBrutoA, rendimentoAnualBrutoB, estadoCivil, 
 }
 
 
-function calcularIRS_IL(rendimentoAnualBrutoA, rendimentoAnualBrutoB, estadoCivil, tributacao, dependentes3Menos, dependentes3Mais, despesasPensoesAlimentos) {
+function calcularIRS_IL(rendimentoAnualBrutoA, rendimentoAnualBrutoB, estadoCivil, dependentes3Menos, dependentes3Mais, ascendentes) {
 
-  // https://iniciativaliberal.pt/legislativas2019/propostas/taxa-irs-15/
+  // TODO: adicionar url
 
   dependentes = dependentes3Menos + dependentes3Mais;
 
@@ -417,19 +417,18 @@ function calcularIRS_IL(rendimentoAnualBrutoA, rendimentoAnualBrutoB, estadoCivi
     rendimentoAnualBrutoB = 0;
   }
 
+  // a isenção é para cada sujeito passivo
   var sujeitosPassivos = rendimentoAnualBrutoB > 0 ? 2 : 1;
 
-  // Ponto C.6 do https://iniciativaliberal.pt/legislativas2019/propostas/taxa-irs-15/
   var valorIsencao = isencaoMensalIL * 14 * sujeitosPassivos;
-
-  // Ponto D.5 do https://iniciativaliberal.pt/legislativas2019/propostas/taxa-irs-15/
   var isencaoMensalILExtra = rendimentoAnualBrutoB > 0 ? 200 : 400;
-  valorIsencao += isencaoMensalILExtra * dependentes * 14 * sujeitosPassivos;
+  valorIsencao += isencaoMensalILExtra * (dependentes + ascendentes) * 14 * sujeitosPassivos;
 
-  // Ponto C.1 do https://iniciativaliberal.pt/legislativas2019/propostas/taxa-irs-15/
+  var taxa_irs = rendimentoAnualBrutoA + rendimentoAnualBrutoB > 30000 ? 0.28 : 0.15;
+  
   var irs = Math.max(
     0,
-    (rendimentoAnualBrutoA + rendimentoAnualBrutoB - valorIsencao) * 0.15
+    (rendimentoAnualBrutoA + rendimentoAnualBrutoB - valorIsencao) * taxa_irs
   );
 
   if (debug) {
@@ -437,142 +436,6 @@ function calcularIRS_IL(rendimentoAnualBrutoA, rendimentoAnualBrutoB, estadoCivi
   }
 
   return irs
-}
-
-
-function calcularDeducoesColeta_IL_3escaloes(dependentes3Menos, dependentes3Mais, estadoCivil, tributacaoSeparado,
-  despesasPensoesAlimentos)
-  {
-
-  var valorDependentes = 5600;
-
-  var deducoesDependentes = dependentes3Menos*valorDependentes +
-                            dependentes3Mais*valorDependentes;
-  if ((estadoCivil==='Casado/Unido de facto') && tributacaoSeparado) {
-    deducoesDependentes = deducoesDependentes / 2;
-  }
-
-  // Ponto 1 do https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs83a.aspx
-  var deducoesPensoesAlimentos = 0.20*despesasPensoesAlimentos;
-
-  if (debug) {
-    console.log('deducoesDependentes', deducoesDependentes);
-    console.log('deducoesPensoesAlimentos', deducoesPensoesAlimentos);
-  }
-
-  return deducoesDependentes + deducoesPensoesAlimentos;
-}
-
-
-function calcularIRS_IL_3escaloes(rendimentoAnualBrutoA, rendimentoAnualBrutoB, estadoCivil, tributacao, dependentes3Menos, dependentes3Mais, despesasPensoesAlimentos) {
-
-  // https://app.parlamento.pt/webutils/docs/doc.pdf?Path=6148523063446f764c304653546d56304c334e706447567a4c31684a566b784652793950525338794d4449784d6a41794d4445774d544976554545764f57457859324d324e444d745a6a557a595330304d7a63314c546c6b59546b744e57566c5a6d4934595452685932466d4c6e426b5a673d3d&Fich=9a1cc643-f53a-4375-9da9-5eefb8a4acaf.pdf&Inline=true
-
-  // ter a certeza que este rendimento é 0 nesta condição
-  if (estadoCivil==='Solteiro, divorciado, viúvo ou separado judicialmente') {
-    rendimentoAnualBrutoB = 0;
-  }
-
-  var ilescalao0 = {valor:   9800, percentagem: 0.000, escalao: 0};
-  var ilescalao1 = {valor:  50000, percentagem: 0.150, escalao: 1};
-  var ilescalao2 = {valor:  50000, percentagem: 0.275, escalao: 2};
-
-  // calcular o IRS progressivamente
-  var escaloes = [ilescalao0, ilescalao1];
-
-  if ((estadoCivil==='Casado/Unido de facto') && (tributacao==='Separado')) {
-    var [coletaTotalA, escalaoA] = calcularColetaTotal(rendimentoAnualBrutoA, escaloes, ilescalao0, ilescalao2);
-    var [coletaTotalB, escalaoB] = calcularColetaTotal(rendimentoAnualBrutoB, escaloes, ilescalao0, ilescalao2);
-    var coletaTotal = coletaTotalA + coletaTotalB;
-    var taxa = `${numeral(escalaoA.percentagem*100).format('0,0.0')}% | ${numeral(escalaoB.percentagem*100).format('0,0.0')}%`;
-
-    var coletaLiquidaA = calcularColetaLiquida(rendimentoAnualBrutoA, rendimentoAnualBrutoA, coletaTotal, 1, thresholdIRSIL);
-    var coletaLiquidaB = calcularColetaLiquida(rendimentoAnualBrutoB, rendimentoAnualBrutoB, coletaTotal, 1, thresholdIRSIL);
-
-    // Garantir que a coleta liquida não é superior à total
-    coletaLiquidaA = Math.min(coletaLiquidaA, coletaTotalA);
-    coletaLiquidaB = Math.min(coletaLiquidaB, coletaTotalB);
-
-    // Ponto 7 do https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs78.aspx
-    var deducoesColetaA = calcularDeducoesColeta_IL_3escaloes(dependentes3Menos, dependentes3Mais, estadoCivil, true, despesasPensoesAlimentos/2);
-    var deducoesColetaB = calcularDeducoesColeta_IL_3escaloes(dependentes3Menos, dependentes3Mais, estadoCivil, true, despesasPensoesAlimentos/2);
-
-    // https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs70.aspx
-    var abaixoExistenciaA = rendimentoAnualBrutoA < minimoExistenciaIL;
-    if (abaixoExistenciaA) {
-      deducoesColetaA = Math.min(deducoesColetaA, coletaTotalA);
-    }
-    var abaixoExistenciaB = rendimentoAnualBrutoB < minimoExistenciaIL;
-    if (abaixoExistenciaB) {
-      deducoesColetaB = Math.min(deducoesColetaB, coletaTotalB);
-    }
-
-    // Deduçōes à Coleta
-    // https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs78.aspx
-    var deducoesColeta = deducoesColetaA + deducoesColetaB;
-    var coletaLiquida = (abaixoExistenciaA ? 0 : (coletaLiquidaA - Math.min(coletaLiquidaA,deducoesColetaA))) + (abaixoExistenciaB ? 0 : (coletaLiquidaB - Math.min(coletaLiquidaB,deducoesColetaB)));
-
-    if (debug) {
-      console.log('rendimentoAnualBrutoA', rendimentoAnualBrutoA);
-      console.log('rendimentoAnualBrutoB', rendimentoAnualBrutoB);
-      console.log('coletaTotalA', coletaTotalA);
-      console.log('coletaTotalB', coletaTotalB);
-      console.log('deducoesColetaA', deducoesColetaA);
-      console.log('deducoesColetaB', deducoesColetaB);
-      console.log('coletaLiquida', coletaLiquida);
-    }
-  } else {
-    var rendimentoAnualBrutoTotal = rendimentoAnualBrutoA + rendimentoAnualBrutoB;
-
-    // Quoeficiente Familiar
-    // https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs69.aspx
-    var quoeficienteFamiliar = (tributacao==='Conjunto') && (estadoCivil==='Casado/Unido de facto') ? 2 : 1;
-
-    // Ponto 1 do https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs69.aspx
-    var rendimentoFinal = rendimentoAnualBrutoTotal / quoeficienteFamiliar;
-
-    var [coletaTotal, escalao] = calcularColetaTotal(rendimentoFinal, escaloes, ilescalao0, ilescalao2);
-    var taxa = `${numeral(escalao.percentagem*100).format('0,0.0')}%`;
-
-    // Ponto 3 do https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs69.aspx
-    coletaTotal = coletaTotal * quoeficienteFamiliar;
-
-    var coletaLiquida = calcularColetaLiquida(rendimentoAnualBrutoTotal, rendimentoAnualBrutoA, coletaTotal, quoeficienteFamiliar, thresholdIRSIL) +
-                        (rendimentoAnualBrutoB>0 ? calcularColetaLiquida(rendimentoAnualBrutoTotal, rendimentoAnualBrutoB, coletaTotal, quoeficienteFamiliar, thresholdIRSIL): 0);
-
-    // Garantir que a coleta liquida não é superior à total
-    coletaLiquida = Math.min(coletaLiquida, coletaTotal);
-
-    // Ponto 7 do https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs78.aspx
-    var deducoesColeta = calcularDeducoesColeta_IL_3escaloes(
-      dependentes3Menos, dependentes3Mais, estadoCivil, false, despesasPensoesAlimentos
-    );
-
-    // https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs70.aspx
-    var abaixoExistencia = rendimentoAnualBrutoTotal < minimoExistenciaIL;
-    if (abaixoExistencia) {
-      deducoesColeta = Math.min(deducoesColeta, coletaTotal);
-    }
-
-    // Deduçōes à Coleta
-    coletaLiquida = abaixoExistencia ? 0 : (coletaLiquida - Math.min(coletaLiquida, deducoesColeta));
-
-    if (debug) {
-      console.log('rendimentoAnualBrutoTotal', rendimentoAnualBrutoTotal);
-      console.log('quoeficienteFamiliar', quoeficienteFamiliar);
-      console.log('coletaTotal', coletaTotal);
-      console.log('deducoesColeta', deducoesColeta);
-      console.log('coletaLiquida', coletaLiquida);
-    }
-  }
-
-  var irs = Math.max(0, coletaLiquida);
-
-  if (debug) {
-    console.log('IRS_IL_3escaloes', irs);
-  }
-
-  return irs;
 }
 
 
@@ -602,7 +465,7 @@ function calcularRendLiquido(rendimentoAnualBrutoA, rendimentoAnualBrutoB, pagar
 }
 
 
-function atualizarTabelaIRS(irsActual, irsIL, il_escaloes, rendimentoA, rendimentoB, estadoCivil,
+function atualizarTabelaIRS(irsActual, irsIL, rendimentoA, rendimentoB, estadoCivil,
   tributacao, ascendentes, dependentes, deducoesEspecificas, rendimentoColectavel,
   taxa, coletaTotal, deducoesColeta, valorTrabalhador, valorEstado)
 {
@@ -665,14 +528,6 @@ function atualizarTabelaIRS(irsActual, irsIL, il_escaloes, rendimentoA, rendimen
   var span_irsIL = $('#irsIL');
   var fIrsIL = numeral(irsIL).format(formato);
   span_irsIL.text(`${fIrsIL}€`);
-
-  var span_irsILTexto = $('#nomeProposta');
-  if (il_escaloes === "1") {
-    var fIrsILTexto = "Flat tax (15%)";
-  } else {
-    var fIrsILTexto = "2 escalões (15%; 27.5%)";
-  }
-  span_irsILTexto.text(fIrsILTexto);
 
   // Diferença entre o IRS do actual sistema e da proposta da IL
   var span_diff = $('#diff');
@@ -779,7 +634,7 @@ function atualizarTabelaRendimentos(rendimentoBase, irsActualBase, valorTrabalha
 }
 
 
-function main(il_escaloes) {
+function main() {
 
     // Obter os valores inseridos pelo utilizador no formulário
     var rendimentoA = Number($("#rendA").val());
@@ -811,10 +666,6 @@ function main(il_escaloes) {
       rendimentoB = 0;
     }
 
-    if (debug) {
-      console.log(il_escaloes);
-    }
-
     //ano = Number($("#anoCivil").val());
     //carregarEscaloesIRS(); // not implemented
 
@@ -824,22 +675,14 @@ function main(il_escaloes) {
       despesasAutomoveis, despesasMotociclos, despesasRestauracao, despesasCabeleireiros, despesasVeterinario, despesasPasses
     );
 
-    if (il_escaloes === "1") {
-      var irsIL = calcularIRS_IL(
-        rendimentoA, rendimentoB, estadoCivil, tributacao, dependentes3Menos, dependentes3Mais,despesasPensoesAlimentos
-      );
-      var fn = calcularIRS_IL;
-    } else {
-      var irsIL = calcularIRS_IL_3escaloes(
-        rendimentoA, rendimentoB, estadoCivil, tributacao, dependentes3Menos, dependentes3Mais,despesasPensoesAlimentos
-      );
-      var fn = calcularIRS_IL_3escaloes;
-    }
+    var irsIL = calcularIRS_IL(
+      rendimentoA, rendimentoB, estadoCivil, dependentes3Menos, dependentes3Mais, ascendentes
+    );
 
     var [valorTrabalhador, valorEstado, pagoEmpresa] = calcularRendLiquido(rendimentoA, rendimentoB, irsActual);
 
     atualizarTabelaIRS(
-      irsActual, irsIL, il_escaloes, rendimentoA, rendimentoB, estadoCivil, tributacao, ascendentes, dependentes3Menos + dependentes3Mais,
+      irsActual, irsIL, rendimentoA, rendimentoB, estadoCivil, tributacao, ascendentes, dependentes3Menos + dependentes3Mais,
       deducoesEspecificas, rendimentoColectavel, taxa, coletaTotal, deducoesColeta, valorTrabalhador, valorEstado
     );
 
@@ -957,7 +800,7 @@ function changeVideo(btn,ep) {
           event.stopPropagation()
         } else {
           if ($(form).attr('id') === "formIRS") {
-            main($(event.submitter).val());
+            main();
           } else {
             //$("#tabelaRendimentos").show();
             if ($('#formIRS')[0].checkValidity()) {

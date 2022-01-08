@@ -1,9 +1,10 @@
-var ano = 2020;
+var ano = 2021;
 const debug = false;
 
 // https://dre.pt/home/-/dre/117942337/details/maximized
 // https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/legislacao/diplomas_legislativos/Documents/Portaria_27_2020.pdf
-var IAS = ano===2019 ? 435.76 : 438.81;
+// https://dre.pt/dre/detalhe/portaria/294-2021-175780035
+var IAS = ano===2019 ? 435.76 : (ano===2020 ? 438.81 : 443.2);
 
 // Mínimo de Existência
 // https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs70.aspx
@@ -15,7 +16,8 @@ var minimoExistenciaIL = 14*700;
 // Salário mínimo nacional
 // https://dre.pt/home/-/dre/117503933/details/maximized
 // https://dre.pt/home/-/dre/126365738/details/maximized
-var salarioMinimo = ano===2019 ? 600 * 14 : 635 * 14;
+// https://files.dre.pt/1s/2021/12/23601/0000500009.pdf
+var salarioMinimo = ano===2019 ? 600 * 14 : (ano===2019 ? 635 * 14 : 705 * 14);
 
 // Valor mínimo de Deduçōes Específicas
 // Página 8: https://info.portaldasfinancas.gov.pt/pt/apoio_contribuinte/Folhetos_informativos/Documents/IRS_folheto_2019.pdf
@@ -50,6 +52,8 @@ if (ano===2019) {
   var escalao7 = {valor: 250000, percentagem: 0.505, escalao: 7};
   var escalao8 = {valor: 250000, percentagem: 0.530, escalao: 8};
 } else {
+  // 2020
+  // 2021
   var escalao0 = {valor:   7112, percentagem: 0.145, escalao: 0};
   var escalao1 = {valor:  10732, percentagem: 0.230, escalao: 1};
   var escalao2 = {valor:  20322, percentagem: 0.285, escalao: 2};
@@ -69,38 +73,6 @@ const formato2 = '0,0';
 // TODO:
 // Ponto 1 d) do https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs78d.aspx
 // PPRs
-
-
-function carregarEscaloesIRS() {
-  if (ano===2019) {
-    escalao0 = {valor:   7091, percentagem: 0.145, escalao: 0};
-    escalao1 = {valor:  10700, percentagem: 0.230, escalao: 1};
-    escalao2 = {valor:  20261, percentagem: 0.285, escalao: 2};
-    escalao3 = {valor:  25000, percentagem: 0.350, escalao: 3};
-    escalao4 = {valor:  36856, percentagem: 0.370, escalao: 4};
-    // €80,000 e não €80,882 devido aos escalōes adicionais de solidariedade
-    escalao5 = {valor:  80000, percentagem: 0.450, escalao: 5};
-    escalao6 = {valor:  80640, percentagem: 0.475, escalao: 6};
-    escalao7 = {valor: 250000, percentagem: 0.505, escalao: 7};
-    escalao8 = {valor: 250000, percentagem: 0.530, escalao: 8};
-  } else {
-    escalao0 = {valor:   7112, percentagem: 0.145, escalao: 0};
-    escalao1 = {valor:  10732, percentagem: 0.230, escalao: 1};
-    escalao2 = {valor:  20322, percentagem: 0.285, escalao: 2};
-    escalao3 = {valor:  25075, percentagem: 0.350, escalao: 3};
-    escalao4 = {valor:  36967, percentagem: 0.370, escalao: 4};
-    // €80,000 e não €80,882 devido aos escalōes adicionais de solidariedade
-    escalao5 = {valor:  80000, percentagem: 0.450, escalao: 5};
-    escalao6 = {valor:  80882, percentagem: 0.475, escalao: 6};
-    escalao7 = {valor: 250000, percentagem: 0.505, escalao: 7};
-    escalao8 = {valor: 250000, percentagem: 0.530, escalao: 8};
-  }
-
-  IAS = ano===2019 ? 435.76 : 438.81;
-  minimoExistencia = 1.5 * 14 * IAS;
-  salarioMinimo = ano===2019 ? 600 * 14 : 635 * 14;
-  thresholdIRS = Math.max(minimoExistencia, salarioMinimo);
-}
 
 
 function rendimentoColectavel(rendimentoAnualBruto) {
@@ -758,8 +730,8 @@ function atualizarTabelaRendimentos(rendimentoBase, irsActualBase, valorTrabalha
 
     [0, 50, 100, 200, 300].forEach(incremento => {
 
-      var rendA = rendimentoA + incremento*14;
-      var rendB = rendimentoB > 0 ? rendimentoB + incremento*14 : 0;
+      var rendA = rendimentoA + incremento*14/2;
+      var rendB = rendimentoB > 0 ? rendimentoB + incremento*14/2 : 0;
 
       var irsActual = calcularIRS(
         rendA, rendB, estadoCivil, tributacao, ascendentes, dependentes3Menos, dependentes3Mais,
@@ -844,7 +816,7 @@ function main(il_escaloes) {
     }
 
     //ano = Number($("#anoCivil").val());
-    //carregarEscaloesIRS();
+    //carregarEscaloesIRS(); // not implemented
 
     var [deducoesEspecificas, rendimentoColectavel, taxa, coletaTotal, deducoesColeta, irsActual] = calcularIRS(
       rendimentoA, rendimentoB, estadoCivil, tributacao, ascendentes, dependentes3Menos, dependentes3Mais,
@@ -922,7 +894,7 @@ function aumento() {
 
   var aumento = Number($("#aumento").val());
   var rendA = rendimentoA + aumento*14;
-  var rendB = rendimentoB > 0 ? rendimentoB + aumento*14 : 0;
+  var rendB = rendimentoB;
 
   var irsActual = calcularIRS(
     rendA, rendB, estadoCivil, tributacao, ascendentes, dependentes3Menos, dependentes3Mais,
@@ -937,7 +909,7 @@ function aumento() {
   var d3 = numeral((pagoEmpresa-pagoEmpresaBase)/14).format(formato);
 
   p_aumento = $('#aumentoTexto');
-  p_aumento.text(`Se a tua empresa te aumentar em ${aumento}€ bruto mensal: ela paga ${d3}€, o estado fica com ${d2}€ e tu ficas com ${d1}€.`);
+  p_aumento.text(`Se a empresa aumentar o sujeito passivo A em ${aumento}€ bruto mensal: ela paga ${d3}€, o estado fica com ${d2}€ e o sujeito passivo A fica com ${d1}€.`);
   p_aumento.removeClass('d-none');
   
 }

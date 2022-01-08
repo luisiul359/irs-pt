@@ -424,12 +424,14 @@ function calcularIRS_IL(rendimentoAnualBrutoA, rendimentoAnualBrutoB, estadoCivi
   var isencaoMensalILExtra = rendimentoAnualBrutoB > 0 ? 200 : 400;
   valorIsencao += isencaoMensalILExtra * (dependentes + ascendentes) * 14 * sujeitosPassivos;
 
-  var taxa_irs = rendimentoAnualBrutoA + rendimentoAnualBrutoB > 30000 ? 0.28 : 0.15;
-  
-  var irs = Math.max(
-    0,
-    (rendimentoAnualBrutoA + rendimentoAnualBrutoB - valorIsencao) * taxa_irs
-  );
+  var rendColetavel = rendimentoAnualBrutoA + rendimentoAnualBrutoB - valorIsencao;
+
+  // calcular irs final
+  if (rendColetavel > 30000) {
+    var irs = 30000 * 0.15 + (rendColetavel-30000) * 0.28;
+  } else {
+    var irs = rendColetavel * 0.15;
+  }
 
   if (debug) {
     console.log('IRS_IL', irs);
@@ -752,7 +754,7 @@ function aumento() {
   var d3 = numeral((pagoEmpresa-pagoEmpresaBase)/14).format(formato);
 
   p_aumento = $('#aumentoTexto');
-  p_aumento.text(`Se a empresa aumentar o sujeito passivo A em ${aumento}€ bruto mensal: ela paga ${d3}€, o estado fica com ${d2}€ e o sujeito passivo A fica com ${d1}€.`);
+  p_aumento.text(`Se a empresa aumentar o sujeito passivo A em ${aumento}€ bruto mensal: esta paga ${d3}€, o Estado fica com ${d2}€ e o sujeito passivo A fica com ${d1}€.`);
   p_aumento.removeClass('d-none');
   
 }

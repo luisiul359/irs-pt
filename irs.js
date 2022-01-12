@@ -10,9 +10,6 @@ var IAS = ano===2019 ? 435.76 : (ano===2020 ? 438.81 : 443.2);
 // https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs70.aspx
 var minimoExistencia = 1.5 * 14 * IAS;
 
-// https://app.parlamento.pt/webutils/docs/doc.pdf?Path=6148523063446f764c304653546d56304c334e706447567a4c31684a566b784652793950525338794d4449784d6a41794d4445774d544976554545764f57457859324d324e444d745a6a557a595330304d7a63314c546c6b59546b744e57566c5a6d4934595452685932466d4c6e426b5a673d3d&Fich=9a1cc643-f53a-4375-9da9-5eefb8a4acaf.pdf&Inline=true
-var minimoExistenciaIL = 14*700;
-
 // Salário mínimo nacional
 // https://dre.pt/home/-/dre/117503933/details/maximized
 // https://dre.pt/home/-/dre/126365738/details/maximized
@@ -25,12 +22,6 @@ const minDeducaoEspecifica = 4104;
 
 // Ponto 4 do https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs70.aspx
 var thresholdIRS = Math.max(minimoExistencia, salarioMinimo);
-
-// https://app.parlamento.pt/webutils/docs/doc.pdf?Path=6148523063446f764c304653546d56304c334e706447567a4c31684a566b784652793950525338794d4449784d6a41794d4445774d544976554545764f57457859324d324e444d745a6a557a595330304d7a63314c546c6b59546b744e57566c5a6d4934595452685932466d4c6e426b5a673d3d&Fich=9a1cc643-f53a-4375-9da9-5eefb8a4acaf.pdf&Inline=true
-var thresholdIRSIL = Math.max(minimoExistenciaIL, salarioMinimo);
-
-// TODO: adicionar url
-const isencaoMensalIL = 664;
 
 // Escalões IRS
 // 2019
@@ -408,7 +399,7 @@ function calcularIRS(rendimentoAnualBrutoA, rendimentoAnualBrutoB, estadoCivil, 
 
 function calcularIRS_IL(rendimentoAnualBrutoA, rendimentoAnualBrutoB, estadoCivil, dependentes3Menos, dependentes3Mais, ascendentes) {
 
-  // TODO: adicionar url
+  // https://iniciativaliberal.pt/wp-content/uploads/2022/01/Iniciativa-Liberal-Programa-Eleitoral-2022.pdf
 
   dependentes = dependentes3Menos + dependentes3Mais;
 
@@ -420,7 +411,7 @@ function calcularIRS_IL(rendimentoAnualBrutoA, rendimentoAnualBrutoB, estadoCivi
   // a isenção é para cada sujeito passivo
   var sujeitosPassivos = rendimentoAnualBrutoB > 0 ? 2 : 1;
 
-  var valorIsencao = isencaoMensalIL * 14 * sujeitosPassivos;
+  var valorIsencao = thresholdIRS * sujeitosPassivos;
   var isencaoMensalILExtra = rendimentoAnualBrutoB > 0 ? 200 : 400;
   valorIsencao += isencaoMensalILExtra * (dependentes + ascendentes) * 14 * sujeitosPassivos;
 

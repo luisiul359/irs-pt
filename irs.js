@@ -438,6 +438,8 @@ function calcularIRS_IL(rendimentoAnualBrutoA, rendimentoAnualBrutoB, estadoCivi
     }
   }
 
+  irs = Math.max(0, irs);
+
   if (debug) {
     console.log('IRS_IL', irs);
   }

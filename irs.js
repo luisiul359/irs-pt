@@ -397,7 +397,17 @@ function calcularIRS(rendimentoAnualBrutoA, rendimentoAnualBrutoB, estadoCivil, 
 }
 
 
-function calcularIRS_IL(rendimentoAnualBrutoA, rendimentoAnualBrutoB, estadoCivil, dependentes3Menos, dependentes3Mais, ascendentes) {
+function calcularIRS_IL_flat(rendimentoAnualBrutoA, rendimentoAnualBrutoB, estadoCivil, dependentes3Menos, dependentes3Mais, ascendentes) {
+  return calcularIRS_IL(rendimentoAnualBrutoA, rendimentoAnualBrutoB, estadoCivil, dependentes3Menos, dependentes3Mais, ascendentes, true)
+}
+
+
+function calcularIRS_IL_2escaloes(rendimentoAnualBrutoA, rendimentoAnualBrutoB, estadoCivil, dependentes3Menos, dependentes3Mais, ascendentes) {
+  return calcularIRS_IL(rendimentoAnualBrutoA, rendimentoAnualBrutoB, estadoCivil, dependentes3Menos, dependentes3Mais, ascendentes, false)
+}
+
+
+function calcularIRS_IL(rendimentoAnualBrutoA, rendimentoAnualBrutoB, estadoCivil, dependentes3Menos, dependentes3Mais, ascendentes, is_flat) {
 
   // https://iniciativaliberal.pt/wp-content/uploads/2022/01/Iniciativa-Liberal-Programa-Eleitoral-2022.pdf
 
@@ -417,11 +427,15 @@ function calcularIRS_IL(rendimentoAnualBrutoA, rendimentoAnualBrutoB, estadoCivi
 
   var rendColetavel = rendimentoAnualBrutoA + rendimentoAnualBrutoB - valorIsencao;
 
-  // calcular irs final
-  if (rendColetavel > 30000) {
-    var irs = 30000 * 0.15 + (rendColetavel-30000) * 0.28;
-  } else {
+  if (is_flat) {
     var irs = rendColetavel * 0.15;
+  } else {
+    // calcular irs final
+    if (rendColetavel > 30000) {
+      var irs = 30000 * 0.15 + (rendColetavel-30000) * 0.28;
+    } else {
+      var irs = rendColetavel * 0.15;
+    }
   }
 
   if (debug) {
@@ -458,7 +472,7 @@ function calcularRendLiquido(rendimentoAnualBrutoA, rendimentoAnualBrutoB, pagar
 }
 
 
-function atualizarTabelaIRS(irsActual, irsIL, rendimentoA, rendimentoB, estadoCivil,
+function atualizarTabelaIRS(irsActual, irsIL, il_escaloes, rendimentoA, rendimentoB, estadoCivil,
   tributacao, ascendentes, dependentes, deducoesEspecificas, rendimentoColectavel,
   taxa, coletaTotal, deducoesColeta, valorTrabalhador, valorEstado)
 {
@@ -521,6 +535,14 @@ function atualizarTabelaIRS(irsActual, irsIL, rendimentoA, rendimentoB, estadoCi
   var span_irsIL = $('#irsIL');
   var fIrsIL = numeral(irsIL).format(formato);
   span_irsIL.text(`${fIrsIL}€`);
+
+  var span_irsILTexto = $('#nomeProposta');
+  if (il_escaloes === "1") {
+    var fIrsILTexto = "Flat tax (15%)";
+  } else {
+    var fIrsILTexto = "2 escalões (15%; 28%)";
+  }
+  span_irsILTexto.text(fIrsILTexto);
 
   // Diferença entre o IRS do actual sistema e da proposta da IL
   var span_diff = $('#diff');
@@ -627,7 +649,7 @@ function atualizarTabelaRendimentos(rendimentoBase, irsActualBase, valorTrabalha
 }
 
 
-function main() {
+function main(il_escaloes) {
 
     // Obter os valores inseridos pelo utilizador no formulário
     var rendimentoA = Number($("#rendA").val());
@@ -659,6 +681,10 @@ function main() {
       rendimentoB = 0;
     }
 
+    if (debug) {
+      console.log(il_escaloes);
+    }
+
     //ano = Number($("#anoCivil").val());
     //carregarEscaloesIRS(); // not implemented
 
@@ -668,14 +694,22 @@ function main() {
       despesasAutomoveis, despesasMotociclos, despesasRestauracao, despesasCabeleireiros, despesasVeterinario, despesasPasses
     );
 
-    var irsIL = calcularIRS_IL(
-      rendimentoA, rendimentoB, estadoCivil, dependentes3Menos, dependentes3Mais, ascendentes
-    );
+    if (il_escaloes === "1") {
+      var irsIL = calcularIRS_IL_flat(
+        rendimentoA, rendimentoB, estadoCivil, dependentes3Menos, dependentes3Mais, ascendentes
+      );
+      var fn = calcularIRS_IL_flat;
+    } else {
+      var irsIL = calcularIRS_IL_2escaloes(
+        rendimentoA, rendimentoB, estadoCivil, dependentes3Menos, dependentes3Mais, ascendentes
+      );
+      var fn = calcularIRS_IL_2escaloes;
+    }
 
     var [valorTrabalhador, valorEstado, pagoEmpresa] = calcularRendLiquido(rendimentoA, rendimentoB, irsActual);
 
     atualizarTabelaIRS(
-      irsActual, irsIL, rendimentoA, rendimentoB, estadoCivil, tributacao, ascendentes, dependentes3Menos + dependentes3Mais,
+      irsActual, irsIL, il_escaloes, rendimentoA, rendimentoB, estadoCivil, tributacao, ascendentes, dependentes3Menos + dependentes3Mais,
       deducoesEspecificas, rendimentoColectavel, taxa, coletaTotal, deducoesColeta, valorTrabalhador, valorEstado
     );
 
@@ -793,7 +827,7 @@ function changeVideo(btn,ep) {
           event.stopPropagation()
         } else {
           if ($(form).attr('id') === "formIRS") {
-            main();
+            main($(event.submitter).val());
           } else {
             //$("#tabelaRendimentos").show();
             if ($('#formIRS')[0].checkValidity()) {

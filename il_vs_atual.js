@@ -21,8 +21,10 @@ const results = [
   "deducoesEspecificas", "rendimentoColectavel", "taxa", "coletaTotal", "deducoesColeta", "irsActual", "irsIL", "diff"]
 ];
 
-const sujeitoA = range(500, 5000, 50).concat(range(5500, 25000, 500));
-const sujeitoB = range(500, 5000, 50).concat(range(5500, 25000, 500));
+var fn = calcularIRS_IL_flat; // calcularIRS_IL_flat, calcularIRS_IL_2escaloes
+
+var sujeitoA = range(500, 5000, 50).concat(range(5500, 25000, 500));
+var sujeitoB = range(500, 5000, 50).concat(range(5500, 25000, 500));
 
 var despesasLares = 0;
 var despesasPensoesAlimentos = 0;
@@ -44,16 +46,12 @@ sujeitoA.forEach(rendimentoA => {
               [1500].forEach(despesasGerais => {
               [400].forEach(despesasSaude => {
               [1500].forEach(despesasEducacao => {
-              [600*12].forEach(despesasHabitacao => {
+              [200*12, 600*12].forEach(despesasHabitacao => {
               [300].forEach(despesasRestauracao => {
               [80].forEach(despesasCabeleireiros => {
 
-                if ((despesasGerais+despesasSaude+despesasEducacao+despesasHabitacao+despesasRestauracao+despesasCabeleireiros)/(rendimentoA*14+rendimentoB*14) >= 0.5) {
-                  despesasHabitacao=0;
-                }
-
-                if (dependentes3Menos+dependentes3Mais === 0) {
-                  despesasEducacao =0;
+                if ((despesasGerais+despesasSaude+despesasEducacao+despesasHabitacao+despesasRestauracao+despesasCabeleireiros)/(rendimentoA*14+rendimentoB*14) >= 0.85) {
+                  return;
                 }
 
                 // impossible cases
@@ -73,15 +71,11 @@ sujeitoA.forEach(rendimentoA => {
                   despesasAutomoveis, despesasMotociclos, despesasRestauracao, despesasCabeleireiros, despesasVeterinario, despesasPasses
                 );
 
-                //var irsIL = calcularIRS_IL(
-                //  rendimentoA*14, rendimentoB*14, estadoCivil, tributacao, dependentes3Menos, dependentes3Mais, despesasPensoesAlimentos
-                //);
-
-                var irsIL = calcularIRS_IL_3escaloes(
-                  rendimentoA*14, rendimentoB*14, estadoCivil, tributacao, dependentes3Menos, dependentes3Mais, despesasPensoesAlimentos
+                var irsIL = fn(
+                  rendimentoA*14, rendimentoB*14, estadoCivil, dependentes3Menos, dependentes3Mais, ascendentes
                 );
 
-                if (irsActual > 0 && irsActual - irsIL < 100) {
+                if (irsActual - irsIL < 0) {
                   results.push(
                     [ano, rendimentoA, rendimentoB, estadoCivil, tributacao, ascendentes, dependentes3Menos, dependentes3Mais,
                     despesasGerais, despesasSaude, despesasEducacao, despesasHabitacao, despesasLares, despesasPensoesAlimentos,
@@ -106,6 +100,79 @@ sujeitoA.forEach(rendimentoA => {
   });
   console.log(`${rendimentoA} | ${total}`);
 });
+
+
+console.log(`Total: ${total} | ${results.length}`);
+
+// around minimum wage
+sujeitoA = range(700, 1000, 5);
+sujeitoB = range(700, 1000, 5);
+
+sujeitoA.forEach(rendimentoA => {
+  [0].concat(sujeitoB).forEach(rendimentoB => {
+    [casado,solteiro].forEach(estadoCivil => {
+      [tributacaoConjunto,tributacaoSeparado].forEach(tributacao => {
+        range(0, 3).forEach(ascendentes => {
+          range(0, 3).forEach(dependentes3Menos => {
+            range(0, 3).forEach(dependentes3Mais => {
+              [3000].forEach(despesasGerais => {
+              [400].forEach(despesasSaude => {
+              [400].forEach(despesasEducacao => {
+              [300*12].forEach(despesasHabitacao => {
+              [300].forEach(despesasRestauracao => {
+              [80].forEach(despesasCabeleireiros => {
+
+                if ((despesasGerais+despesasSaude+despesasEducacao+despesasHabitacao+despesasRestauracao+despesasCabeleireiros)/(rendimentoA*14+rendimentoB*14) >= 0.85) {
+                  return;
+                }
+
+                // impossible cases
+                if (rendimentoB===0 && estadoCivil===casado) {
+                  return;
+                }
+                if (rendimentoB>0 && estadoCivil===solteiro) {
+                  return;
+                }
+                if (estadoCivil===solteiro && tributacao===tributacaoConjunto) {
+                  return;
+                }
+
+                var [deducoesEspecificas, rendimentoColectavel, taxa, coletaTotal, deducoesColeta, irsActual] = calcularIRS(
+                  rendimentoA*14, rendimentoB*14, estadoCivil, tributacao, ascendentes, dependentes3Menos, dependentes3Mais,
+                  despesasGerais, despesasSaude, despesasEducacao, despesasHabitacao, despesasLares, despesasPensoesAlimentos,
+                  despesasAutomoveis, despesasMotociclos, despesasRestauracao, despesasCabeleireiros, despesasVeterinario, despesasPasses
+                );
+
+                var irsIL = fn(
+                  rendimentoA*14, rendimentoB*14, estadoCivil, dependentes3Menos, dependentes3Mais, ascendentes
+                );
+
+                if (irsActual - irsIL < 0) {
+                  results.push(
+                    [ano, rendimentoA, rendimentoB, estadoCivil, tributacao, ascendentes, dependentes3Menos, dependentes3Mais,
+                    despesasGerais, despesasSaude, despesasEducacao, despesasHabitacao, despesasLares, despesasPensoesAlimentos,
+                    despesasAutomoveis, despesasMotociclos, despesasRestauracao, despesasCabeleireiros, despesasVeterinario, despesasPasses,
+                    deducoesEspecificas, rendimentoColectavel, taxa, coletaTotal, deducoesColeta, irsActual, irsIL, irsActual - irsIL]
+                  );
+                }
+
+                total++;
+
+              });
+              });
+              });
+              });
+              });
+              });
+            });
+          });
+        });
+      });
+    });
+  });
+  console.log(`${rendimentoA} | ${total}`);
+});
+
 
 
 console.log("Creating CSV file...");

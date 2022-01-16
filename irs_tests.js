@@ -17,7 +17,6 @@ const solteiro = 'Solteiro, divorciado, viúvo ou separado judicialmente';
 const tributacaoConjunto = 'Conjunto';
 const tributacaoSeparado = 'Separado';
 
-
 if (ano===2019) {
   // solteiro
   var tests = [
@@ -737,19 +736,19 @@ if (ano===2019) {
       `Casado + Conjunto + dependentes ${dependentes}+ abaixo do mínimo de existência`
     );
   });
-  // casado + tributacao separada
 }
 
 if (ano===2020) {
   // solteiro
   var tests = [
-    // [rendimento, valor obtido pelo simulador da pwc - aparenta estar errado quando é necessário considerar o Mínimo de Existência]
+    // [rendimento, valor obtido pelo simulador da pwc - este aparenta estar errado quando é necessário considerar o Mínimo de Existência, nessas situações usámos o valor do Portal das Finanças]
     [  500*14,      0.00],
     [  550*14,      0.00],
     [  635*14,      0.00],
     [  650*14,      0.00],
     [  675*14,    234.99],
     [  700*14,    584.99],
+    [  714*14,    780.99],
     [ 1200*14,   2423.56],
     [ 1500*14,   3620.56],
     [ 2000*14,   5847.97],
@@ -1085,6 +1084,15 @@ if (ano===2020) {
   );
 }
 
+if (ano===2021) {
+  // TODO
+}
+
+
+if (ano===2022) {
+  // não disponível no simulador do portal das finanças e a PwC implementou a proposta do OE2022 que não está em vigor
+  // assim que estiver disponível no portal das finanças será adicionado
+}
 
 // deducoes dependentes e ascendentes
 assert(
@@ -1337,23 +1345,23 @@ assert(
 );
 
 
-// proposta IRS da IL
+// proposta IRS flat da IL
 
 
 // solteiro
 // sem dependentes
 assert(
   withinMarginError(
-    calcularIRS_IL(1000*14, 0, solteiro, tributacaoSeparado, 0, 0, 0),
-    0.15*14*(1000-650)
+    calcularIRS_IL_flat(1000*14, 0, solteiro, 0, 0, 0),
+    0.15*14*(1000-thresholdIRS/14)
   ),
   `Proposta IL solteiro sem dependentes 1`
 );
 // o rendimento do sujeito passivo B deve ser ignorado
 assert(
   withinMarginError(
-    calcularIRS_IL(1000*14, 100000*14, solteiro, tributacaoSeparado, 0, 0, 0),
-    0.15*14*(1000-650)
+    calcularIRS_IL_flat(1000*14, 100000*14, solteiro, 0, 0, 0),
+    0.15*14*(1000-thresholdIRS/14)
   ),
   `Proposta IL solteiro sem dependentes 2`
 );
@@ -1363,10 +1371,19 @@ assert(
 // sem dependentes
 assert(
   withinMarginError(
-    calcularIRS_IL(1000*14, 750*14, casado, tributacaoSeparado, 0, 0, 0),
-    0.15*14*(1000+750-650*2)
+    calcularIRS_IL_flat(1000*14, 750*14, casado, 0, 0, 0),
+    0.15*14*(1000+750-thresholdIRS*2/14)
   ),
   `Proposta IL casado sem dependentes`
+);
+
+// casado, onde um não apresenta rendimentos
+assert(
+  withinMarginError(
+    calcularIRS_IL_flat(3000*14, 0, casado, 0, 0, 0),
+    0.15*14*(3000-thresholdIRS*2/14)
+  ),
+  `Proposta IL casado, onde um não apresenta rendimentos`
 );
 
 // solteiro - monoparental
@@ -1375,8 +1392,8 @@ var filhos = [1,2,3];
 filhos.forEach(dependentes => {
   assert(
     withinMarginError(
-      calcularIRS_IL(2000*14, 0, solteiro, tributacaoSeparado, dependentes, 0, 0),
-      0.15*14*(2000-(650+400*dependentes))
+      calcularIRS_IL_flat(2000*14, 0, solteiro, dependentes, 0, 0),
+      0.15*14*(2000-(thresholdIRS/14+400*dependentes))
     ),
     `Proposta IL solteiro com ${dependentes} dependentes`
   );
@@ -1384,7 +1401,7 @@ filhos.forEach(dependentes => {
 // minimo de IRS é 0
 assert(
   withinMarginError(
-    calcularIRS_IL(1000*14, 0, solteiro, tributacaoSeparado, 10, 0, 0),
+    calcularIRS_IL_flat(1000*14, 0, solteiro, 10, 0, 0),
     0
   ),
   `Proposta IL solteiro com 10 dependentes`
@@ -1397,17 +1414,102 @@ var filhos = [1,2,3];
 filhos.forEach(dependentes => {
   assert(
     withinMarginError(
-      calcularIRS_IL(2500*14, 1500*14, casado, tributacaoSeparado, dependentes, 0, 0),
-      0.15*14*(2500-(650+200*dependentes)+1500-(650+200*dependentes))
+      calcularIRS_IL_flat(2500*14, 1500*14, casado, dependentes, 0, 0),
+      0.15*14*(2500-(thresholdIRS/14+200*dependentes)+1500-(thresholdIRS/14+200*dependentes))
     ),
     `Proposta IL casado com ${dependentes} dependentes`
   );
 });
 
 
+// proposta IRS 2 escaloes da IL
 
+// solteiro
+// sem dependentes
+assert(
+  withinMarginError(
+    calcularIRS_IL_2escaloes(1000*14, 0, solteiro, 0, 0, 0),
+    0.15*14*(1000-thresholdIRS/14)
+  ),
+  `Proposta IL 2 escaloes solteiro sem dependentes 1`
+);
+assert(
+  withinMarginError(
+    calcularIRS_IL_2escaloes(3000*14, 0, solteiro, 0, 0, 0),
+    0.15*30000+0.28*(14*(3000-thresholdIRS/14)-30000)
+  ),
+  `Proposta IL 2 escaloes solteiro sem dependentes 1 - 2`
+);
+// o rendimento do sujeito passivo B deve ser ignorado
+assert(
+  withinMarginError(
+    calcularIRS_IL_2escaloes(3000*14, 100000*14, solteiro, 0, 0, 0),
+    0.15*30000+0.28*(14*(3000-thresholdIRS/14)-30000)
+  ),
+  `Proposta IL 2 escaloes solteiro sem dependentes 2`
+);
 
+// casado + tributacao conjunta
+// casado + tributacao separada
+// sem dependentes
+assert(
+  withinMarginError(
+    calcularIRS_IL_2escaloes(2000*14, 2000*14, casado, 0, 0, 0),
+    0.15*30000+0.28*(14*(2000-thresholdIRS/14+2000-thresholdIRS/14)-30000)
+  ),
+  `Proposta IL 2 escaloes casado sem dependentes`
+);
 
+// casado, onde um não apresenta rendimentos
+assert(
+  withinMarginError(
+    calcularIRS_IL_2escaloes(3000*14, 0, casado, 0, 0, 0),
+    0.15*14*(3000-thresholdIRS*2/14)
+  ),
+  `Proposta IL 2 escaloes casado, onde um não apresenta rendimentos`
+);
+assert(
+  withinMarginError(
+    calcularIRS_IL_2escaloes(4000*14, 0, casado, 0, 0, 0),
+    0.15*30000+0.28*(14*(4000-thresholdIRS/14-thresholdIRS/14)-30000)
+  ),
+  `Proposta IL 2 escaloes casado, onde um não apresenta rendimentos`
+);
+
+// solteiro - monoparental
+// com dependentes
+var filhos = [1,2,3];
+filhos.forEach(dependentes => {
+  assert(
+    withinMarginError(
+      calcularIRS_IL_2escaloes(5000*14, 0, solteiro, dependentes, 0, 0),
+      0.15*30000+0.28*(14*(5000-(thresholdIRS/14+400*dependentes))-30000)
+    ),
+    `Proposta IL 2 escaloes solteiro com ${dependentes} dependentes`
+  );
+});
+// minimo de IRS é 0
+assert(
+  withinMarginError(
+    calcularIRS_IL_2escaloes(1000*14, 0, solteiro, 10, 0, 0),
+    0
+  ),
+  `Proposta IL 2 escaloes solteiro com 10 dependentes`
+);
+
+// casado + tributacao conjunta
+// casado + tributacao separada
+// com dependentes
+var filhos = [1,2,3];
+filhos.forEach(dependentes => {
+  assert(
+    withinMarginError(
+      calcularIRS_IL_2escaloes(4500*14, 3500*14, casado, dependentes, 0, 0),
+      0.15*30000+0.28*(14*(4500-(thresholdIRS/14+200*dependentes)+3500-(thresholdIRS/14+200*dependentes))-30000)
+    ),
+    `Proposta IL 2 escaloes casado com ${dependentes} dependentes`
+  );
+});
 
 
 //

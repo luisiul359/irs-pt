@@ -1,10 +1,14 @@
-var ano = 2021;
+// ano das despesas, a ser declarado no ano+1
+// valores possíveis: 2019, 2020, 2021, 2022
+var ano = 2022;
 const debug = false;
 
 // https://dre.pt/home/-/dre/117942337/details/maximized
 // https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/legislacao/diplomas_legislativos/Documents/Portaria_27_2020.pdf
 // https://dre.pt/dre/detalhe/portaria/294-2021-175780035
-var IAS = ano===2019 ? 435.76 : (ano===2020 ? 438.81 : 443.2);
+// https://www.dgaep.gov.pt/index.cfm?OBJID=3E74CF19-DA87-4B8F-81E2-51E0649AAA9F
+var IAS = ano===2019 ? 435.76 : (ano===2020 ? 438.81 : (ano===2021 ? 438.81 : 443.2));
+          
 
 // Mínimo de Existência
 // https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs70.aspx
@@ -13,8 +17,9 @@ var minimoExistencia = 1.5 * 14 * IAS;
 // Salário mínimo nacional
 // https://dre.pt/home/-/dre/117503933/details/maximized
 // https://dre.pt/home/-/dre/126365738/details/maximized
+// https://dre.pt/dre/detalhe/decreto-lei/109-a-2020-152637760
 // https://files.dre.pt/1s/2021/12/23601/0000500009.pdf
-var salarioMinimo = ano===2019 ? 600 * 14 : (ano===2020 ? 635 * 14 : 705 * 14);
+var salarioMinimo = ano===2019 ? 600 * 14 : (ano===2020 ? 635 * 14 : (ano===2021 ? 665 * 14 : 705 * 14));
 
 // Valor mínimo de Deduçōes Específicas
 // Página 8: https://info.portaldasfinancas.gov.pt/pt/apoio_contribuinte/Folhetos_informativos/Documents/IRS_folheto_2019.pdf
@@ -45,6 +50,7 @@ if (ano===2019) {
 } else {
   // 2020
   // 2021
+  // 2022
   var escalao0 = {valor:   7112, percentagem: 0.145, escalao: 0};
   var escalao1 = {valor:  10732, percentagem: 0.230, escalao: 1};
   var escalao2 = {valor:  20322, percentagem: 0.285, escalao: 2};
@@ -732,6 +738,7 @@ function main(il_escaloes) {
     //);
 
 }
+
 
 function aumento() {
 

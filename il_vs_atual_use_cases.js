@@ -75,11 +75,11 @@ console.log('Starting...');
                   despesasAutomoveis, despesasMotociclos, despesasRestauracao, despesasCabeleireiros, despesasVeterinario, despesasPasses
                 );
 
-                var fn = calcularIRS_IL;
+                var fn = calcularIRS_IL_flat;
                 //var fn = calcularIRS_IL_3escaloes;
 
                 var irsIL = fn(
-                  rendimentoA*14, rendimentoB*14, estadoCivil, tributacao, dependentes3Menos, dependentes3Mais, despesasPensoesAlimentos
+                  rendimentoA*14, rendimentoB*14, estadoCivil, dependentes3Menos, dependentes3Mais, ascendentes
                 );
 
                 var [valorTrabalhadorBase, valorEstadoBase, pagoEmpresaBase] = calcularRendLiquido(rendimentoA*14, rendimentoB*14, irsActual);
@@ -98,7 +98,7 @@ console.log('Starting...');
                 )[5];
           
                 var irsILInc = fn(
-                  rendA, rendB, estadoCivil, tributacao, dependentes3Menos, dependentes3Mais, despesasPensoesAlimentos
+                  rendimentoA*14, rendimentoB*14, estadoCivil, dependentes3Menos, dependentes3Mais, ascendentes
                 );
 
                 var [valorTrabalhador, valorEstado, pagoEmpresa] = calcularRendLiquido(rendA, rendB, irsActualInc);

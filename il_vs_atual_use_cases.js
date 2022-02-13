@@ -98,7 +98,7 @@ console.log('Starting...');
                 )[5];
           
                 var irsILInc = fn(
-                  rendimentoA*14, rendimentoB*14, estadoCivil, dependentes3Menos, dependentes3Mais, ascendentes
+                  rendA, rendB, estadoCivil, dependentes3Menos, dependentes3Mais, ascendentes
                 );
 
                 var [valorTrabalhador, valorEstado, pagoEmpresa] = calcularRendLiquido(rendA, rendB, irsActualInc);

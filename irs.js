@@ -834,25 +834,33 @@ function changeVideo(btn,ep) {
 
   window.addEventListener('load', function () {
     // Fetch all the forms we want to apply custom Bootstrap validation styles to
-    var forms = document.getElementsByClassName('needs-validation')
+    var forms = document.getElementsByClassName('needs-validation');
 
     // Disabling form submissions if there are invalid fields
     // and prevent submission to keep the values
     Array.prototype.filter.call(forms, function (form) {
       form.addEventListener('submit', function (event) {
         if (form.checkValidity() === false) {
-          event.preventDefault()
-          event.stopPropagation()
+          event.preventDefault();
+          event.stopPropagation();
         } else {
           if ($(form).attr('id') === "formIRS") {
-            main($(event.submitter).val());
+            // only works in safari
+            const formData = new FormData(form, event.howeverWeGetSubmitter);
+            formData.get("irs");
+
+            // "event.submitter" works in all browsers but safari and ie
+            // https://developer.mozilla.org/en-US/docs/Web/API/SubmitEvent/submitter
+            const irs_type = formData.get("irs") || $(event.submitter).val();
+
+            main(irs_type);
           } else {
             //$("#tabelaRendimentos").show();
             if ($('#formIRS')[0].checkValidity()) {
               aumento();
             } else {
-              event.preventDefault()
-              event.stopPropagation()
+              event.preventDefault();
+              event.stopPropagation();
               $('#formAumento').addClass('was-validated');
 
             }
